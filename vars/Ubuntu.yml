@@ -1,0 +1,32 @@
+---
+
+packages__single_google_earth: 'google-earth-stable'
+packages__single_flashplugin_nonfree: 'flashplugin-installer'
+
+packages__single_iceweasel: 'firefox'
+packages__single_iceweasel_l10n: 'firefox-locale-LANG_CODE'
+
+packages__single_chromium: 'chromium-browser'
+packages__single_chromium_inspector: 'chromium-browser-inspector'
+packages__single_chromium_l10n: 'chromium-browser-l10n'
+
+packages__single_icedove: 'thunderbird'
+packages__single_icedove_l10n: 'thunderbird-locale-LANG_CODE'
+packages__single_iceowl_extension: 'xul-ext-lightning'
+packages__single_iceowl_l10n: ''
+
+## Seems to be not packaged for Ubuntu?
+packages__single_xul_ext_sogo_connector: ''
+
+packages__languages_available_additional_dist:
+  - present_packages: '{{ packages__single_iceweasel }}'
+    ## Currently, does not really install much but why not.
+    additional_packages:
+      - 'language-pack-LANG_CODE'
+
+packages__group_education_additional_dist:
+  - 'ubuntu-edu-tertiary'
+  - 'ubuntu-edu-secondary'
+
+packages__group_office_dist:
+  - 'libreoffice-templates'

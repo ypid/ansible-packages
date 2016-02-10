@@ -1,0 +1,28 @@
+---
+
+## linuxmuster.net client
+packages__targets:
+  - 'Ubuntu 14.04 LTS (Trusty Tahr)'
+  - 'Linux Mint 17 LTS Qiana'
+
+
+packages__single_pidcat: ''
+packages__single_python3_nmap: ''
+packages__single_viewnior: ''
+packages__single_dns_root_data: ''
+packages__single_openjdk_8_jdk: ''
+packages__single_systemd_ui: ''
+packages__single_hwinfo: ''
+packages__single_shellcheck: ''
+packages__single_python3_virtualenv: ''
+
+packages__single_gedit_latex_plugin: ''
+
+## At least on Linuxmint 17:
+## gedit-latex-plugin : Hängt ab von: gedit (>= 3.8) aber 2.30.5+qiana ist installiert.
+
+packages__group_firmware_free: []
+packages__group_firmware_non_free:
+  - 'linux-firmware-nonfree'
+packages__group_firmware_dist:
+  - 'firmware-addon-dell'

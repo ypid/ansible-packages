@@ -1,0 +1,91 @@
+{% macro gen_package_list(packages, reject_packages=[]) %}{# ((( #}
+{% set packages__list = (packages | reject("equalto", "") | unique | list | d([]))
+                     + (packages__global_additional    |list | d([]))
+                     + (packages__host_group_additional|list | d([]))
+                     + (packages__host_additional      |list | d([]))
+%}
+{% for condition in packages__languages_available %}
+{%   set _ = add_conditional_pkts(packages__list, condition, 'language') %}
+{% endfor %}
+{% for condition in packages__conditional %}
+{%   set _ = add_conditional_pkts(packages__list, condition, 'package') %}
+{% endfor %}
+{% set final_packages__list = [] %}
+{% for pkt in packages__list | reject("equalto", "") | sort | unique %}
+{%   if pkt not in reject_packages %}
+{%     set _ = final_packages__list.append(pkt) %}
+{%   endif %}
+{% endfor %}
+{{ final_packages__list | join('\n') }}
+{%- endmacro %}{# ))) #}
+
+
+{% macro add_conditional_pkts(packages__list, condition, mode) %}{# ((( #}
+{#
+mode:
+
+``package``
+  Selection depends only on present_packages.
+
+``language``
+  Selection depends on language and present_packages.
+
+#}
+{% set found_main_package = [] %}
+{% set present_packages = [] %}
+{% if condition.present_packages is string %}
+{%   set _ = present_packages.append(condition.present_packages) %}
+{%   if condition.present_packages in packages__list %}
+{%     set _ = found_main_package.append(condition.present_packages) %}
+{%   endif %}
+{% elif condition.present_packages is iterable %}
+{%   set present_packages = condition.present_packages %}
+{%   for pkt in condition.present_packages if pkt in packages__list %}
+{%     set _ = found_main_package.append(pkt) %}
+{%   endfor %}
+{% endif %}
+{% if mode == 'package' %}
+{% set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode) %}
+{% elif mode == 'language' %}
+{%   for lang in packages__languages %}
+{%     set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, lang) %}
+{%   endfor %}
+{% endif %}
+{%- endmacro %}{# ))) #}
+
+
+{% macro set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, lang=None) %}{# ((( #}
+{% if condition.require|d('one') == 'all' %}
+{%   set require = present_packages|length %}
+{% elif condition.require|d('one') is number %}
+{%   set require = condition.require|int %}
+{% endif %}
+{% if (found_main_package|length and not ((require is string or require is number) and found_main_package|length < require)) %}
+{%   if mode == 'package' or (mode == 'language' and condition.when|d(lang.code) == lang.code) %}
+{%     if condition.additional_packages is string %}
+{%       set _ = packages__list.append(get_lang_pkt(condition.additional_packages, lang)) %}
+{%     elif condition.additional_packages is iterable %}
+{%       for new_pkt in condition.additional_packages %}
+{%         set _ = packages__list.append(get_lang_pkt(new_pkt, lang)) %}
+{%       endfor %}
+{%     endif %}
+{%   endif %}
+{% endif %}
+{%- endmacro %}{# ))) #}
+
+
+{% macro get_lang_pkt(pkt, lang) %}{# ((( #}
+{% if lang is defined and lang is mapping -%}
+{{   pkt|replace("LANG_NAME", lang.name)|replace("LANG_CODE", lang.code)|replace("LANG_CULTURE", lang.culture) }}
+{%- else %}
+{{   pkt }}
+{%- endif %}
+{%- endmacro %}{# ))) #}
+
+
+{% macro print_comment(comment_sign) %}{# ((( #}
+{% for line in packages__export_comment.split('\n') if line != 'empty' %}
+{{   comment_sign }}{{ (" " + line) if (line|length) else "" }}
+{# {{ comment_sign }} {{ line|wordwrap(wrapstring='\n' + comment_sign + ' ') }} #}
+{% endfor %}
+{%- endmacro %}{# ))) #}

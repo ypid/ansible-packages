@@ -1,0 +1,22 @@
+---
+
+- name: Test for supported package managers
+  assert:
+    that: ansible_pkg_mgr in [
+            'apt',
+          ]
+  when: (packages__mode == 'deploy')
+  tags:
+    - 'role::packages:debconf'
+
+- name: Combine variables
+  set_fact:
+    packages__classes_combined: |
+      {{ packages__classes|d({}) | combine(packages__classes_additional|d({})) }}
+
+- include: deploy.yml
+  when: (packages__mode == 'deploy')
+
+- include: export.yml
+  with_items: '{{ packages__export_distributions }}'
+  when: (packages__mode == 'export')

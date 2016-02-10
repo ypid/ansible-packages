@@ -1,0 +1,39 @@
+---
+
+- name: Include distribution specific variables
+  include_vars: '{{ item }}'
+  when: (item|d() and packages__load_distribution_vars)
+  with_first_found:
+    - files:
+      - '{{ ansible_distribution + ".yml" }}'
+      skip: True
+
+- name: Include distribution release specific variables
+  include_vars: '{{ item }}'
+  with_first_found:
+    - files:
+      - '{{ ansible_distribution + "_" + ansible_distribution_release + ".yml" }}'
+      skip: True
+
+- name: Include distribution release backports specific variables
+  include_vars: '{{ item }}'
+  when: (item|d() and packages__load_distribution_backports_vars)
+  with_first_found:
+    - files:
+      - '{{ ansible_distribution + "_" + ansible_distribution_release + "_backports.yml" }}'
+      skip: True
+
+- name: Preserve current packages__targets for later use
+  set_fact:
+    packages__targets_real: '{{ packages__targets }}'
+  when: (packages__load_distribution_additional_releases)
+
+- name: Include additional distribution release specific variables
+  include_vars: '{{ ansible_distribution + "_" + item + ".yml" }}'
+  when: (item|d())
+  with_items: '{{ packages__load_distribution_additional_releases }}'
+
+- name: Restore packages__targets_real to packages__targets
+  set_fact:
+    packages__targets: '{{ packages__targets_real }}'
+  when: (packages__load_distribution_additional_releases)

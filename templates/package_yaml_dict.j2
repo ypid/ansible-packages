@@ -1,0 +1,5 @@
+{% import 'package_macros.j2' as pkt_macros with context %}
+---
+{{ pkt_macros.print_comment('##' ) -}}
+{{ packages__export_key_name }}:
+  {{ pkt_macros.gen_package_list(item.value, packages__reject_for_class[item.key]|d([])).split('\n') | to_nice_yaml | indent(2) }}

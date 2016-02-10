@@ -1,0 +1,9 @@
+---
+
+- name: Write package list
+  template:
+    src: 'package_list.j2'
+    dest: '/tmp/tmp_ansible_ypid.packages.list'
+  no_log: True
+  delegate_to: 'localhost'
+  with_items: [ '{{ packages__host_class }}' ]

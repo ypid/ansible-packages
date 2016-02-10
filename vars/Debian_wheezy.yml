@@ -1,0 +1,11 @@
+---
+
+packages__targets:
+  - 'Debian GNU/Linux 7 (wheezy)'
+
+
+packages__group_office_duden_dist:
+  - 'libstlport4.6-dev'
+
+packages__single_silversearcher_ag: ''
+packages__single_nicstat: ''

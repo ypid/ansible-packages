@@ -1,0 +1,15 @@
+---
+
+packages__targets:
+  - 'Debian GNU/Linux 9 (stretch)'
+
+# .. Only defined here to overrule Debian_jessie.yml when packages__load_distribution_additional_releases (((
+packages__single_bats: 'bats'
+packages__single_haxe: 'haxe'
+packages__single_libmonitoring_plugin_perl: 'libmonitoring-plugin-perl'
+packages__single_python_aiml: 'python-aiml'
+packages__single_docker_io: 'docker.io'
+packages__single_borgbackup: 'borgbackup'
+packages__single_borgbackup_doc: 'borgbackup-doc'
+packages__single_firejail: 'firejail'
+# .. )))

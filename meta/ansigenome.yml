@@ -1,0 +1,88 @@
+---
+
+ansigenome_info:
+  github_url: "https://github.com/ypid/ansible-packages"
+  git_branch: "master"
+  galaxy_id: ""
+
+  travis: True
+
+  synopsis: |
+    This role allows you to select/manage packages over a heterogeneous set of
+    hosts using Ansible.
+
+    It was written to allow to have the maximum level of flexibility in regards
+    to selecting which packages should be installed on which host. Normally
+    Ansible works by making host groups in your inventory and configuring the
+    packages to install for those groups. This has certain downsides when the
+    complexity increases. For example, imagine that one of those hosts runs a
+    different distribution/OS. Also, when you have groups of packages in the
+    order of hundreds (to keep it generic), you would probably mess up your
+    Ansible inventory and your configuration would be distributed over hundreds
+    of files. Also this approach would not be practical because seeing all
+    those package groups which apply for a given hosts is not easy to
+    understand when you just want the big picture of software installed on this
+    host. Therefore this role puts its focus on packages, groups of packages
+    and classes of hosts while allowing to overwrite package names to match the
+    naming used by different distributions or versions of distributions.
+
+    ### Why make it that complicated?
+
+    Well, it started when I found more and more nice software in Debian
+    repositories combined with the need to install/provision different kinds of
+    systems with a certain subset of the software I know/have tested.
+
+    Those different systems include:
+
+    * My workstation
+    * Servers/VMs/virtual appliances
+    * Workstation systems for other people
+    * [Linux based systems for schools](https://github.com/ypid/ansible-linuxmuster_net-client-customize)
+    * Live systems
+
+    ### History
+
+    Before I knew Ansible, I had a shell script which asked you which
+    categories you wanted to install.
+    Now that I know Ansible I have something slightly more advanced :wink:
+
+    ### Variable prefixes
+
+    All variables are prefixed by the name of this role to avoid conflicts.
+
+    Furthermore, there are a number of variable namespaces:
+
+    * single: Name of a single package defaulting to the name in Debian stable.
+      This can be used if other distributions (for instance Ubuntu) call a
+      package differently.
+
+    * group: A set of packages which fit in the same topic.
+
+      * core: CLI only, does not require X
+
+    * class: List of all packages for a specific class of hosts.
+
+    * deploy: Options related to the installation and removal of packages as
+      provided by the package management modules in Ansible.
+
+    It is preferred when group names match
+    [Debtags](https://wiki.debian.org/Debtags) for the packages they group
+    together. For example `field`.
+
+    ### Variable suffixes
+
+    For `group` variables, certain suffixes are defined:
+
+    * minimal: Minimal set of packages of the group.
+    * basic: Basic set of packages of the group (including minimal).
+    * additional: Additional set of packages.
+    * full: Union of the minimal, basic and all the additional sets.
+
+    ### How to deal with the abstraction this role introduces?
+
+    There is a export feature available which you can use to generate package
+    lists for the different classes. Furthermore you can keep those lists under
+    version control so you can see what a change to a package group has for
+    example.
+
+    Check the [docs](/docs/getting-started.rst) for more details.

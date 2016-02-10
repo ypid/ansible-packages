@@ -1,0 +1,9 @@
+#!/bin/sh
+## @license AGPLv3 <https://www.gnu.org/licenses/agpl-3.0.html>
+## @author Copyright (C) 2015 Robin Schneider <ypid@riseup.net>
+##
+## Small shell script with no external dependencies except gnu core tools to
+## reformat the install list for apt-get or aptitude.
+## Example usage: aptitude install $(gen_install_list_from_yaml $filepath_to_yaml)
+
+grep '^  - ' "$1" | sed 's/^\s\+- "\?\([^"]\+\)"\?/\1/' | xargs

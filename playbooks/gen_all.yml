@@ -1,0 +1,13 @@
+---
+
+- name: Export all package lists
+  hosts: localhost
+  gather_facts: False
+  vars:
+    ansible_pkg_mgr: 'apt'
+    ansible_virtualization_role: 'host'
+    packages__mode: 'export'
+    packages__export_directory: '{{ inventory_dir | realpath }}/../../apt_package_lists'
+
+  roles:
+    - role: ypid.packages

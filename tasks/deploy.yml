@@ -1,0 +1,59 @@
+---
+
+- include: include_vars.yml
+  tags: [ 'role::packages:debconf' ]
+
+- name: Set packages__export_key_name to static value
+  set_fact:
+    packages__export_key_name: 'packages__class_install'
+
+- name: Write package list to temporary file
+  template:
+    src: 'package_yaml.j2'
+    dest: '/tmp/tmp_ansible_ypid.packages.list'
+  no_log: True
+  changed_when: False
+  always_run: True
+  delegate_to: 'localhost'
+  with_items: '{{ packages__host_class }}'
+
+- include_vars: '/tmp/tmp_ansible_ypid.packages.list'
+
+- name: Ensure temporary package list file is absent
+  file:
+    path: '/tmp/tmp_ansible_ypid.packages.list'
+    state: 'absent'
+  always_run: True
+  delegate_to: 'localhost'
+  changed_when: False
+
+- include: debconf.yml
+  tags: [ 'role::packages:debconf' ]
+  when: (packages__mode == 'install' and packages__debconf_enabled and ansible_os_family == 'Debian')
+
+- name: Install packages via APT
+  apt:
+    name: '{{ item }}'
+    state: '{{ packages__deploy_state }}'
+    install_recommends: '{{ packages__deploy_install_recommends|bool }}'
+    force: '{{ packages__deploy_force|bool }}'
+    update_cache: '{{ packages__deploy_update_cache|bool }}'
+    cache_valid_time: '{{ packages__deploy_cache_valid_time|d(omit) }}'
+    default_release: '{{ packages__deploy_default_release|d(omit) }}'
+    dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
+  with_items: '{{ packages__class_install }}'
+  when: (ansible_pkg_mgr == 'apt')
+
+- name: Remove packages via APT
+  apt:
+    name: '{{ item }}'
+    state: 'absent'
+    install_recommends: '{{ packages__deploy_install_recommends|bool }}'
+    purge: '{{ packages__deploy_purge|bool }}'
+    force: '{{ packages__deploy_force|bool }}'
+    update_cache: '{{ packages__deploy_update_cache|bool }}'
+    cache_valid_time: '{{ packages__deploy_cache_valid_time|d(omit) }}'
+    default_release: '{{ packages__deploy_default_release|d(omit) }}'
+    dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
+  with_items: (packages__absent_for_class[packages__host_class]|d([]))
+  when: (ansible_pkg_mgr == 'apt')

@@ -1,0 +1,19 @@
+---
+
+- name: Export Linuxmuster.net package lists
+  hosts: localhost
+  gather_facts: False
+  vars:
+    ansible_pkg_mgr: 'apt'
+    ansible_virtualization_role: 'host'
+    packages__mode: 'export'
+    packages__export_format: 'yaml'
+    packages__export_key_name: 'linuxmuster_net_client_apt_packages'
+    packages__export_directory: '{{ inventory_dir | realpath }}/../../apt_package_lists'
+    packages__contrib_enabled: True
+    packages__non_free_enabled: True
+    packages__export_classes:
+      - 'desktop_school_linuxmuster'
+
+  roles:
+    - role: ypid.packages
