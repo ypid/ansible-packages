@@ -2531,7 +2531,7 @@ packages__classes:
 
 # .. envvar:: packages__classes_additional
 #
-# Host group dict of available classes mapping to all packages of the class.
+# Additional class to packages mappings.
 # Allows you to add more classes from your Ansible inventory.
 packages__classes_additional: {}
 

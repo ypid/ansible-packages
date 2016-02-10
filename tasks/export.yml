@@ -14,7 +14,7 @@
   no_log: True
   ## Because package lists can get long …
   when: (packages__export_classes is string and packages__export_classes == 'all')
-  with_dict: '{{ packages__classes }}'
+  with_dict: '{{ packages__classes_combined }}'
 
 - name: Write package list
   template:
