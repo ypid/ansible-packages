@@ -11,3 +11,4 @@
 
   roles:
     - role: ypid.packages
+      tags: [ 'role::packages' ]

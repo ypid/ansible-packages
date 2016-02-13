@@ -87,7 +87,8 @@ lists for the different classes. Furthermore you can keep those lists under
 version control so you can see what a change to a package group is
 resulting in for the different classes and if that is what you intended.
 
-Check the [docs](/docs/getting-started.rst) for more details.
+Check the [docs](/docs/getting-started.rst) and the [example
+playbooks](/playbooks) for more details.
 
 
 

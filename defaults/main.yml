@@ -39,10 +39,10 @@ packages__mode: 'deploy'
 # Note that this option only takes effect in ``deploy`` mode.
 # Choices are:
 #
-# `present``
+# ``present``
 #   Ensures that any version of the packages is installed.
 #
-# `latest``
+# ``latest``
 #   Ensures that the latest version is installed.
 #
 # ``build-dep``
@@ -87,9 +87,9 @@ packages__deploy_update_cache: True
 # refresh is less or equal than ``packages__deploy_cache_valid_time`` seconds ago,
 # the ``update_cache`` gets skipped.
 packages__deploy_cache_valid_time: '{{ ansible_local.core.cache_valid_time
-                                      if (ansible_local|d() and ansible_local.core|d() and
-                                          ansible_local.core.cache_valid_time)
-                                      else (60 * 60 * 24) }}'
+                                       if (ansible_local|d() and ansible_local.core|d() and
+                                           ansible_local.core.cache_valid_time)
+                                       else (60 * 60 * 24) }}'
 
 
 # .. envvar:: packages__deploy_default_release
@@ -519,7 +519,7 @@ packages__conditional_role:
 
 # .. envvar:: packages__languages
 #
-# List of language codes which should be supported?
+# List of language codes which should be supported.
 # English (en-us) is the default and you should not be required to specify it.
 #
 # For Debian, this feature works by a predefined list for some packages which
@@ -620,7 +620,11 @@ packages__languages_available_additional_dist: []
 #   Packages groups
 # -------------------
 
-# .. List of applications for the KDE environment to match against (((
+# .. List of applications for the to match against (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   List of applications for the to match against
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 packages__group_kde_applications:
   - 'parley'
@@ -633,6 +637,10 @@ packages__group_kde_applications:
 # .. )))
 
 # .. Debtags: field::finance (((
+#
+# ~~~~~~~~~~~~
+#   Finances
+# ~~~~~~~~~~~~
 
 packages__group_tag_field_finance_minimum:
   - 'kmymoney'
@@ -653,6 +661,10 @@ packages__group_tag_field_finance_full: |
 # .. )))
 
 # .. Debtags: works-with::archive (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~
+#   File archiver/packer
+# ~~~~~~~~~~~~~~~~~~~~~~~~
 
 packages__group_tag_works_with_archive:
   - 'unp'
@@ -675,6 +687,10 @@ packages__group_tag_works_with_archive:
 # .. )))
 
 # .. Debtags: accessibility::ocr (((
+#
+# ~~~~~~~
+#   OCR
+# ~~~~~~~
 
 packages__group_tag_accessibility_ocr:
   - 'libtesseract3'
@@ -690,6 +706,10 @@ packages__group_tag_accessibility_ocr:
 # .. )))
 
 # .. Debtags: game (((
+#
+# ~~~~~~~~~
+#   Games
+# ~~~~~~~~~
 
 packages__group_tag_game:
   - 'supertux'
@@ -721,6 +741,10 @@ packages__group_tag_game_toys:
 # .. )))
 
 # .. Debtags: role::documentation (((
+#
+# ~~~~~~~~~~~~~~~~~
+#   Documentation
+# ~~~~~~~~~~~~~~~~~
 
 packages__group_tag_role_documentation:
   - 'linux-doc'
@@ -734,6 +758,10 @@ packages__group_tag_role_documentation:
 # .. )))
 
 # .. Imaging (((
+#
+# ~~~~~~~~~~~
+#   Imaging
+# ~~~~~~~~~~~
 
 packages__group_imaging:
   - 'kpartx'
@@ -757,6 +785,10 @@ packages__group_imaging:
 # .. )))
 
 # .. Internet (((
+#
+# ~~~~~~~~~~~~
+#   Internet
+# ~~~~~~~~~~~~
 
 packages__group_internet_minimum:
   - '{{ packages__single_iceweasel }}'
@@ -809,6 +841,10 @@ packages__group_internet_full: |
 # .. )))
 
 # .. VOIP (((
+#
+# ~~~~~~~~
+#   VOIP
+# ~~~~~~~~
 
 packages__group_tag_protocol_voip_minimum:
   - 'sflphone-gnome'
@@ -817,6 +853,10 @@ packages__group_tag_protocol_voip_minimum:
 # .. )))
 
 # .. Sysadmin (((
+#
+# ~~~~~~~~~~~~
+#   Sysadmin
+# ~~~~~~~~~~~~
 
 # .. Debtags: admin::backup (((
 
@@ -1053,6 +1093,10 @@ packages__group_sysadmin_full: |
 # .. )))
 
 # .. Education (((
+#
+# ~~~~~~~~~~~~~
+#   Education
+# ~~~~~~~~~~~~~
 
 packages__group_tag_field_astronomy:
   ## Based on education-astronomy (only makes recommendations).
@@ -1215,6 +1259,10 @@ packages__group_education_full: |
 # .. )))
 
 # .. Multimedia (((
+#
+# ~~~~~~~~~~~~~~
+#   Multimedia
+# ~~~~~~~~~~~~~~
 
 packages__group_multimedia_minimum:
   - 'clementine'
@@ -1303,6 +1351,10 @@ packages__group_multimedia_full: |
 # .. )))
 
 # .. Office (((
+#
+# ~~~~~~~~~~
+#   Office
+# ~~~~~~~~~~
 
 packages__group_pdf_viewing:
   - 'evince'
@@ -1403,6 +1455,10 @@ packages__group_office_full: |
 # .. )))
 
 # .. Development (((
+#
+# ~~~~~~~~~~~~~~~
+#   Development
+# ~~~~~~~~~~~~~~~
 
 # .. Revision Control System (((
 
@@ -1917,6 +1973,10 @@ packages__group_devel_full: |
 # .. )))
 
 # .. Package Management (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~
+#   Package Management
+# ~~~~~~~~~~~~~~~~~~~~~~
 
 packages__group_apt_package_management_minimal:
   - 'apt-transport-https'
@@ -1942,6 +2002,10 @@ packages__group_apt_package_management_full: |
 # .. )))
 
 # .. Core programs, drivers and firmware files (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Core programs, drivers and firmware files
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ## Minimum set of programs which I need.
 packages__group_core_minimum:
@@ -2099,8 +2163,12 @@ packages__group_core_full: |
 
 # .. )))
 
-# .. User terminal programs (((
+# .. CLI programs (((
 #
+# ~~~~~~~~~~~~~~~~
+#   CLI programs
+# ~~~~~~~~~~~~~~~~
+
 # Console programs not really intended for server.
 packages__group_user_terminal_programs_minimum:
   - 'encfs'
@@ -2126,6 +2194,10 @@ packages__group_user_terminal_programs_minimum:
 # .. )))
 
 # .. Live system (((
+#
+# ~~~~~~~~~~~~~~~
+#   Live system
+# ~~~~~~~~~~~~~~~
 
 packages__group_live_system_additional:
   - 'console-data'
@@ -2137,6 +2209,10 @@ packages__group_live_system_additional:
 # .. )))
 
 # .. Linuxmuster.net (((
+#
+# ~~~~~~~~~~~~~~~~~~~
+#   Linuxmuster.net
+# ~~~~~~~~~~~~~~~~~~~
 
 # Packaged by linuxmuster.net:
 packages__group_linuxmuster:
@@ -2211,6 +2287,10 @@ packages__group_school_services:
 # .. )))
 
 # .. Desktop sharing (((
+#
+# ~~~~~~~~~~~~~~~~~~~
+#   Desktop sharing
+# ~~~~~~~~~~~~~~~~~~~
 
 packages__group_network_remmina:
   - 'remmina'
@@ -2236,6 +2316,10 @@ packages__group_user_desktop_sharing_full: |
 # .. )))
 
 # .. Miscellaneous (((
+#
+# ~~~~~~~~~~~~~~~~~
+#   Miscellaneous
+# ~~~~~~~~~~~~~~~~~
 
 packages__group_user_file_manager:
   - 'nemo'
@@ -2442,7 +2526,7 @@ packages__host_additional: []
 # .. envvar:: packages__additional_for_class
 #
 # Additional packages for a class, can be used by inventory variables.
-# A use cases is the global inventory.
+# A use case is the global inventory.
 packages__additional_for_class: {}
 
 
