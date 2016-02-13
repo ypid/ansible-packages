@@ -22,7 +22,10 @@ galaxy_info:
   galaxy_tags:
     - system
     - packages
+    - packaging
+    - deployment
     - software
-    - programs
-    - package management
-    - package selection
+    - applications
+    - client
+    - desktop
+    - workstation
