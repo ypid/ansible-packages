@@ -55,9 +55,9 @@ mode:
 
 
 {% macro set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, lang=None) %}{# ((( #}
-{% if condition.require|d('one') == 'all' %}
+{% if condition.require|d('all') == 'all' %}
 {%   set require = present_packages|length %}
-{% elif condition.require|d('one') is number %}
+{% elif condition.require|d('all') is number %}
 {%   set require = condition.require|int %}
 {% endif %}
 {% if (found_main_package|length and not ((require is string or require is number) and found_main_package|length < require)) %}

@@ -1,3 +1,9 @@
 {% import 'package_macros.j2' as pkt_macros with context %}
 {{ pkt_macros.print_comment('##' ) -}}
-{{ pkt_macros.gen_package_list(item.value, []) }}
+{{ pkt_macros.gen_package_list(
+    item.value +
+    (packages__reject_for_class[item.key] | d([]) | list) if
+      packages__rejected_ensure_absent else [],
+    [],
+   )
+}}

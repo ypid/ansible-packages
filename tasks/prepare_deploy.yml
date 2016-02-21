@@ -1,0 +1,44 @@
+---
+
+- name: Run include vars tasks
+  include: include_vars.yml
+
+- name: Set packages__export_key_name to static value
+  set_fact:
+    packages__export_key_name: 'packages__class_install'
+
+- name: Write package list to temporary file
+  template:
+    src: 'package_yaml.j2'
+    dest: '/tmp/tmp_ansible_ypid.packages.list'
+  no_log: True
+  changed_when: False
+  always_run: True
+  delegate_to: 'localhost'
+  with_items: '{{ packages__host_class }}'
+
+- name: Include package list from templated file
+  include_vars: '/tmp/tmp_ansible_ypid.packages.list'
+
+- name: Ensure temporary package list file is absent
+  file:
+    path: '/tmp/tmp_ansible_ypid.packages.list'
+    state: 'absent'
+  always_run: True
+  delegate_to: 'localhost'
+  changed_when: False
+
+- name: Fail when a package has a conflicting state
+  fail:
+    msg: 'The following packages are required to be installed and at the same time to should be absent: {{ packages__class_install | intersect(packages__absent_for_class[packages__host_class]|d([])) }}'
+  when: (packages__class_install | intersect(packages__absent_for_class[packages__host_class]|d([])))
+
+- name: Apply debconf settings
+  debconf:
+    name: '{{ item.name }}'
+    question: '{{ item.question|d(omit) }}'
+    value: '{{ item.value|d() }}'
+    vtype: '{{ item.vtype|d() }}'
+  when: (packages__mode == 'deploy' and packages__debconf_enabled and ansible_os_family == 'Debian' and
+         (item.name in packages__class_install or (item.when_package|d() and item.when_package in packages__class_install)))
+  with_items: '{{ packages__debconf_settings_combined }}'

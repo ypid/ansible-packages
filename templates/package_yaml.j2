@@ -2,4 +2,4 @@
 ---
 {{ pkt_macros.print_comment('##' ) -}}
 {{ packages__export_key_name }}:
-  {{ pkt_macros.gen_package_list(packages__classes_combined[item]).split('\n') | to_nice_yaml | indent(2) }}
+  {{ pkt_macros.gen_package_list(packages__classes_combined[item], packages__reject_for_class[item]|d([])).split('\n') | to_nice_yaml | indent(2) }}

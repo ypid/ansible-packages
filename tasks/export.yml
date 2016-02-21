@@ -3,14 +3,17 @@
 - name: Set facts for selected distribution
   set_fact:
     ansible_distribution: '{{ item.ansible_distribution }}'
-    ansible_distribution_release: '{{ item.ansible_distribution_release }}'
+    ansible_distribution_release: '{{ item.ansible_distribution_release|d("") }}'
 
-- include: include_vars.yml
+- name: Run include vars tasks
+  include: include_vars.yml
 
 - name: Write package list for all classes
   template:
     src: '{{ "package_" + packages__export_format + "_dict.j2" }}'
-    dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +  item.key + "." + packages__export_format }}'
+    dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
+              packages__export_filename_prepend + item.key + packages__export_filename_append +
+              "." + packages__export_format }}'
   no_log: True
   ## Because package lists can get long …
   when: (packages__export_classes is string and packages__export_classes == 'all')
@@ -19,7 +22,9 @@
 - name: Write package list
   template:
     src: '{{ "package_" + packages__export_format + ".j2" }}'
-    dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +  item + "." + packages__export_format }}'
+    dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
+              packages__export_filename_prepend + item + packages__export_filename_append +
+              "." + packages__export_format }}'
   no_log: True
   ## Because package lists can get long …
   when: (packages__export_classes is not string and packages__export_classes is iterable)
@@ -28,7 +33,9 @@
 - name: Write absent package list for specified classes
   template:
     src: '{{ "package_" + packages__export_format + "_absent_dict.j2" }}'
-    dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +  item.key + "_packages__absent." + packages__export_format }}'
+    dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
+              packages__export_filename_prepend + item.key + packages__export_filename_append +
+              "_packages__absent." + packages__export_format }}'
   no_log: True
   ## Because package lists can get long …
   when: (item|d() and item.key is string and item.key in packages__export_classes|d({}))

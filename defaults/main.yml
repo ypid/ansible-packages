@@ -170,6 +170,18 @@ packages__export_distributions:
 packages__export_format: 'list'
 
 
+# .. envvar:: packages__export_filename_prepend
+#
+# String which is used as part of the filename before the class name.
+packages__export_filename_prepend: ''
+
+
+# .. envvar:: packages__export_filename_append
+#
+# String which is used as part of the filename after the class name.
+packages__export_filename_append: ''
+
+
 # .. envvar:: packages__export_comment
 #
 # Include the specified header as comment exporting.
@@ -188,7 +200,8 @@ packages__export_comment: |
 
 # .. envvar:: packages__export_key_name
 #
-# When exporting in a format which supports lists, use the given string as variable name for the package list.
+# When exporting in a format which supports lists, use the given string as
+# variable name for the package list.
 packages__export_key_name: 'package_list'
 
 # .. )))
@@ -420,6 +433,8 @@ packages__single_qemu: 'qemu'
 packages__single_qemu_kvm: 'qemu-kvm'
 packages__single_aqemu: 'aqemu'
 packages__single_firejail: 'firejail'
+packages__single_firmware_amd_graphics: 'firmware-amd-graphics'
+packages__single_firmware_misc_nonfree: 'firmware-misc-nonfree'
 
 # .. contrib (((
 #
@@ -452,18 +467,17 @@ packages__single_flashplugin_nonfree: 'flashplugin-nonfree'
 #   additional_packages to be added to the selection.
 #
 # ``require``
-#   Optional, defaults to ``one``.
-#
-#   ``one``
-#     String. Specifies that at least one package defined by ``present_packages`` is needed to added the ``additional_packages`` to the selection.
-#     (Boolean or)
-#
-#   ``all``
-#     String. Specifies that all packages defined by ``present_packages`` are needed to added the ``additional_packages`` to the selection.
-#     (Boolean and)
+#   Optional, defaults to ``all``.
 #
 #   ``number``
-#     String. Specifies that at least ``number`` package defined by ``present_packages`` are needed to added the ``additional_packages`` to the selection.
+#     Number. Specifies that at least ``number`` package defined by
+#     ``present_packages`` are needed to added the ``additional_packages`` to
+#     the selection.
+#
+#   ``all``
+#     String. Specifies that all packages defined by ``present_packages`` are
+#     needed to added the ``additional_packages`` to the selection.  (Boolean
+#     and)
 #
 packages__conditional: |
   {{
@@ -477,10 +491,15 @@ packages__conditional: |
 #
 # Role defaults for ``packages__conditional``.
 packages__conditional_role:
+
+  - present_packages:
+      - 'texlive-full'
+    additional_packages:
+      - 'texlive-latex-base'
+
   - present_packages:
       - 'pidgin'
       - 'texlive-latex-base'
-      - 'texlive-full'
     require: 2
     additional_packages:
       - 'pidgin-latex'
@@ -488,7 +507,6 @@ packages__conditional_role:
   - present_packages:
       - 'gedit'
       - 'texlive-latex-base'
-      - 'texlive-full'
     require: 2
     additional_packages:
       - '{{ packages__single_gedit_latex_plugin }}'
@@ -508,6 +526,94 @@ packages__conditional_role:
     require: 2
     additional_packages:
       - 'nautilus-owncloud'
+
+    ## Add package ``gnome-themes-standard`` which is specific to Gnome.
+    ## Used later to check if a Gnome environment is to be installed.
+  - present_packages:
+      - 'gnome-core'
+      - 'gnome'
+      - 'task-gnome-desktop'
+    require: 1
+    additional_packages:
+      - 'gnome-themes-standard'
+
+  - present_packages:
+      - 'gnome-themes-standard'
+    additional_packages:
+      - 'tint2'
+
+# .. Network manager (((
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'network-manager'
+    require: 2
+    additional_packages:
+      - 'network-manager-gnome'
+
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'network-manager-iodine'
+    require: 2
+    additional_packages:
+      - 'network-manager-iodine-gnome'
+
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'network-manager-openvpn'
+    require: 2
+    additional_packages:
+      - 'network-manager-openvpn-gnome'
+
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'network-manager-vpnc'
+    require: 2
+    additional_packages:
+      - 'network-manager-vpnc-gnome'
+
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'network-manager-ssh'
+    require: 2
+    additional_packages:
+      - 'network-manager-ssh-gnome'
+
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'network-manager-pptp'
+    require: 2
+    additional_packages:
+      - 'network-manager-pptp-gnome'
+
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'network-manager-openconnect'
+    require: 2
+    additional_packages:
+      - 'network-manager-openconnect-gnome'
+# .. )))
+
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'libreoffice-writer'
+    require: 2
+    additional_packages:
+      - 'libreoffice-gnome'
+
+    ## Add package ``xfce4-settings`` which is specific to XFCE.
+    ## Used later to check if a XFCE environment is to be installed.
+  - present_packages:
+      - 'xfce4'
+      - 'task-xfce-desktop'
+    require: 1
+    additional_packages:
+      - 'xfce4-settings'
+
+    ## Does not include a good launcher.
+  - present_packages:
+      - 'xfce4-settings'
+    additional_packages: '{{ packages__group_application_launcher }}'
+
 
 # .. )))
 
@@ -553,12 +659,12 @@ packages__languages: []
 # .. envvar:: packages__languages_available
 #
 # Definition of available localization packages. The localization packages will
-# only be installed when the one of the ``present_packages`` is tagged for installation.
+# only be installed when one of the ``present_packages`` is tagged for installation.
 #
 # Note that this feature is based on the ``packages__conditional``
 # implementation. Check the documentation of it for more information.
 #
-# The values from each ``packages__languages`` dict will substituted with the ``LANG_*`` (example: ``LANG_CODE``) placeholders.
+# The values from each ``packages__languages`` dict will be substituted with the ``LANG_*`` (example: ``LANG_CODE``) placeholders.
 packages__languages_available: '{{ packages__languages_available_global + packages__languages_available_additional_dist }}'
 
 
@@ -646,11 +752,12 @@ packages__group_tag_field_finance_minimum:
   - 'kmymoney'
 
 packages__group_tag_field_finance_additional:
-  - 'gnucash'
-  - 'gnucash-docs'
-  - 'python-gnucash'
   - 'aqbanking-tools'
   - 'libaqbanking-doc'
+
+  # - 'gnucash'
+  # - 'gnucash-docs'
+  # - 'python-gnucash'
 
 packages__group_tag_field_finance_full: |
   {{
@@ -795,6 +902,8 @@ packages__group_internet_minimum:
 
   - '{{ packages__single_chromium }}'
 
+
+packages__group_email_minimum:
   - '{{ packages__single_icedove }}'
   - 'enigmail'
   - '{{ packages__single_xul_ext_sogo_connector }}'
@@ -834,6 +943,8 @@ packages__group_internet_additional:
 packages__group_internet_full: |
   {{
     packages__group_internet_minimum +
+    packages__group_email_minimum +
+    packages__group_internet_flash +
     packages__group_internet_additional +
     []
   }}
@@ -869,9 +980,13 @@ packages__group_tag_admin_backup:
 
 packages__group_ansible:
   - 'ansible'
+  - 'python-paramiko'
+  - 'python-jinja2'
+  - 'python-yaml'
+
   # - 'facter'
 
-  ## passlib must be installed to encrypt vars_prompt values
+    ## passlib must be installed to encrypt vars_prompt values.
   - 'python-passlib'
 
   - 'python-netaddr'
@@ -1359,16 +1474,19 @@ packages__group_multimedia_full: |
 packages__group_pdf_viewing:
   - 'evince'
 
+packages__group_pdf_viewing_additional:
+  - 'mupdf'
+  - 'qpdfview'
+  - 'pdfgrep'
+  - 'xournal'
+
 packages__group_pdf_editing:
   - 'pdfposter'
-  - 'pdfgrep'
 
   - 'pdftk'
   - 'pdfchain'
 
   - 'pdfmod'
-
-  - 'xournal'
 
 packages__group_typesetting_minimal:
   - 'texlive-latex-base'
@@ -1413,15 +1531,18 @@ packages__group_office_sweethome:
   - '{{ "sweethome3d-furniture-nonfree" if (packages__non_free_enabled|d()) else "" }}'
 
 packages__group_office_minimal:
-  - 'libreoffice'
+  - 'libreoffice-writer'
   - 'libreoffice-pdfimport'
-  - 'libreoffice-writer2xhtml'
-  - 'libreoffice-wiki-publisher'
-  # - 'libreoffice-java-common'
+  - 'libreoffice-calc'
   - 'keepnote'
   - 'qtqr'
 
 packages__group_office_additional:
+  - 'libreoffice'
+  - 'libreoffice-writer2xhtml'
+  - 'libreoffice-wiki-publisher'
+  # - 'libreoffice-java-common'
+
   - 'rednotebook'
 
   - 'calibre'
@@ -1435,6 +1556,8 @@ packages__group_office_additional:
   - 'gscan2pdf'
   - 'gtg'
 
+  - 'simple-scan'
+
 packages__group_office_basic: |
   {{
     packages__group_pdf_viewing +
@@ -1447,6 +1570,7 @@ packages__group_office_basic: |
 packages__group_office_full: |
   {{
     packages__group_office_basic +
+    packages__group_pdf_viewing_additional +
     packages__group_office_additional +
     packages__group_typesetting_full +
     []
@@ -1649,6 +1773,7 @@ packages__group_tag_devel_lang_perl:
   - 'libtext-csv-xs-perl'
   - 'libconfig-simple-perl'
   - 'libdata-ical-perl'
+  - 'libpod-markdown-perl'
 
   - '{{ packages__single_libmonitoring_plugin_perl }}'
 
@@ -1773,6 +1898,11 @@ packages__group_devel_virtualization:
 packages__group_devel_virtualization_detection:
   - 'virt-what'
   - 'imvirt'
+
+packages__group_devel_live_system:
+  - 'live-build'
+  - 'squashfs-tools'
+  - 'debootstrap'
 
 packages__group_devel_shellscript:
   - '{{ packages__single_shellcheck }}'
@@ -1992,6 +2122,7 @@ packages__group_apt_package_management_additional:
   - '{{ packages__single_needrestart }}'
   # - 'dlocate'
   - 'debian-goodies'
+  - 'debtags'
 
 packages__group_apt_package_management_full: |
   {{
@@ -2063,6 +2194,9 @@ packages__group_core_additional:
   - 'attr'
   - 'cifs-utils'
 
+  - 'python-setuptools'
+  - 'python3-setuptools'
+
 packages__group_core_basic: |
   {{
     packages__group_core_minimum +
@@ -2098,6 +2232,8 @@ packages__group_core_bare_metal: |
 # .. Firmware blobs (((
 #
 # https://git-tails.immerda.ch/tails/tree/config/chroot_local-packageslists/tails-common.list
+#
+# Maybe use /usr/lib/live/build/chroot_firmware from live-build for this.
 
 packages__group_firmware_free:
   - 'firmware-linux-free'
@@ -2111,7 +2247,7 @@ packages__group_firmware_contrib:
   - 'linux-wlan-ng-firmware'
 
 packages__group_firmware_non_free:
-  - 'firmware-amd-graphics'
+  - '{{ packages__single_firmware_amd_graphics }}'
 
   ## Firmware for wireless adapters (((
   - 'firmware-atheros'
@@ -2125,13 +2261,10 @@ packages__group_firmware_non_free:
   # - 'firmware-linux'
 
   - 'firmware-linux-nonfree'
-  - 'firmware-misc-nonfree'
+  - '{{ packages__single_firmware_misc_nonfree }}'
 
   - 'firmware-realtek'
   - 'firmware-zd1211'
-
-  ## Not in Tails:
-  - 'firmware-ralink'
   ## )))
 
 packages__group_firmware_dist: []
@@ -2153,11 +2286,11 @@ packages__group_core_full: |
   {{
     packages__group_core_minimum +
     packages__group_core_basic +
-    (packages__group_apt_package_management_minimal if (ansible_pkg_mgr == 'apt') else []) +
+    (packages__group_apt_package_management_minimal if ('apt' in ansible_pkg_mgr) else []) +
     packages__group_core_minimum +
     packages__group_core_cron +
-    (packages__group_core_bare_metal if (ansible_virtualization_role == 'host') else []) +
-    (packages__group_core_hardware   if (ansible_virtualization_role == 'host') else []) +
+    (packages__group_core_bare_metal if ('host' in ansible_virtualization_role) else []) +
+    (packages__group_core_hardware   if ('host' in ansible_virtualization_role) else []) +
     []
   }}
 
@@ -2200,12 +2333,24 @@ packages__group_user_terminal_programs_minimum:
 # ~~~~~~~~~~~~~~~
 
 packages__group_live_system_additional:
+  - 'debconf-utils'
+  - 'live-boot'
+  - 'live-config'
+  - 'live-tools'
+  - 'user-setup'
+  - 'sudo'
+  - 'live-config-systemd'
   - 'console-data'
   - 'console-setup'
+  - 'xkb-data'
   - 'keyboard-configuration'
   - 'task-ssh-server'
-  - 'task-gnome-desktop'
   - 'task-laptop'
+
+  ## Allow Debian installation form started live system.
+  - 'debian-installer-launcher'
+
+  - 'virtualbox-guest-utils'
 # .. )))
 
 # .. Linuxmuster.net (((
@@ -2275,7 +2420,6 @@ packages__group_school_additional:
   - 'pyrenamer'
   - 'ubuntu-restricted-extras'
 
-  - 'gnome-tweak-tool'
   - 'sup-mail'
   - 'ruby-gpgme'
 
@@ -2284,6 +2428,141 @@ packages__group_school_services:
   - 'libapache2-mod-python'
   - 'libapache2-mod-python-doc'
   - 'mysql-server'
+# .. )))
+
+# .. Gnome desktop environment (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Gnome desktop environment
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Ideally only for the window manager itself and its core applications and not
+# more to allow maximum user choice of applications to install.
+
+# :command:`apt-cache depends gnome-core | grep 'Depends: ' | sed --regexp-extended "s/^\s*Depends: (.*)/  - '\1'/" | grep --invert-match --extended-regexp "'(gnome-user-share|vino|empathy|gnome-contacts|gnome-online-accounts|gnome-sushi)'`
+packages__group_wm_gnome_core_debian_jessie:
+  - 'libatk-adaptor'
+  - 'at-spi2-core'
+  - 'adwaita-icon-theme'
+  - 'baobab'
+  - 'fonts-cantarell'
+  - 'caribou'
+  - 'caribou-antler'
+  - 'libcaribou-gtk-module'
+  - 'libcaribou-gtk3-module'
+  - 'dconf-gsettings-backend'
+  - 'dconf-tools'
+  - 'eog'
+  - 'evince'
+  - 'evolution-data-server'
+  - 'sound-theme-freedesktop'
+  - 'gdm3'
+  - 'glib-networking'
+  - 'gnome-backgrounds'
+  - 'gnome-bluetooth'
+  - 'gnome-calculator'
+  - 'gnome-control-center'
+  - 'gnome-dictionary'
+  - 'gnome-disk-utility'
+  - 'gnome-font-viewer'
+  - 'gnome-keyring'
+  - 'libpam-gnome-keyring'
+  - 'gnome-menus'
+  - 'gnome-online-miners'
+  - 'gnome-packagekit'
+  - 'gnome-screenshot'
+  - 'gnome-session'
+  - 'gnome-settings-daemon'
+  - 'gnome-shell'
+  - 'gnome-shell-extensions'
+  - 'gnome-system-log'
+  - 'gnome-system-monitor'
+  - 'gnome-terminal'
+  - 'gnome-themes-standard'
+  - 'gnome-user-guide'
+  - 'gsettings-desktop-schemas'
+  - 'gstreamer1.0-plugins-base'
+  - 'gstreamer1.0-plugins-good'
+  - 'gstreamer1.0-pulseaudio'
+  - 'libgtk-3-common'
+  - 'gtk2-engines'
+  - 'gucharmap'
+  - 'gvfs-backends'
+  - 'gvfs-bin'
+  - 'gvfs-fuse'
+  - 'iceweasel'
+  - 'libcanberra-pulse'
+  - 'gkbd-capplet'
+  - 'metacity'
+  - 'mousetweaks'
+  - 'nautilus'
+  - 'policykit-1-gnome'
+  - 'pulseaudio'
+  - 'totem'
+  - 'tracker-gui'
+  - 'yelp'
+  - 'zenity'
+
+packages__group_wm_gnome_minimal:
+  - 'desktop-base'
+  - 'xdg-user-dirs-gtk'
+  - 'network-manager'
+
+packages__group_wm_gnome_additional:
+  - 'gnome-clocks'
+  - 'gnome-nettool'
+
+packages__group_wm_gnome_power_user:
+  - 'gnome-tweak-tool'
+
+packages__group_wm_gnome_basic: |
+  {{
+    (packages__group_wm_gnome_core_debian_jessie if (
+      ansible_distribution|d("") == 'Debian' and
+      ansible_distribution_release|d("") == 'jessie'
+    ) else [ 'gnome-core' ]) +
+    packages__group_wm_gnome_minimal +
+    packages__group_wm_gnome_additional +
+    []
+  }}
+
+packages__group_wm_gnome_normal: |
+  {{
+    packages__group_wm_gnome_basic +
+    packages__group_wm_gnome_power_user +
+    []
+  }}
+
+packages__group_wm_gnome_full: |
+  {{
+    [
+      'task-gnome-desktop',
+    ] +
+    packages__group_wm_gnome_normal +
+    []
+  }}
+
+# .. )))
+
+
+# .. Application finder/launcher (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Application finder/launcher
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+packages__group_application_launcher:
+  - 'synapse'
+
+  ## Written in Python
+  # - 'kupfer'
+
+  # - 'launchy'
+
+  ## Written in C#
+  # - 'gnome-do'
+  # - 'gmrun'
+
 # .. )))
 
 # .. Desktop sharing (((
@@ -2332,6 +2611,7 @@ packages__group_user_file_manager:
   - 'doublecmd-help-en'
 
   - 'baobab'
+  - 'file-roller'
 
 packages__group_user_text_editor:
   - 'gedit'
@@ -2379,9 +2659,10 @@ packages__group_network_avahi:
   - 'avahi-utils'
 
 packages__group_network_manager:
-  - 'network-manager-iodine-gnome'
-  - 'network-manager-openvpn-gnome'
-  - 'network-manager-vpnc-gnome'
+  - 'network-manager-iodine'
+  - 'network-manager-openvpn'
+  - 'network-manager-vpnc'
+  - 'network-manager-ssh'
 
 packages__group_user_basic: |
   {{
@@ -2423,18 +2704,21 @@ packages__classes_base: |
     []
   }}
 
+#
+    # packages__group_office_minimal +
+    # packages__group_multimedia_basic +
 packages__classes_live_system: |
   {{
     packages__group_core_full +
+    packages__group_wm_gnome_minimal +
     packages__group_hardware_testing_and_benchmarking_full +
     packages__group_sysadmin_basic +
     packages__group_internet_minimum +
-    packages__group_office_basic +
     packages__group_education_minimum +
-    packages__group_multimedia_basic +
     packages__group_user_basic +
     packages__group_user_terminal_programs_minimum +
     packages__group_firmware_full +
+    packages__group_live_system_additional +
     []
   }}
 
@@ -2463,8 +2747,11 @@ packages__classes_desktop_explorer: |
     packages__group_tag_field_finance_full +
     packages__group_multimedia_full +
     packages__group_sysadmin_full +
+    packages__group_network_manager +
     packages__group_education_full +
+    packages__group_office_full +
     packages__group_devel_basic +
+    packages__group_wm_gnome_power_user +
     []
   }}
 
@@ -2483,6 +2770,7 @@ packages__group_desktop_school: |
     packages__group_user_desktop_sharing_full +
     packages__group_school_additional +
     packages__group_school_additional_dev +
+    packages__group_wm_gnome_power_user +
     []
   }}
 
@@ -2534,8 +2822,8 @@ packages__additional_for_class: {}
 #
 # Although a specific package would be included in the selection for a specific
 # class, do not include it for this class. This does not ensure that the
-# package is absent. Use ``packages__absent_for_class`` if that is what you
-# want.
+# package is absent. Use ``packages__absent_for_class`` or
+# ``packages__rejected_ensure_absent`` if that is what you want.
 #
 # Example::
 #
@@ -2554,6 +2842,12 @@ packages__reject_for_class:
 # installed by other means.
 # The role debops.apt_preferences_ can be used to achieve this.
 packages__absent_for_class: {}
+
+
+# .. envvar:: packages__rejected_ensure_absent
+#
+# If ``True`` ensure that rejected packages are absent.
+packages__rejected_ensure_absent: True
 
 
 # .. envvar:: packages__classes
@@ -2578,6 +2872,7 @@ packages__classes:
   live_system: |
     {{
       packages__classes_live_system +
+      packages__group_wm_gnome_minimal +
       (packages__additional_for_class.live_system|d([])) +
       []
     }}
@@ -2585,6 +2880,7 @@ packages__classes:
   desktop_normal: |
     {{
       packages__classes_desktop_normal +
+      packages__group_wm_gnome_normal +
       packages__group_tag_game +
       (packages__additional_for_class.desktop_normal|d([])) +
       []
@@ -2593,6 +2889,7 @@ packages__classes:
   desktop_explorer: |
     {{
       packages__classes_desktop_explorer +
+      packages__group_wm_gnome_normal +
       packages__group_tag_game +
       (packages__additional_for_class.desktop_explorer|d([])) +
       []
