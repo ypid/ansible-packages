@@ -3,30 +3,50 @@
 - name: Run include vars tasks
   include: include_vars.yml
 
-- name: Set packages__export_key_name to static value
+- name: Set packages__export_key_name to packages__class_install
   set_fact:
     packages__export_key_name: 'packages__class_install'
 
 - name: Write package list to temporary file
   template:
     src: 'package_yaml.j2'
-    dest: '/tmp/tmp_ansible_ypid.packages.list'
+    dest: '/tmp/ansible-ypid-packages__class_install.yml'
   no_log: True
   changed_when: False
   always_run: True
   delegate_to: 'localhost'
   with_items: '{{ packages__host_class }}'
 
-- name: Include package list from templated file
-  include_vars: '/tmp/tmp_ansible_ypid.packages.list'
+- name: Set packages__export_key_name to packages__class_absent
+  set_fact:
+    packages__export_key_name: 'packages__class_absent'
 
-- name: Ensure temporary package list file is absent
+- name: Write absent package list to temporary file
+  template:
+    src: 'package_yaml_absent.j2'
+    dest: '/tmp/ansible-ypid-packages__class_absent.yml'
+  no_log: True
+  changed_when: False
+  always_run: True
+  delegate_to: 'localhost'
+  with_items: '{{ packages__host_class }}'
+
+- name: Include templated package lists
+  include_vars: '/tmp/ansible-ypid-{{ item }}.yml'
+  with_items:
+    - 'packages__class_install'
+    - 'packages__class_absent'
+
+- name: Ensure temporary package list files are absent
   file:
-    path: '/tmp/tmp_ansible_ypid.packages.list'
+    path: '/tmp/ansible-ypid-{{ item }}.yml'
     state: 'absent'
   always_run: True
   delegate_to: 'localhost'
   changed_when: False
+  with_items:
+    - 'packages__class_install'
+    - 'packages__class_absent'
 
 - name: Fail when a package has a conflicting state
   fail:

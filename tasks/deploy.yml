@@ -25,9 +25,4 @@
     default_release: '{{ packages__deploy_default_release|d(omit) }}'
     dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
   when: (ansible_pkg_mgr == 'apt')
-  with_flattened: |
-    {{
-      (packages__absent_for_class[packages__host_class] | d([]) | list) +
-      (packages__reject_for_class[packages__host_class] | d([]) | list) if
-        packages__rejected_ensure_absent else []
-    }}
+  with_flattened: '{{ packages__class_absent }}'
