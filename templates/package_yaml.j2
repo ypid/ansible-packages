@@ -1,5 +1,9 @@
 {% import 'package_macros.j2' as pkt_macros with context %}
 ---
 {{ pkt_macros.print_comment('##' ) -}}
+{% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item) %}
 {{ packages__export_key_name }}:
-  {{ pkt_macros.gen_package_list(packages__classes_combined[item], packages__reject_for_class[item]|d([])).split('\n') | to_nice_yaml | indent(2) }}
+  {{ pkt_macros.gen_package_list(
+      packages__classes_combined[item],
+      packages__reject_for_class[class_pattern_for_reject_list]|d([])).split('\n') | to_nice_yaml | indent(2)
+  }}

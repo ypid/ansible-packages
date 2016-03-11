@@ -1,3 +1,4 @@
 {% import 'package_macros.j2' as pkt_macros with context %}
 {{ pkt_macros.print_comment('##' ) -}}
-{{ pkt_macros.gen_package_list(packages__classes_combined[item], packages__reject_for_class[item]|d([])) }}
+{% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item) %}
+{{ pkt_macros.gen_package_list(packages__classes_combined[item], packages__reject_for_class[class_pattern_for_reject_list]|d([])) }}

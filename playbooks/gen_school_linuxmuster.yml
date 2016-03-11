@@ -14,6 +14,9 @@
     packages__non_free_enabled: True
     packages__export_classes:
       - 'desktop_school_linuxmuster'
+    packages__export_distributions:
+      - ansible_distribution: 'Ubuntu'
+        ansible_distribution_release: 'trusty'
 
   roles:
     - role: ypid.packages

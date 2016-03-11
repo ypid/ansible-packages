@@ -30,7 +30,7 @@
   when: (packages__export_classes is not string and packages__export_classes is iterable)
   with_flattened: '{{ packages__export_classes }}'
 
-- name: Write absent package list for specified classes
+- name: Write absent package list for all classes
   template:
     src: '{{ "package_" + packages__export_format + "_absent_dict.j2" }}'
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
@@ -38,5 +38,16 @@
               "_packages__absent." + packages__export_format }}'
   no_log: True
   ## Because package lists can get long …
-  when: (item|d() and item.key is string and item.key in packages__export_classes|d({}))
-  with_dict: '{{ packages__absent_for_class }}'
+  when: (packages__export_classes is string and packages__export_classes == 'all')
+  with_dict: '{{ packages__classes_combined }}'
+
+- name: Write absent package list
+  template:
+    src: '{{ "package_" + packages__export_format + "_absent.j2" }}'
+    dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
+              packages__export_filename_prepend + item + packages__export_filename_append +
+              "_packages__absent." + packages__export_format }}'
+  no_log: True
+  ## Because package lists can get long …
+  when: (packages__export_classes is not string and packages__export_classes is iterable)
+  with_flattened: '{{ packages__export_classes }}'

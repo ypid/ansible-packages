@@ -4,6 +4,10 @@
 
 # .. contents:: Sections
 #    :local:
+#    :depth: 3
+#
+# .. role:: jinja_code(code)
+#    :language: jinja
 #
 # .. Basic options (((
 #
@@ -543,6 +547,7 @@ packages__conditional_role:
       - 'tint2'
 
 # .. Network manager (((
+#
   - present_packages:
       - 'gnome-themes-standard'
       - 'network-manager'
@@ -662,7 +667,7 @@ packages__languages: []
 # only be installed when one of the ``present_packages`` is tagged for installation.
 #
 # Note that this feature is based on the ``packages__conditional``
-# implementation. Check the documentation of it for more information.
+# implementation. Check the documentation of it for more details.
 #
 # The values from each ``packages__languages`` dict will be substituted with the ``LANG_*`` (example: ``LANG_CODE``) placeholders.
 packages__languages_available: '{{ packages__languages_available_global + packages__languages_available_additional_dist }}'
@@ -765,32 +770,6 @@ packages__group_tag_field_finance_full: |
     packages__group_tag_field_finance_additional +
     []
   }}
-# .. )))
-
-# .. Debtags: works-with::archive (((
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-#   File archiver/packer
-# ~~~~~~~~~~~~~~~~~~~~~~~~
-
-packages__group_tag_works_with_archive:
-  - 'unp'
-
-  - 'p7zip-full'
-  - 'xzdec'
-  - 'lzip'
-
-  - 'zip'
-  - 'unzip'
-
-  - 'unrar-free'
-
-  - '{{ "p7zip-rar" if (packages__non_free_enabled|d()) else "" }}'
-  - '{{ "unrar"     if (packages__non_free_enabled|d()) else "" }}'
-
-  ## Used for Firmware files.
-  - 'cabextract'
-
 # .. )))
 
 # .. Debtags: accessibility::ocr (((
@@ -969,6 +948,43 @@ packages__group_tag_protocol_voip_minimum:
 #   Sysadmin
 # ~~~~~~~~~~~~
 
+# .. Debtags: works-with::archive (((
+
+# """"""""""""""""""""""""
+#   File archiver/packer
+# """"""""""""""""""""""""
+
+packages__group_tag_works_with_archive_minimal:
+  - 'unp'
+  - 'tar'
+  - 'gzip'
+  - 'zip'
+  - 'unzip'
+
+packages__group_tag_works_with_archive_additional:
+
+  - 'p7zip-full'
+  - 'xzdec'
+  - 'bzip2'
+  - 'ncompress'
+  - 'xz-utils'
+  - 'lzip'
+
+  - '{{ "p7zip-rar" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "unrar"     if (packages__non_free_enabled|d()) else "unrar-free" }}'
+
+  ## Used for Firmware files.
+  - 'cabextract'
+
+packages__group_tag_works_with_archive_full: |
+  {{
+    packages__group_tag_works_with_archive_minimal +
+    packages__group_tag_works_with_archive_additional +
+    []
+  }}
+
+# .. )))
+
 # .. Debtags: admin::backup (((
 
 packages__group_tag_admin_backup:
@@ -1023,6 +1039,7 @@ packages__group_tag_admin_monitoring_network_minimum:
 
   - 'tcpdump'
   - 'iptraf'
+  - 'speedtest-cli'
 
 packages__group_tag_admin_monitoring_network_additional:
   - 'wireshark'
@@ -1183,6 +1200,7 @@ packages__group_sysadmin_minimal: |
 packages__group_sysadmin_basic: |
   {{
     packages__group_sysadmin_minimal +
+    packages__group_tag_works_with_archive_minimal +
     packages__group_tag_admin_backup +
     packages__group_tag_admin_monitoring_basic +
     []
@@ -1191,6 +1209,7 @@ packages__group_sysadmin_basic: |
 packages__group_sysadmin_full: |
   {{
     packages__group_tag_admin_monitoring_full +
+    packages__group_tag_works_with_archive_full +
     packages__group_sysadmin_minimal +
     packages__group_sysadmin_basic +
     packages__group_network_address_calculation +
@@ -2572,6 +2591,7 @@ packages__group_application_launcher:
 # ~~~~~~~~~~~~~~~~~~~
 
 packages__group_network_remmina:
+  - 'freerdp-x11'
   - 'remmina'
   - 'remmina-plugin-gnome'
   - 'remmina-plugin-nx'
@@ -2658,7 +2678,7 @@ packages__group_network_avahi:
   - 'avahi-discover'
   - 'avahi-utils'
 
-packages__group_network_manager:
+packages__group_network_manager_vpn_plugin:
   - 'network-manager-iodine'
   - 'network-manager-openvpn'
   - 'network-manager-vpnc'
@@ -2747,7 +2767,7 @@ packages__classes_desktop_explorer: |
     packages__group_tag_field_finance_full +
     packages__group_multimedia_full +
     packages__group_sysadmin_full +
-    packages__group_network_manager +
+    packages__group_network_manager_vpn_plugin +
     packages__group_education_full +
     packages__group_office_full +
     packages__group_devel_basic +
@@ -2817,7 +2837,6 @@ packages__host_additional: []
 # A use case is the global inventory.
 packages__additional_for_class: {}
 
-
 # .. envvar:: packages__reject_for_class
 #
 # Although a specific package would be included in the selection for a specific
@@ -2831,7 +2850,31 @@ packages__additional_for_class: {}
 #      container:
 #        - '{{ packages__single_needrestart }}'
 #
+# .. Don’t overdo it. This feature is currently disabled until it a real need occurs.
+# ..
+# .. For advanced users: You can also use a regular expression pattern for the class name which is illustrated in the following example::
+# ..
+# ..    packages__reject_for_class:
+# ..      'container.*':
+# ..        - '{{ packages__single_needrestart }}'
+# ..
+# .. This means that :jinja_code:`{{ packages__single_needrestart }}` will be rejected for ``container`` and ``container_app1`` (everything which the pattern matches).
+#
 packages__reject_for_class:
+
+  desktop_school: '{{ packages__reject_for_school }}'
+  desktop_school_linuxmuster: '{{ packages__reject_for_school }}'
+
+
+# .. envvar:: packages__reject_for_school
+#
+# Packages to reject for package classes indented for schools.
+# See ``packages__reject_for_class`` for more details.
+packages__reject_for_school: |
+  {{
+    packages__group_network_manager_vpn_plugin +
+    []
+  }}
 
 
 # .. envvar:: packages__absent_for_class

@@ -1,8 +1,28 @@
-{% macro gen_package_list(packages, reject_packages=[]) %}{# ((( #}
-{% set packages__list = (packages | reject("equalto", "") | unique | list | d([]))
-                     + (packages__global_additional    |list | d([]))
-                     + (packages__host_group_additional|list | d([]))
-                     + (packages__host_additional      |list | d([]))
+{% macro get_regex_match(classes_regex_pattern, class_name) %}{# ((( #}
+{{ class_name -}}
+{#
+Don’t overdo it. This feature is currently disabled until it a real need occurs.
+{% set class_regex_match = { 'pattern': '' } %}
+{% for class_regex_pattern in classes_regex_pattern %}
+{%   if class_name == class_regex_pattern %}
+{%     set _ = class_regex_match.update({'exact_match': class_name}) %}
+{%   elif class_name | match(class_regex_pattern) %}
+{%     set _ = class_regex_match.update({'pattern': class_regex_pattern}) %}
+{%   endif %}
+{% endfor %}
+{{ class_regex_match.exact_match|d(class_regex_match.pattern) -}}
+#}
+{%- endmacro %}{# ))) #}
+
+
+{% macro gen_package_list(packages, reject_packages=[], is_present_packages_list=True) %}{# ((( #}
+{% set packages__list = (
+                              (packages                        | list | d([]))
+                          + (((packages__global_additional     | list | d([]))
+                          +   (packages__host_group_additional | list | d([]))
+                          +   (packages__host_additional       | list | d([]))
+                             ) if is_present_packages_list else [])
+                        ) | reject("equalto", "") | unique | list
 %}
 {% for condition in packages__languages_available %}
 {%   set _ = add_conditional_pkts(packages__list, condition, 'language') %}
@@ -10,13 +30,13 @@
 {% for condition in packages__conditional %}
 {%   set _ = add_conditional_pkts(packages__list, condition, 'package') %}
 {% endfor %}
-{% set final_packages__list = [] %}
+{% set packages__list_final = [] %}
 {% for pkt in packages__list | reject("equalto", "") | sort | unique %}
 {%   if pkt not in reject_packages %}
-{%     set _ = final_packages__list.append(pkt) %}
+{%     set _ = packages__list_final.append(pkt) %}
 {%   endif %}
 {% endfor %}
-{{ final_packages__list | join('\n') }}
+{{ packages__list_final | join('\n') }}
 {%- endmacro %}{# ))) #}
 
 
