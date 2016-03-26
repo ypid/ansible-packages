@@ -85,5 +85,16 @@ ansigenome_info:
     version control so you can see what a change to a package group is
     resulting in for the different classes and if that is what you intended.
 
-    Check the [docs](/docs/getting-started.rst) and the [example
-    playbooks](/playbooks) for more details.
+    <!-- Check the [docs][/docs/getting-started.rst] and the [example -->
+    <!-- playbooks][/playbooks] for more details. -->
+
+    Check the [example playbooks][/playbooks] for more documentation.
+
+    ### Role variables
+
+    Check the [defaults/main.yml][] for a list of all default variables and
+    package presets available.
+
+    [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
+    [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
+    [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml

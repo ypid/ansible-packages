@@ -87,24 +87,29 @@ lists for the different classes. Furthermore you can keep those lists under
 version control so you can see what a change to a package group is
 resulting in for the different classes and if that is what you intended.
 
-Check the [docs](/docs/getting-started.rst) and the [example
-playbooks](/playbooks) for more details.
+<!-- Check the [docs][/docs/getting-started.rst] and the [example -->
+<!-- playbooks][/playbooks] for more details. -->
 
-
+Check the [example playbooks][/playbooks] for more documentation.
 
 ### Role variables
 
-Check the [defaults/main.yml](/defaults/main.yml) for a list of default
-variables available.
+Check the [defaults/main.yml][] for a list of all default variables and
+package presets available.
+
+[/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
+[/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
+[defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml
+
+
 
 List of internal variables used by the role:
 
-    packages__export_key_name
     packages__targets
-    packages__targets_real
-    packages__debconf_settings_combined
     ansible_distribution
+    packages__export_key_name
     packages__classes_combined
+    packages__targets_real
 
 
 ### Authors and license
