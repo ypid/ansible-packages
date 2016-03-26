@@ -15,6 +15,7 @@
   changed_when: False
   always_run: True
   delegate_to: 'localhost'
+  become: False
   with_items: '{{ packages__host_class }}'
 
 - name: Set packages__export_key_name to packages__class_absent
@@ -29,6 +30,7 @@
   changed_when: False
   always_run: True
   delegate_to: 'localhost'
+  become: False
   with_items: '{{ packages__host_class }}'
 
 - name: Include templated package lists
@@ -43,6 +45,7 @@
     state: 'absent'
   always_run: True
   delegate_to: 'localhost'
+  become: False
   changed_when: False
   with_items:
     - 'packages__class_install'

@@ -6,4 +6,5 @@
     dest: '/tmp/tmp_ansible_ypid.packages.list'
   no_log: True
   delegate_to: 'localhost'
+  become: False
   with_items: [ '{{ packages__host_class }}' ]
