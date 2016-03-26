@@ -841,6 +841,9 @@ packages__group_tag_role_documentation:
   - 'ansible-doc'
   - 'git-doc'
 
+packages__group_tag_role_documentation_additinal:
+  - 'doc-rfc'
+
 # .. )))
 
 # .. Imaging (((
@@ -1219,6 +1222,8 @@ packages__group_sysadmin_full: |
     packages__group_sysadmin_gui +
     packages__group_hardware_info +
     packages__group_sysadmin_hardware_minimum +
+    packages__group_tag_protocol_ldap +
+    packages__group_tag_protocol_smtp +
     []
   }}
 
@@ -1440,6 +1445,9 @@ packages__group_multimedia_editing_additional:
   - 'librecad'
   - 'librsvg2-bin'
   - 'pitivi'
+
+  ## Needs testing
+  # - 'ardour3'
 
 packages__group_multimedia_basic: |
   {{
@@ -2342,6 +2350,10 @@ packages__group_user_terminal_programs_minimum:
   - 'dos2unix'
   - 'jq'
   - 'crudini'
+  - 'csvtool'
+
+  ## flat file extractor
+  # - 'ffe'
 
 # .. )))
 
