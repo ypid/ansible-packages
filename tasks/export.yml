@@ -25,8 +25,6 @@
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item + packages__export_filename_append +
               "." + packages__export_format }}'
-  no_log: True
-  ## Because package lists can get long …
   when: (packages__export_classes is not string and packages__export_classes is iterable)
   with_flattened: '{{ packages__export_classes }}'
 
@@ -47,7 +45,5 @@
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item + packages__export_filename_append +
               "_packages__absent." + packages__export_format }}'
-  no_log: True
-  ## Because package lists can get long …
   when: (packages__export_classes is not string and packages__export_classes is iterable)
   with_flattened: '{{ packages__export_classes }}'
