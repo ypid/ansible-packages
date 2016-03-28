@@ -784,7 +784,7 @@ packages__languages_available_additional_dist: []
 #    apt_preferences__list:
 #      - '{{ (packages__apt_preferences__debian_backports_list|d([]) | list) if (ansible_distribution == "Debian") else [] }}'
 #
-# to your inventory and let debops.apt_preferences_ do the reset.
+# to your inventory and let debops.apt_preferences_ do the rest.
 # Note that debops.apt_preferences_ will need to run in the same context as this role.
 packages__apt_preferences__debian_backports_list:
 
