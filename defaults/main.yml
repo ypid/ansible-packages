@@ -725,6 +725,114 @@ packages__languages_available_additional_dist: []
 
 # .. )))
 
+# .. Package origin presets for Debian GNU/Linux (((
+#
+# -----------------------------------------------
+#   Package origin presets for Debian GNU/Linux
+# -----------------------------------------------
+#
+# Releases of Debian GNU/Linux usually don’t contain the latest upstream
+# versions of software.  This is perfectly fine because the versions which are
+# included in releases had some time to stabilize (no new features, only bug
+# fixes) and it is less likely that bugs and security vulnerabilities are still
+# contained in the released packages.
+#
+# However, when administrating a system based on Debian stable, users might
+# still prefer or need newer versions of software then released with Debian
+# Stable itself.
+#
+# To archive this, there are several options available, listed in order of
+# preference starting with the most preferred one:
+#
+# #. `Debian Backports`_: Backports are packages taken from the next Debian
+#    release (called testing), adjusted and recompiled for usage on Debian
+#    stable.
+#
+# #. Debian testing or unstable. Depending on the packages, this might require
+#    to upgrade some package dependencies to a newer version as well.
+#
+# #. Installing software from third-party repositories.
+#
+# #. Installing software from self build packages. Checkout the
+#    debops.reprepro_ role which can get you started.
+#
+# #. Installing software from source.
+#
+# Only the first two options are converted by this section. But considering the
+# size of the Debian package archive, these two options can get you pretty far.
+#
+# Note that you might need to enable releases in your ``sources.list(5)``.
+# debops.apt_ can do that for you. Also note that when you do that, you will
+# need to prevent APT to upgrade all of your packages to the latest version
+# available. To do this, you can checkout the ``apt_preferences__preset_list``
+# variable of the debops.apt_preferences_ role.
+#
+# The following lists only contain presets for packages not covered by more
+# specific roles. For example the debops.apt_cacher_ng_ role might also set
+# APT preferences. This will be configured by the role directly.
+
+
+# .. envvar:: packages__debian_backports_list:
+#
+# Preset of available `Debian Backports`_ intended for all releases of Debian.
+#
+# Note that this also includes packages, which are only available in `Debian
+# Backports`_, and where not released with the distribution.
+#
+# To use it, add the following::
+#
+#    apt_preferences__list:
+#      - '{{ (packages__apt_preferences__debian_backports_list|d([]) | list) if (ansible_distribution == "Debian") else [] }}'
+#
+# to your inventory and let debops.apt_preferences_ do the reset.
+# Note that debops.apt_preferences_ will need to run in the same context as this role.
+packages__apt_preferences__debian_backports_list:
+
+  - package: 'vim vim-*'
+    backports: [ 'wheezy' ]
+
+  - package: 'torbrowser-launcher'
+    backports: [ 'jessie' ]
+
+  - package: 'borgbackup borgbackup-* python3-msgpack'
+    backports: [ 'jessie' ]
+
+  - package: 'git-annex'
+    backports: [ 'jessie' ]
+
+  - package: 'ansible'
+    backports: [ 'jessie' ]
+
+  - package: 'owncloud-client nautilus-owncloud libowncloudsync0'
+    backports: [ 'jessie' ]
+
+  - package: 'wireshark wireshark-* tshark libwireshark* libwiretap* libwsutil4'
+    backports: [ 'jessie' ]
+
+  - package: 'exfat-fuse exfat-utils'
+    backports: [ 'jessie' ]
+
+  - package: 'libreoffice libreoffice-* uno-libs3 ure python3-uno'
+    backports: [ 'jessie' ]
+
+  - package: 'virtualbox virtualbox-*'
+    backports: [ 'jessie' ]
+
+  - package: 'xpra'
+    backports: [ 'jessie' ]
+
+
+# .. envvar:: packages__debian_stretch_from_jessie_list:
+#
+# Preset of packages from the Debian Stretch release which can be installed on
+# Debian Jessie.
+#
+# FIXME
+packages__debian_stretch_from_jessie_list:
+
+
+# .. )))
+
 # .. Packages groups (((
 #
 # -------------------
@@ -2352,6 +2460,9 @@ packages__group_user_terminal_programs_minimum:
   - 'crudini'
   - 'csvtool'
 
+  ## Provides ``xmllint``.
+  - 'libxml2-utils'
+
   ## flat file extractor
   # - 'ffe'
 
@@ -2977,3 +3088,6 @@ packages__classes_additional: {}
 #
 # .. _debops.apt: https://github.com/debops/ansible-apt
 # .. _debops.apt_preferences: https://github.com/debops/ansible-apt_preferences
+# .. _debops.reprepro: https://github.com/debops/ansible-reprepro
+# .. _`Debian Backports`: http://backports.debian.org/
+# .. _debops.apt_cacher_ng: https://github.com/debops/ansible-apt_cacher_ng
