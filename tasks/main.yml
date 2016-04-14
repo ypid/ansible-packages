@@ -11,8 +11,6 @@
 
 - name: Combine variables
   set_fact:
-    packages__classes_combined: |
-      {{ packages__classes|d({}) | combine(packages__classes_additional|d({})) }}
     packages__debconf_settings_combined: |
       {{
         (packages__debconf_settings       | d([]) | list) +

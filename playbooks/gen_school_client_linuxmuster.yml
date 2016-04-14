@@ -1,5 +1,6 @@
 ---
 
+## FIXME: Support absent with different YAML key name.
 - name: Export Linuxmuster.net package lists
   hosts: localhost
   gather_facts: False
@@ -8,11 +9,12 @@
     ansible_virtualization_role: 'host'
     packages__mode: 'export'
     packages__export_format: 'yaml'
-    packages__export_key_name: 'linuxmuster_net_client_apt_packages'
+    packages__export_key_name: 'linuxmuster_net_client__package_preset_ypid_list'
     packages__export_directory: '{{ inventory_dir | realpath }}/../../apt_package_lists'
     packages__contrib_enabled: True
     packages__non_free_enabled: True
     packages__export_classes:
+      # - 'school_client_linuxmuster'
       - 'desktop_school_linuxmuster'
     packages__export_distributions:
       - ansible_distribution: 'Ubuntu'

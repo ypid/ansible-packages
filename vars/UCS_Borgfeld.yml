@@ -1,0 +1,16 @@
+---
+
+packages__targets:
+  - 'Univention Corporate Server 3.2 (Borgfeld)'
+
+# UCS 3.2 Codename: Borgfeld
+# https://forge.univention.org/bugzilla/show_bug.cgi?id=31686
+
+packages__single_ntfs_3g: 'ntfsprogs'
+
+## Existing packages:
+packages__classes_core:
+
+  ## Version of ``ntfsfix`` is too old to have the -d, --clear-dirty flag.
+  - '{{ packages__single_ntfs_3g }}'
+  - 'git'

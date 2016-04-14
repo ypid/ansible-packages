@@ -198,7 +198,7 @@ packages__export_comment: |
   ") if (packages__targets|d([])|length) else "empty" }}
   {{ "You don’t have to use Ansible to get all those packages installed." if (packages__export_format == "yaml") else "empty" }}
   {{ "Have a look at the helper script called gen_install_list_from_yaml:" if (packages__export_format == "yaml") else "empty" }}
-  {{ "https://github.com/ypid/ansible-packages/blob/master/gen_install_list_from_yaml." if (packages__export_format == "yaml") else "empty" }}
+  {{ "https://github.com/ypid/ansible-packages/blob/master/scripts/gen_install_list_from_yaml." if (packages__export_format == "yaml") else "empty" }}
   {{ "" }}
 
 
@@ -408,7 +408,6 @@ packages__single_mcelog: 'mcelog'
 packages__single_pidcat: 'pidcat'
 packages__single_openjdk_8_jdk: 'openjdk-8-jdk'
 packages__single_python3_nmap: 'python3-nmap'
-packages__single_python3_virtualenv: 'python3-virtualenv'
 packages__single_viewnior: 'viewnior'
 packages__single_gedit_latex_plugin: 'gedit-latex-plugin'
 packages__single_shellcheck: 'shellcheck'
@@ -427,7 +426,21 @@ packages__single_iceowl_l10n: 'iceowl-l10n-LANG_CODE'
 packages__single_bats: 'bats'
 packages__single_haxe: 'haxe'
 packages__single_libmonitoring_plugin_perl: 'libmonitoring-plugin-perl'
+packages__single_libnet_openssh_parallel_perl: 'libnet-openssh-parallel-perl'
+packages__single_nautilus_owncloud: 'nautilus-owncloud'
+packages__single_pulseview: 'pulseview'
 packages__single_python_aiml: 'python-aiml'
+packages__single_python_jsmin: 'python-jsmin'
+packages__single_python3_django: 'python3-django'
+packages__single_python3_geoip: 'python3-geoip'
+packages__single_python3_geojson: 'python3-geojson'
+packages__single_python3_jsmin: 'python3-jsmin'
+packages__single_python3_redis: 'python3-redis'
+packages__single_python3_traceback2: 'python3-traceback2'
+packages__single_python3_virtualenv: 'python3-virtualenv'
+packages__single_speedtest_cli: 'speedtest-cli'
+packages__single_sysdig: 'sysdig'
+packages__single_python_traceback2: 'python-traceback2'
 packages__single_docker_io: 'docker.io'
 packages__single_jstest_gtk: 'jstest-gtk'
 packages__single_borgbackup: 'borgbackup'
@@ -439,6 +452,12 @@ packages__single_aqemu: 'aqemu'
 packages__single_firejail: 'firejail'
 packages__single_firmware_amd_graphics: 'firmware-amd-graphics'
 packages__single_firmware_misc_nonfree: 'firmware-misc-nonfree'
+packages__single_firmware_realtek: 'firmware-realtek'
+packages__single_firmware_zd1211: 'firmware-zd1211'
+packages__single_ntfs_3g: 'ntfs-3g'
+packages__single_geoip_database_extra: 'geoip-database-extra'
+packages__single_isenkram_cli: 'isenkram-cli'
+packages__single_apt_venv: 'apt-venv'
 
 # .. contrib (((
 #
@@ -529,7 +548,7 @@ packages__conditional_role:
       - 'nautilus'
     require: 2
     additional_packages:
-      - 'nautilus-owncloud'
+      - '{{ packages__single_nautilus_owncloud }}'
 
     ## Add package ``gnome-themes-standard`` which is specific to Gnome.
     ## Used later to check if a Gnome environment is to be installed.
@@ -769,12 +788,12 @@ packages__languages_available_additional_dist: []
 #
 # The following lists only contain presets for packages not covered by more
 # specific roles. For example the debops.apt_cacher_ng_ role might also set
-# APT preferences. This will be configured by the role directly.
+# APT preferences. This will be configured by this role directly.
 
 
 # .. envvar:: packages__debian_backports_list:
 #
-# Preset of available `Debian Backports`_ intended for all releases of Debian.
+# Preset of available `Debian Backports`_.
 #
 # Note that this also includes packages, which are only available in `Debian
 # Backports`_, and where not released with the distribution.
@@ -803,7 +822,7 @@ packages__apt_preferences__debian_backports_list:
   - package: 'ansible'
     backports: [ 'jessie' ]
 
-  - package: 'owncloud-client nautilus-owncloud libowncloudsync0'
+  - package: 'owncloud-client {{ packages__single_nautilus_owncloud }} libowncloudsync0'
     backports: [ 'jessie' ]
 
   - package: 'wireshark wireshark-* tshark libwireshark* libwiretap* libwsutil4'
@@ -1133,7 +1152,7 @@ packages__group_tag_admin_monitoring_additional:
   - 'dstat'
   - 'sysstat'
   - 'strace'
-  - 'sysdig'
+  - '{{ packages__single_sysdig }}'
 
   - 'logtop'
   - 'goaccess'
@@ -1150,7 +1169,7 @@ packages__group_tag_admin_monitoring_network_minimum:
 
   - 'tcpdump'
   - 'iptraf'
-  - 'speedtest-cli'
+  - '{{ packages__single_speedtest_cli }}'
 
 packages__group_tag_admin_monitoring_network_additional:
   - 'wireshark'
@@ -1158,7 +1177,7 @@ packages__group_tag_admin_monitoring_network_additional:
   - 'tshark'
   - 'geoip-bin'
   - 'geoip-database'
-  - 'geoip-database-extra'
+  - '{{ packages__single_geoip_database_extra }}'
   - '{{ "geoip-database-contrib" if (packages__contrib_enabled|d()) else "" }}'
 
 packages__group_tag_admin_monitoring_basic: |
@@ -1229,7 +1248,7 @@ packages__group_hardware_info_gui:
   - 'usbview'
 
 packages__group_sysadmin_hardware_minimum:
-  - 'isenkram-cli'
+  - '{{ packages__single_isenkram_cli }}'
 
 packages__group_hardware_testing_and_benchmarking_minimum:
   - 'f3'
@@ -1406,6 +1425,8 @@ packages__group_tag_field_mathematics_additional:
 
   - 'cantor'
   - 'cantor-backend-kalgebra'
+
+  - 'wxmaxima'
 
   ## Based on education-mathematics (only makes recommendations).
   - 'mathomatic'
@@ -1792,7 +1813,7 @@ packages__group_devel_debian:
   - 'debhelper'
   - 'dpatch'
   - 'asciidoc'
-  - 'apt-venv'
+  - '{{ packages__single_apt_venv }}'
 
 packages__group_devel_java:
   - 'openjdk-7-jdk'
@@ -1814,6 +1835,9 @@ packages__group_devel_graphics:
   - 'freeglut3-dev'
   - 'mesa-utils'
   - 'mesa-utils-extra'
+
+  ## Provides :command:`rsvg-convert` needed for development of the doclicense LaTeX package.
+  - 'librsvg2-bin'
 
 packages__group_devel_javascript:
   - 'npm'
@@ -1853,7 +1877,7 @@ packages__group_tag_field_electronics:
 
   - 'xoscope'
   - 'sigrok'
-  - 'pulseview'
+  - '{{ packages__single_pulseview }}'
 
   - 'flashrom'
 
@@ -1895,7 +1919,7 @@ packages__group_tag_devel_lang_perl:
   - 'libnet-ldap-perl'
   - 'libnet-jabber-perl'
   - 'libnet-openssh-perl'
-  - 'libnet-openssh-parallel-perl'
+  - '{{ packages__single_libnet_openssh_parallel_perl }}'
   - 'libnet-openssh-compat-perl'
 
   - 'libemail-mime-perl'
@@ -1948,8 +1972,8 @@ packages__group_tag_devel_lang_python:
   - 'python-dateutil'
   - 'python3-dateutil'
   - 'python-twill'
-  - 'python-jsmin'
-  - 'python3-jsmin'
+  - '{{ packages__single_python_jsmin }}'
+  - '{{ packages__single_python3_jsmin }}'
   - 'python-mysqldb'
   - 'python-sphinx'
   - 'python-all-dev'
@@ -1959,15 +1983,15 @@ packages__group_tag_devel_lang_python:
   - 'python-paramiko'
   - 'python-pexpect'
   - 'python-configparser'
-  - 'python-traceback2'
-  - 'python3-traceback2'
+  - '{{ packages__single_python_traceback2 }}'
+  - '{{ packages__single_python3_traceback2 }}'
   - 'python-unittest2'
   - 'python-tox'
   - 'python3-nose'
   - 'python-flexmock'
   - 'python3-flexmock'
   - 'python-redis'
-  - 'python3-redis'
+  - '{{ packages__single_python3_redis }}'
   - 'python-memcache'
   # - python3-memcache
 
@@ -1981,7 +2005,7 @@ packages__group_tag_devel_lang_python:
   # - 'python-beautifulsoup'
 
 packages__group_tag_devel_lang_python_additional:
-  - 'python3-django'
+  - '{{ packages__single_python3_django }}'
   - 'python-django'
   - 'ipython-doc'
   - 'python-bs4'
@@ -1990,8 +2014,8 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-doc'
   - 'python-flake8'
   - 'python3-flake8'
-  - 'python3-geoip'
-  - 'python3-geojson'
+  - '{{ packages__single_python3_geoip }}'
+  - '{{ packages__single_python3_geojson }}'
   - 'python3-gnupg'
   - 'python3-openssl'
   - 'python3-postgresql'
@@ -2018,7 +2042,7 @@ packages__group_devel_virtualization:
   # - 'qemu-user-binfmt'
   - 'qemu-user-static'
 
-  ## Just provides a wrapper script /usr/bin/kvm which runs qemu-system-x86.
+  ## Just provides a wrapper script :file:`/usr/bin/kvm` which runs :program:`qemu-system-x86`.
   - '{{ packages__single_qemu_kvm }}'
 
   - '{{ packages__single_aqemu }}'
@@ -2398,8 +2422,8 @@ packages__group_firmware_non_free:
   - 'firmware-linux-nonfree'
   - '{{ packages__single_firmware_misc_nonfree }}'
 
-  - 'firmware-realtek'
-  - 'firmware-zd1211'
+  - '{{ packages__single_firmware_realtek }}'
+  - '{{ packages__single_firmware_zd1211 }}'
   ## )))
 
 packages__group_firmware_dist: []
@@ -2928,6 +2952,15 @@ packages__group_desktop_school_linuxmuster: |
     []
   }}
 
+
+packages__group_school_server: |
+  {{
+    packages__group_core_full +
+    packages__group_sysadmin_basic +
+    [  packages__single_ntfs_3g ] +
+    []
+  }}
+
 # .. )))
 
 # .. Classes  (((
@@ -3043,6 +3076,7 @@ packages__classes:
       []
     }}
 
+  ## FIXME: Rename to client_desktop_normal
   desktop_normal: |
     {{
       packages__classes_desktop_normal +

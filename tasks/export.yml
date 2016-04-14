@@ -8,6 +8,11 @@
 - name: Run include vars tasks
   include: include_vars.yml
 
+- name: Combine variables
+  set_fact:
+    packages__classes_combined: |
+      {{ packages__classes|d({}) | combine(packages__classes_additional|d({})) }}
+
 - name: Write package list for all classes
   template:
     src: '{{ "package_" + packages__export_format + "_dict.j2" }}'

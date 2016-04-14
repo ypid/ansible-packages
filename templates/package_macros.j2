@@ -1,7 +1,7 @@
 {% macro get_regex_match(classes_regex_pattern, class_name) %}{# ((( #}
 {{ class_name -}}
 {#
-Don’t overdo it. This feature is currently disabled until it a real need occurs.
+Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% set class_regex_match = { 'pattern': '' } %}
 {% for class_regex_pattern in classes_regex_pattern %}
 {%   if class_name == class_regex_pattern %}
@@ -65,7 +65,7 @@ mode:
 {%   endfor %}
 {% endif %}
 {% if mode == 'package' %}
-{% set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode) %}
+{%   set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode) %}
 {% elif mode == 'language' %}
 {%   for lang in packages__languages %}
 {%     set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, lang) %}
