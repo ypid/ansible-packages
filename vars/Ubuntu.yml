@@ -15,8 +15,10 @@ packages__single_icedove_l10n: 'thunderbird-locale-LANG_CODE'
 packages__single_iceowl_extension: 'xul-ext-lightning'
 packages__single_iceowl_l10n: ''
 
-## Seems to be not packaged for Ubuntu?
-packages__single_xul_ext_sogo_connector: ''
+packages__blacklist_by_role:
+
+  ## Seems to be not packaged for Ubuntu?
+  - 'xul-ext-sogo-connector'
 
 packages__languages_available_additional_dist:
   - present_packages: '{{ packages__single_iceweasel }}'

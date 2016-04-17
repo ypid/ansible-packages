@@ -1,6 +1,7 @@
 ---
 
 ## FIXME: Support absent with different YAML key name.
+## FIXME: Ensure absent
 - name: Export Linuxmuster.net package lists
   hosts: localhost
   gather_facts: False
@@ -14,9 +15,9 @@
     packages__contrib_enabled: True
     packages__non_free_enabled: True
     packages__export_classes:
-      # - 'school_client_linuxmuster'
-      - 'desktop_school_linuxmuster'
+      - 'client_school_linuxmuster'
     packages__export_distributions:
+
       - ansible_distribution: 'Ubuntu'
         ansible_distribution_release: 'trusty'
 

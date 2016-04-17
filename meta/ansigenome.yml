@@ -37,13 +37,13 @@ ansigenome_info:
     * My workstation
     * Servers/VMs/virtual appliances
     * Workstation systems for other people
-    * [Linux based systems for schools](https://github.com/ypid/ansible-linuxmuster_net-client-customize)
+    * [Linux based systems for schools](https://github.com/ypid/ansible-linuxmuster_net_client)
     * Live systems
 
     ### History
 
-    Before I knew Ansible, I had a shell script which asked you which
-    categories you wanted to install.
+    Before I knew Ansible, I had a shell script which asked me which
+    categories I wanted to install.
     Now that I know Ansible I have something slightly more advanced :wink:
 
     ### Variable prefixes

@@ -1,6 +1,6 @@
 ---
 
-- name: Export paedML Linux 6.0 package lists for the UCS Servers
+- name: Export paedML Linux 6.0 package lists for the UCS Server
   hosts: localhost
   gather_facts: False
   vars:
@@ -8,12 +8,12 @@
     ansible_virtualization_role: 'host'
     packages__mode: 'export'
     packages__export_format: 'yaml'
-    packages__export_key_name: 'lmz_paedml_linux__docker_packages'
+    packages__export_key_name: 'lmz_paedml_linux__additional_packages'
     packages__export_directory: '{{ inventory_dir | realpath }}/../../apt_package_lists'
     packages__contrib_enabled: True
     packages__non_free_enabled: True
     packages__export_classes:
-      - 'packages__group_school_server'
+      - 'server_school'
     packages__export_distributions:
       - ansible_distribution: 'UCS'
         ansible_distribution_release: 'Borgfeld'

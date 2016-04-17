@@ -8,9 +8,9 @@ packages__targets:
 
 packages__single_ntfs_3g: 'ntfsprogs'
 
-## Existing packages:
-packages__classes_core:
+packages__whitelist_by_role:
 
   ## Version of ``ntfsfix`` is too old to have the -d, --clear-dirty flag.
   - '{{ packages__single_ntfs_3g }}'
+
   - 'git'

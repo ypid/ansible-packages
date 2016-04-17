@@ -2,7 +2,8 @@
 {{ pkt_macros.print_comment('##' ) -}}
 {% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item.key) %}
 {{ pkt_macros.gen_package_list(
-	item.value,
-	packages__reject_for_class[class_pattern_for_reject_list]|d([])
+    item.value,
+    ((packages__reject_for_class[class_pattern_for_reject_list]|d([]) | list) + (packages__blacklist | list)),
+    packages__whitelist,
   )
 }}

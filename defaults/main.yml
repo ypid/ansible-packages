@@ -20,12 +20,12 @@
 # In which mode should this role operate. Choices are:
 #
 # ``deploy``
-#   Ensure that all packages are in the desired state as configured
-#   by ``packages__deploy_state``.
+#   Ensure that all packages are in the desired state on the system as
+#   configured by ``packages__deploy_state``.
 #
 # ``export``
 #   Ensure that package lists files are up-to-date.
-#   See also the section about Package list export.
+#   See also the section about :ref:`packages__export_section`.
 #
 packages__mode: 'deploy'
 
@@ -114,6 +114,8 @@ packages__deploy_dpkg_options: '{{ omit }}'
 # .. )))
 
 # .. Package list export (((
+#
+# .. _packages__export_section:
 #
 # -----------------------
 #   Package list export
@@ -243,7 +245,7 @@ packages__non_free_enabled: False
 # Should the distribution specific variables which are bundled with this role
 # under :file:`vars/` be loaded?
 #
-# This mechanize is used to change packages names in case they differ from the
+# This mechanism is used to change packages names in case they differ from the
 # names in Debian Jessie or to remove packages from the list in case they are
 # not available in the default repositories.
 packages__load_distribution_vars: True
@@ -252,17 +254,11 @@ packages__load_distribution_vars: True
 # .. envvar:: packages__load_distribution_backports_vars
 #
 # Should the distribution release backports specific variables which are
-# bundled with this role under :file:`vars/` be loaded? Refer to
-# `packages__load_distribution_vars`.
+# bundled with this role under :file:`vars/` be loaded?
 #
-# This option might be useful in case you intend to use most packages from your
-# default release (e.g. Debian Jessie) but want to some install packages which are
-# not available or to old in your default release from backports e.g.
-# jessie-backports.
-#
-# In which case, you will need to set this option to `True` so that packages
-# which have been selected and are available in backports will be included in
-# the package list.
+# When this option is set to ``True``, packages which are not included in your
+# distribution release about instead are maintained in backports will also be
+# considered for being selected.
 #
 # Note that you must configure your source :manpage:`sources.list(5)` accordingly.
 # You should also configure :manpage:`apt_preferences(5)` in case you use other
@@ -293,7 +289,7 @@ packages__load_distribution_backports_vars: False
 #
 # Useful in combination with `packages__load_distribution_additional_releases`.
 #
-# Refer to `packages__load_distribution_backports_vars` for details.
+# Refer to ``packages__load_distribution_backports_vars`` for details.
 packages__load_distribution_release_vars: True
 
 
@@ -384,15 +380,17 @@ packages__debconf_host_settings: []
 # -------------------
 #   Single packages
 # -------------------
-
+#
 # Default definitions of packages as they are called in Debian Jessie or if it
-# does not yet exist in Debian stable then use the package name from Debian
-# testing or unstable.
+# did not yet exist in Debian Jessie then use the package name from the first Debian
+# release which contained the package or testing or unstable in case it has not
+# been released yet.
 #
-# The variable key names are pinned to the names in Debian Jessie to provide
-# backwards compatibility in case some names change in further releases of
-# Debian stable.
+# The variables and there values are pinned when they are first introduced to
+# provide backwards compatibility in case some names change in further releases
+# of Debian stable.
 #
+# The use case for for the single
 # Add a default entry for each package here which needs to later be overwritten
 # in the :file:`vars` directory of this role, either because it has a different
 # name or because it does not exist in a specific distribution or release.
@@ -458,6 +456,8 @@ packages__single_ntfs_3g: 'ntfs-3g'
 packages__single_geoip_database_extra: 'geoip-database-extra'
 packages__single_isenkram_cli: 'isenkram-cli'
 packages__single_apt_venv: 'apt-venv'
+packages__single_ffmpeg: 'ffmpeg'
+packages__single_pdf2htmlex: 'pdf2htmlex'
 
 # .. contrib (((
 #
@@ -473,6 +473,107 @@ packages__single_flashplugin_nonfree: 'flashplugin-nonfree'
 
 # .. )))
 
+# .. Package blacklisting/whitelisting (((
+#
+# .. _packages__black_white_listing_section:
+#
+# -------------------------------------
+#   Package blacklisting/whitelisting
+# -------------------------------------
+#
+# Blacklisting/whitelisting of packages regardless of the package class.
+# In comparison to ``packages__reject_for_class`` which allows you to reject
+# packages only for certain package classes.
+# This feature is mainly used internally to implement support for different
+# distributions where a set of packages is missing/included compared to Debian.
+
+# .. envvar:: packages__blacklist
+#
+# Combined blacklisted packages. To blacklist/reject packages for individual
+# classes, checkout ``packages__reject_for_class``.
+#
+# .. note:: Blacklisted packages will be enforced to be absent the same way as
+#           rejected packages are, when ``packages__rejected_ensure_absent`` is
+#           set to ``True``.
+#
+packages__blacklist: |
+  {{
+    (packages__blacklist_global                         | list) +
+    (packages__blacklist_host_group                     | list) +
+    (packages__blacklist_host                           | list) +
+    (packages__blacklist_by_role                | d([]) | list)
+  }}
+
+
+# .. envvar:: packages__blacklist_global
+#
+# Global blacklisted packages.
+packages__blacklist_global: []
+
+
+# .. envvar:: packages__blacklist_host_group
+#
+# Host group blacklisted packages.
+packages__blacklist_host_group: []
+
+
+# .. envvar:: packages__blacklist_host
+#
+# Host blacklisted packages.
+packages__blacklist_host: []
+
+
+# .. envvar:: packages__blacklist_by_role
+#
+# Used internally to blacklisted packages from
+# :file:`vars/`.
+packages__blacklist_by_role: []
+
+
+# .. envvar:: packages__whitelist
+#
+# Combined whitelisted packages. If this list not empty, only the packages
+# listed there can be selected. This feature is rarely used because
+# blacklisting is obviously strongly preferred.
+#
+# This feature has only been implemented to support the Univention Corporate
+# Server for which, despite the fact that it is directly based on Debian
+# GNU/Linux, only offers a very limited set of packages in there repositories.
+packages__whitelist: |
+  {{
+    (packages__whitelist_global             | list) +
+    (packages__whitelist_host_group         | list) +
+    (packages__whitelist_host               | list) +
+    (packages__whitelist_by_role    | d([]) | list)
+  }}
+
+
+# .. envvar:: packages__whitelist_global
+#
+# Global whitelisted packages.
+packages__whitelist_global: []
+
+
+# .. envvar:: packages__whitelist_host_group
+#
+# Host group whitelisted packages.
+packages__whitelist_host_group: []
+
+
+# .. envvar:: packages__whitelist_host
+#
+# Host whitelisted packages.
+packages__whitelist_host: []
+
+
+# .. envvar:: packages__whitelist_by_role
+#
+# Used internally to blacklisted packages from
+# :file:`vars/`.
+packages__whitelist_by_role: []
+
+# .. )))
+
 # .. Conditional package selection (((
 #
 # ---------------------------------
@@ -481,33 +582,34 @@ packages__single_flashplugin_nonfree: 'flashplugin-nonfree'
 
 # .. envvar:: packages__conditional
 #
-# Allows you to select a package if a set of other packages was also selected.
+# Allows you to add packages to the selection depending on a set of other
+# packages being already selected.
 #
 # Options:
 #
 # ``present_packages``
-#   Required string or list of strings which must be selected in order for the
-#   additional_packages to be added to the selection.
+#   Required, string or list of strings of package names which must be selected
+#   in order for the ``additional_packages`` to be added to the selection.
 #
 # ``require``
 #   Optional, defaults to ``all``.
 #
 #   ``number``
 #     Number. Specifies that at least ``number`` package defined by
-#     ``present_packages`` are needed to added the ``additional_packages`` to
-#     the selection.
+#     ``present_packages`` are needed to add the ``additional_packages`` to the
+#     selection.
 #
 #   ``all``
 #     String. Specifies that all packages defined by ``present_packages`` are
-#     needed to added the ``additional_packages`` to the selection.  (Boolean
-#     and)
+#     needed to added the ``additional_packages`` to the selection. (Logical
+#     conjunction).
 #
 packages__conditional: |
   {{
-    (packages__conditional_role  | d([]) | list) +
-    (packages__conditional_all   | d([]) | list) +
-    (packages__conditional_group | d([]) | list) +
-    (packages__conditional_host  | d([]) | list)
+    (packages__conditional_global      | d([]) | list) +
+    (packages__conditional_host_group  | d([]) | list) +
+    (packages__conditional_host        | d([]) | list) +
+    (packages__conditional_role                | list)
   }}
 
 # .. envvar:: packages__conditional_role
@@ -565,8 +667,8 @@ packages__conditional_role:
     additional_packages:
       - 'tint2'
 
-# .. Network manager (((
-#
+  # .. Network manager (((
+  #
   - present_packages:
       - 'gnome-themes-standard'
       - 'network-manager'
@@ -615,7 +717,7 @@ packages__conditional_role:
     require: 2
     additional_packages:
       - 'network-manager-openconnect-gnome'
-# .. )))
+  # .. )))
 
   - present_packages:
       - 'gnome-themes-standard'
@@ -754,7 +856,7 @@ packages__languages_available_additional_dist: []
 # versions of software.  This is perfectly fine because the versions which are
 # included in releases had some time to stabilize (no new features, only bug
 # fixes) and it is less likely that bugs and security vulnerabilities are still
-# contained in the released packages.
+# existent in the released packages.
 #
 # However, when administrating a system based on Debian stable, users might
 # still prefer or need newer versions of software then released with Debian
@@ -849,6 +951,9 @@ packages__apt_preferences__debian_backports_list:
 # FIXME
 packages__debian_stretch_from_jessie_list:
 
+# Ubuntu
+#
+# https://askubuntu.com/questions/656794/how-to-install-libreoffice-5-0-in-ubuntu
 
 # .. )))
 
@@ -858,10 +963,10 @@ packages__debian_stretch_from_jessie_list:
 #   Packages groups
 # -------------------
 
-# .. List of applications for the to match against (((
+# .. List of applications used to check conditions (((
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#   List of applications for the to match against
+#   List of applications used to check conditions
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 packages__group_kde_applications:
@@ -1176,9 +1281,8 @@ packages__group_tag_admin_monitoring_network_additional:
   - 'lua-cjson-dev'
   - 'tshark'
   - 'geoip-bin'
-  - 'geoip-database'
-  - '{{ packages__single_geoip_database_extra }}'
-  - '{{ "geoip-database-contrib" if (packages__contrib_enabled|d()) else "" }}'
+  - '{{ "" if (packages__contrib_enabled|d()) else packages__single_geoip_database_extra }}'
+  - '{{ "geoip-database-contrib" if (packages__contrib_enabled|d()) else "geoip-database" }}'
 
 packages__group_tag_admin_monitoring_basic: |
   {{
@@ -1586,7 +1690,7 @@ packages__group_multimedia_basic: |
   }}
 
 packages__group_multimedia_additional:
-  - 'ffmpeg'
+  - '{{ packages__single_ffmpeg }}'
 
   ## For MPEG-4
   - 'libavcodec-extra'
@@ -1655,6 +1759,7 @@ packages__group_typesetting_converters:
   - 'docx2txt'
   - 'wkhtmltopdf'
   - 'rst2pdf'
+  - '{{ packages__single_pdf2htmlex }}'
 
 packages__group_typesetting_additional:
   - 'texlive-full'
@@ -1856,9 +1961,11 @@ packages__group_tag_devel_lang_haskell:
   - 'cabal-install'
   - 'ghc'
 
-# https://media.ccc.de/browse/conferences/camp2015/camp2015-6634-pushing_the_limits_of_diy_electronics.html#video
 packages__group_tag_field_electronics:
-  ## Based on education-electronics (only makes recommendations).
+  ## Based on:
+  ## * education-electronics (only makes recommendations).
+  ## * https://media.ccc.de/browse/conferences/camp2015/camp2015-6634-pushing_the_limits_of_diy_electronics.html#video
+
   - 'kicad'
   - 'kicad-doc-en'
   - '{{ "eagle" if (packages__non_free_enabled|d()) else "" }}'
@@ -2142,8 +2249,8 @@ packages__group_devel_additional:
 
 # .. devel_env_for (((
 
-## https://github.com/themighty1/lpfw
 packages__group_devel_env_for_lpfw:
+  ## https://github.com/themighty1/lpfw
   - 'libcap-dev'
   - 'libnetfilter-conntrack-dev'
   - 'libnetfilter-queue-dev'
@@ -2278,10 +2385,12 @@ packages__group_apt_package_management_minimal:
 packages__group_apt_package_management_additional:
   - 'packagesearch'
   - 'debconf-utils'
-  - '{{ packages__single_needrestart }}'
   # - 'dlocate'
   - 'debian-goodies'
   - 'debtags'
+
+packages__group_apt_package_management_server:
+  - '{{ packages__single_needrestart }}'
 
 packages__group_apt_package_management_full: |
   {{
@@ -2376,8 +2485,14 @@ packages__group_cpu_microcode_non_free:
   - '{{ "intel-microcode" if (packages__non_free_enabled|d()) else "" }}'
   - '{{ "amd64-microcode" if (packages__non_free_enabled|d()) else "" }}'
 
-packages__group_core_bare_metal_services:
+packages__group_core_bare_metal_services_not_working_on_all_machines:
   - '{{ packages__single_mcelog }}'
+
+packages__group_core_bare_metal_services: |
+  {{
+    packages__group_core_bare_metal_services_not_working_on_all_machines +
+    []
+  }}
 
 packages__group_core_bare_metal: |
   {{
@@ -2525,8 +2640,8 @@ packages__group_live_system_additional:
 #   Linuxmuster.net
 # ~~~~~~~~~~~~~~~~~~~
 
-# Packaged by linuxmuster.net:
 packages__group_linuxmuster:
+  ## Packaged by linuxmuster.net:
   - 'linuxmuster-client-truecrypt'
   - 'linuxmuster-client-extras'
 
@@ -2602,9 +2717,14 @@ packages__group_school_services:
 #   Gnome desktop environment
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Ideally only for the window manager itself and its core applications and not
-# more to allow maximum user choice of applications to install.
+# Window managers like Gnome tend to install a lot of software which you might not need/want.
+# To avoid this, the following packages groups can be used to allow maximum
+# user choice of applications to install.
 
+# .. envvar:: packages__group_wm_gnome_core_debian_jessie
+#
+# Core packages to install Gnome on Debian Jessie.
+# This list has been generated by this command:
 # :command:`apt-cache depends gnome-core | grep 'Depends: ' | sed --regexp-extended "s/^\s*Depends: (.*)/  - '\1'/" | grep --invert-match --extended-regexp "'(gnome-user-share|vino|empathy|gnome-contacts|gnome-online-accounts|gnome-sushi)'`
 packages__group_wm_gnome_core_debian_jessie:
   - 'libatk-adaptor'
@@ -2871,7 +2991,13 @@ packages__classes_base: |
     []
   }}
 
-#
+packages__classes_server: |
+  {{
+    packages__classes_base +
+    packages__group_apt_package_management_server +
+    []
+  }}
+
     # packages__group_office_minimal +
     # packages__group_multimedia_basic +
 packages__classes_live_system: |
@@ -2889,7 +3015,7 @@ packages__classes_live_system: |
     []
   }}
 
-packages__classes_desktop_normal: |
+packages__classes_client: |
   {{
     packages__group_core_full +
     packages__group_apt_package_management_full +
@@ -2907,9 +3033,9 @@ packages__classes_desktop_normal: |
   }}
 
 
-packages__classes_desktop_explorer: |
+packages__classes_client_explorer: |
   {{
-    packages__classes_desktop_normal +
+    packages__classes_client +
     packages__group_tag_game_toys +
     packages__group_tag_field_finance_full +
     packages__group_multimedia_full +
@@ -2923,9 +3049,9 @@ packages__classes_desktop_explorer: |
   }}
 
 
-packages__group_desktop_school: |
+packages__classes_client_school: |
   {{
-    packages__classes_desktop_explorer +
+    packages__classes_client_explorer +
     packages__group_education_games +
     packages__group_education_junior +
     packages__group_office_full +
@@ -2942,9 +3068,9 @@ packages__group_desktop_school: |
   }}
 
 
-packages__group_desktop_school_linuxmuster: |
+packages__classes_client_school_linuxmuster: |
   {{
-    packages__group_desktop_school +
+    packages__classes_client_school +
     packages__group_linuxmuster +
     packages__group_school_additional +
     packages__group_school_additional_dev +
@@ -2953,9 +3079,9 @@ packages__group_desktop_school_linuxmuster: |
   }}
 
 
-packages__group_school_server: |
+packages__classes_server_school: |
   {{
-    packages__group_core_full +
+    packages__classes_server +
     packages__group_sysadmin_basic +
     [  packages__single_ntfs_3g ] +
     []
@@ -2971,19 +3097,22 @@ packages__group_school_server: |
 
 # .. envvar:: packages__global_additional
 #
-# Additional packages for all classes.
+# Additional packages for all classes indented for use from the global
+# inventory.
 packages__global_additional: []
 
 
 # .. envvar:: packages__host_group_additional
 #
-# Additional packages for all classes.
+# Additional packages for all classes indented for use from the inventory for
+# one host group.
 packages__host_group_additional: []
 
 
 # .. envvar:: packages__host_additional
 #
-# Additional packages for all classes.
+# Additional packages for all classes intended for use from the host specific
+# inventory.
 packages__host_additional: []
 
 
@@ -2993,12 +3122,16 @@ packages__host_additional: []
 # A use case is the global inventory.
 packages__additional_for_class: {}
 
+
 # .. envvar:: packages__reject_for_class
 #
 # Although a specific package would be included in the selection for a specific
 # class, do not include it for this class. This does not ensure that the
 # package is absent. Use ``packages__absent_for_class`` or
 # ``packages__rejected_ensure_absent`` if that is what you want.
+#
+# Refer to :ref:`packages__black_white_listing_section` if you want to blacklist
+# packages regardless of the package class.
 #
 # Example::
 #
@@ -3018,8 +3151,8 @@ packages__additional_for_class: {}
 #
 packages__reject_for_class:
 
-  desktop_school: '{{ packages__reject_for_school }}'
-  desktop_school_linuxmuster: '{{ packages__reject_for_school }}'
+  client_school: '{{ packages__reject_for_school }}'
+  client_school_linuxmuster: '{{ packages__reject_for_school }}'
 
 
 # .. envvar:: packages__reject_for_school
@@ -3029,6 +3162,7 @@ packages__reject_for_class:
 packages__reject_for_school: |
   {{
     packages__group_network_manager_vpn_plugin +
+    packages__group_core_bare_metal_services_not_working_on_all_machines +
     []
   }}
 
@@ -3045,7 +3179,7 @@ packages__absent_for_class: {}
 
 # .. envvar:: packages__rejected_ensure_absent
 #
-# If ``True`` ensure that rejected packages are absent.
+# If ``True`` ensure that rejected and blacklisted packages are absent.
 packages__rejected_ensure_absent: True
 
 
@@ -3068,6 +3202,20 @@ packages__classes:
       []
     }}
 
+  server: |
+    {{
+      packages__classes_server +
+      (packages__additional_for_class.server|d([])) +
+      []
+    }}
+
+  server_school: |
+    {{
+      packages__classes_server_school +
+      (packages__additional_for_class.server_school|d([])) +
+      []
+    }}
+
   live_system: |
     {{
       packages__classes_live_system +
@@ -3076,36 +3224,35 @@ packages__classes:
       []
     }}
 
-  ## FIXME: Rename to client_desktop_normal
-  desktop_normal: |
+  client: |
     {{
-      packages__classes_desktop_normal +
+      packages__classes_client +
       packages__group_wm_gnome_normal +
       packages__group_tag_game +
-      (packages__additional_for_class.desktop_normal|d([])) +
+      (packages__additional_for_class.client|d([])) +
       []
     }}
 
-  desktop_explorer: |
+  client_explorer: |
     {{
-      packages__classes_desktop_explorer +
+      packages__classes_client_explorer +
       packages__group_wm_gnome_normal +
       packages__group_tag_game +
-      (packages__additional_for_class.desktop_explorer|d([])) +
+      (packages__additional_for_class.client_explorer|d([])) +
       []
     }}
 
-  desktop_school: |
+  client_school: |
     {{
-      packages__group_desktop_school +
-      (packages__additional_for_class.desktop_school|d([])) +
+      packages__classes_client_school +
+      (packages__additional_for_class.client_school|d([])) +
       []
     }}
 
-  desktop_school_linuxmuster: |
+  client_school_linuxmuster: |
     {{
-      packages__group_desktop_school_linuxmuster +
-      (packages__additional_for_class.desktop_school_linuxmuster|d([])) +
+      packages__classes_client_school_linuxmuster +
+      (packages__additional_for_class.client_school_linuxmuster|d([])) +
       []
     }}
 

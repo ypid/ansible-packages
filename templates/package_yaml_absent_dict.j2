@@ -8,6 +8,7 @@
       (packages__reject_for_class[class_pattern_for_reject_list] | d([]) | list) if
         packages__rejected_ensure_absent else [],
       [],
+      [],
       False,
      ).split('\n') | to_nice_yaml | indent(2)
   }}

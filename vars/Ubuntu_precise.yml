@@ -4,9 +4,8 @@ packages__targets:
   - 'Ubuntu Ubuntu 12.04 LTS (Precise Pangolin)'
   # - 'linuxmuster.net 6.1 server'
 
-
-packages__single_myrepos: ''
-packages__single_needrestart: ''
-packages__single_viewnior: ''
-
-packages__single_python3_virtualenv: ''
+packages__blacklist_distribution_release:
+  - 'myrepos'
+  - 'needrestart'
+  - 'viewnior'
+  - 'python3-virtualenv'

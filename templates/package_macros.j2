@@ -15,13 +15,13 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {%- endmacro %}{# ))) #}
 
 
-{% macro gen_package_list(packages, reject_packages=[], is_present_packages_list=True) %}{# ((( #}
+{% macro gen_package_list(packages, reject_packages=[], whitelist_packages=[], is_present_packages_list=True) %}{# ((( #}
 {% set packages__list = (
-                              (packages                        | list | d([]))
-                          + (((packages__global_additional     | list | d([]))
-                          +   (packages__host_group_additional | list | d([]))
-                          +   (packages__host_additional       | list | d([]))
-                             ) if is_present_packages_list else [])
+                               (packages                        | list | d([]))
+                          + ( ((packages__global_additional     | list | d([]))
+                          +    (packages__host_group_additional | list | d([]))
+                          +    (packages__host_additional       | list | d([]))
+                              ) if is_present_packages_list else [])
                         ) | reject("equalto", "") | unique | list
 %}
 {% for condition in packages__languages_available %}
@@ -30,13 +30,11 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% for condition in packages__conditional %}
 {%   set _ = add_conditional_pkts(packages__list, condition, 'package') %}
 {% endfor %}
-{% set packages__list_final = [] %}
-{% for pkt in packages__list | reject("equalto", "") | sort | unique %}
-{%   if pkt not in reject_packages %}
-{%     set _ = packages__list_final.append(pkt) %}
-{%   endif %}
-{% endfor %}
-{{ packages__list_final | join('\n') }}
+{% set packages__list_final = packages__list | difference(reject_packages) %}
+{% if whitelist_packages %}
+{%   set packages__list_final = (packages__list_final | intersect(whitelist_packages)) %}
+{% endif %}
+{{ packages__list_final | reject("equalto", "") | sort | unique | join('\n') }}
 {%- endmacro %}{# ))) #}
 
 
