@@ -97,18 +97,28 @@ Check the [example playbooks][/playbooks] for more documentation.
 Check the [defaults/main.yml][] for a list of all default variables and
 package presets available.
 
+### Requirements
+
+This role makes extensive use of some recently introduced features of
+Ansible 2.  One of those features, namely iterating over using a include
+tasks multiple times with `when_*` had a bug so this role currently only
+works with a latest [devel][ansible-devel] version as of 2016-04-18.
+
 [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
 [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
 [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml
+[ansible-devel]: https://github.com/ansible/ansible/tree/devel
 
 
 
 List of internal variables used by the role:
 
-    packages__targets
-    ansible_distribution
     packages__export_key_name
+    packages__targets
+    packages__debconf_settings_combined
+    ansible_distribution
     packages__classes_combined
+    packages__blacklist_by_vars_combined
     packages__targets_real
 
 
