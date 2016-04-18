@@ -4,14 +4,16 @@ packages__targets:
   - 'Debian GNU/Linux 8 (jessie)'
 
 
-packages__single_bats: ''
-packages__single_haxe: ''
-packages__single_libmonitoring_plugin_perl: ''
-packages__single_python_aiml: ''
-packages__single_docker_io: ''
-packages__single_borgbackup: ''
-packages__single_borgbackup_doc: ''
-packages__single_uncrustify: ''
-packages__single_firejail: ''
-packages__single_firmware_amd_graphics: ''
-packages__single_firmware_misc_nonfree: ''
+packages__blacklist_by_vars:
+
+  - 'bats'
+  - 'haxe'
+  - 'libmonitoring-plugin-perl'
+  - 'python-aiml'
+  - 'docker-io'
+  - 'borgbackup'
+  - 'borgbackup-doc'
+  - 'uncrustify'
+  - 'firejail'
+  - 'firmware-amd-graphics'
+  - 'firmware-misc-nonfree'

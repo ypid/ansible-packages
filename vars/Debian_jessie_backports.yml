@@ -1,5 +1,8 @@
 ---
 
+packages__blacklist_by_vars:
+
+
 packages__single_libmonitoring_plugin_perl: 'libmonitoring-plugin-perl'
 packages__single_docker_io: 'docker.io'
 packages__single_borgbackup: 'borgbackup'

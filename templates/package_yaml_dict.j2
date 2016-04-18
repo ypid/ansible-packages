@@ -7,5 +7,6 @@
       item.value,
       ((packages__reject_for_class[class_pattern_for_reject_list]|d([]) | list) + (packages__blacklist | list)),
       packages__whitelist,
+      packages__name_remapping,
     ).split('\n') | to_nice_yaml | indent(2)
   }}

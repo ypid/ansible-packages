@@ -6,12 +6,7 @@ packages__targets:
   - 'Linux Mint 17 LTS Qiana'
 
 
-## https://askubuntu.com/questions/15408/flashplugin-installer-vs-flashplugin-nonfree-vs-adobe-flashplugin
-## https://askubuntu.com/questions/49298/whats-the-difference-between-flashplugin-installer-and-adobe-flashplugin
-packages__single_flashplugin_nonfree: 'adobe-flashplugin'
-
-
-packages__blacklist_by_role:
+packages__blacklist_by_vars:
   - 'pidcat'
   - 'python3-nmap'
   - 'viewnior'

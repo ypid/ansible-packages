@@ -15,8 +15,8 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {%- endmacro %}{# ))) #}
 
 
-{% macro gen_package_list(packages, reject_packages=[], whitelist_packages=[], is_present_packages_list=True) %}{# ((( #}
-{% set packages__list = (
+{% macro gen_package_list(packages, reject_packages=[], whitelist_packages=[], remapped_packages={}, is_present_packages_list=True) %}{# ((( #}
+{% set packages__list_raw = (
                                (packages                        | list | d([]))
                           + ( ((packages__global_additional     | list | d([]))
                           +    (packages__host_group_additional | list | d([]))
@@ -25,12 +25,16 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
                         ) | reject("equalto", "") | unique | list
 %}
 {% for condition in packages__languages_available %}
-{%   set _ = add_conditional_pkts(packages__list, condition, 'language') %}
+{%   set _ = add_conditional_pkts(packages__list_raw, condition, 'language', remapped_packages) %}
 {% endfor %}
 {% for condition in packages__conditional %}
-{%   set _ = add_conditional_pkts(packages__list, condition, 'package') %}
+{%   set _ = add_conditional_pkts(packages__list_raw, condition, 'package', remapped_packages) %}
 {% endfor %}
-{% set packages__list_final = packages__list | difference(reject_packages) %}
+{% set packages__list = [] %}
+{% for pkt in packages__list_raw %}
+{%   set _ = packages__list.append(remapped_packages[pkt] | d(pkt)) %}
+{% endfor %}
+{% set packages__list_final = (packages__list | difference(reject_packages)) %}
 {% if whitelist_packages %}
 {%   set packages__list_final = (packages__list_final | intersect(whitelist_packages)) %}
 {% endif %}
@@ -38,7 +42,7 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {%- endmacro %}{# ))) #}
 
 
-{% macro add_conditional_pkts(packages__list, condition, mode) %}{# ((( #}
+{% macro add_conditional_pkts(packages__list, condition, mode, remapped_packages) %}{# ((( #}
 {#
 mode:
 
@@ -63,16 +67,16 @@ mode:
 {%   endfor %}
 {% endif %}
 {% if mode == 'package' %}
-{%   set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode) %}
+{%   set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages) %}
 {% elif mode == 'language' %}
 {%   for lang in packages__languages %}
-{%     set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, lang) %}
+{%     set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages, lang) %}
 {%   endfor %}
 {% endif %}
 {%- endmacro %}{# ))) #}
 
 
-{% macro set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, lang=None) %}{# ((( #}
+{% macro set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages, lang=None) %}{# ((( #}
 {% if condition.require|d('all') == 'all' %}
 {%   set require = present_packages|length %}
 {% elif condition.require|d('all') is number %}
@@ -81,10 +85,12 @@ mode:
 {% if (found_main_package|length and not ((require is string or require is number) and found_main_package|length < require)) %}
 {%   if mode == 'package' or (mode == 'language' and condition.when|d(lang.code) == lang.code) %}
 {%     if condition.additional_packages is string %}
-{%       set _ = packages__list.append(get_lang_pkt(condition.additional_packages, lang)) %}
+{%       set pkt = condition.additional_packages %}
+{%       set _ = packages__list.append(get_lang_pkt((remapped_packages[pkt] | d(pkt)), lang)) %}
 {%     elif condition.additional_packages is iterable %}
 {%       for new_pkt in condition.additional_packages %}
-{%         set _ = packages__list.append(get_lang_pkt(new_pkt, lang)) %}
+{%         set pkt = get_lang_pkt(get_lang_pkt((remapped_packages[new_pkt] | d(new_pkt)), lang)) %}
+{%         set _ = packages__list.append(pkt) %}
 {%       endfor %}
 {%     endif %}
 {%   endif %}

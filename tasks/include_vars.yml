@@ -39,9 +39,9 @@
 - name: Restore packages__targets_real to packages__targets
   set_fact:
     packages__targets: '{{ packages__targets_real | d(packages__targets) }}'
-    packages__blacklist_by_role: '{{
-      ((packages__blacklist_by_role_combined | d([]) | list) +
-      (packages__blacklist_by_role | d([]) | list)) | unique }}'
-    packages__whitelist_by_role: '{{
-      ((packages__whitelist_by_role_combined | d([]) | list) +
-      (packages__whitelist_by_role | d([]) | list)) | unique }}'
+    packages__blacklist_by_vars: '{{
+      ((packages__blacklist_by_vars_combined | d([]) | list) +
+      (packages__blacklist_by_vars | d([]) | list)) | unique }}'
+    packages__whitelist_by_vars: '{{
+      ((packages__whitelist_by_vars_combined | d([]) | list) +
+      (packages__whitelist_by_vars | d([]) | list)) | unique }}'

@@ -3,7 +3,12 @@
 packages__targets:
   - 'Fedora'
 
-packages__single_vim_nox: 'vim'
-packages__single_safe_rm: ''
-packages__single_silversearcher_ag: 'the_silver_searcher'
-packages__single_jstest_gtk: ''
+
+packages__name_remapping_by_vars:
+  'vim-nox': 'vim'
+  'silversearcher-ag': 'the-silver-searcher'
+
+
+packages__blacklist_by_vars:
+  - 'safe_rm'
+  - 'jstest_gtk'

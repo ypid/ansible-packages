@@ -1,34 +1,40 @@
 ---
 
-packages__single_google_earth: 'google-earth-stable'
-packages__single_flashplugin_nonfree: 'flashplugin-installer'
 
-packages__single_iceweasel: 'firefox'
-packages__single_iceweasel_l10n: 'firefox-locale-LANG_CODE'
+## https://askubuntu.com/questions/15408/flashplugin-installer-vs-flashplugin-nonfree-vs-adobe-flashplugin
+## https://askubuntu.com/questions/49298/whats-the-difference-between-flashplugin-installer-and-adobe-flashplugin
+packages__name_remapping_by_vars:
+  'flashplugin-nonfree': 'adobe-flashplugin'
+  'google-earth': 'google-earth-stable'
+  'iceweasel': 'firefox'
+  'iceweasel-l10n-LANG_CODE': 'firefox-locale-LANG_CODE'
+  'chromium': 'chromium-browser'
+  'chromium-inspector': 'chromium-browser-inspector'
+  'chromium-l10n': 'chromium-browser-l10n'
+  'icedove': 'thunderbird'
+  'icedove-l10n-LANG_CODE': 'thunderbird-locale-LANG_CODE'
+  'iceowl-extension': 'xul-ext-lightning'
 
-packages__single_chromium: 'chromium-browser'
-packages__single_chromium_inspector: 'chromium-browser-inspector'
-packages__single_chromium_l10n: 'chromium-browser-l10n'
 
-packages__single_icedove: 'thunderbird'
-packages__single_icedove_l10n: 'thunderbird-locale-LANG_CODE'
-packages__single_iceowl_extension: 'xul-ext-lightning'
-packages__single_iceowl_l10n: ''
-
-packages__blacklist_by_role:
+packages__blacklist_by_vars:
 
   ## Seems to be not packaged for Ubuntu?
   - 'xul-ext-sogo-connector'
 
+  - 'iceowl-l10n-LANG_CODE'
+
 packages__languages_available_additional_dist:
-  - present_packages: '{{ packages__single_iceweasel }}'
+
+  - present_packages: 'iceweasel'
     ## Currently, does not really install much but why not.
     additional_packages:
       - 'language-pack-LANG_CODE'
 
+
 packages__group_education_additional_dist:
   - 'ubuntu-edu-tertiary'
   - 'ubuntu-edu-secondary'
+
 
 packages__group_office_dist:
   - 'libreoffice-templates'

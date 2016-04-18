@@ -6,11 +6,12 @@ packages__targets:
 # UCS 3.2 Codename: Borgfeld
 # https://forge.univention.org/bugzilla/show_bug.cgi?id=31686
 
-packages__single_ntfs_3g: 'ntfsprogs'
+packages__name_remapping_by_vars:
+  'ntfs-3g': 'ntfsprogs'
 
-packages__whitelist_by_role:
+packages__whitelist_by_vars:
 
   ## Version of ``ntfsfix`` is too old to have the -d, --clear-dirty flag.
-  - '{{ packages__single_ntfs_3g }}'
+  - 'ntfsprogs'
 
   - 'git'

@@ -1,6 +1,6 @@
 ---
 
-packages__blacklist_by_role:
+packages__blacklist_by_vars:
 
   ## qemu-system-*: Can not be installed because Qubes OS installs a libxen-4.6 but it conflicts with libxen-4.4.
   - 'qemu'
