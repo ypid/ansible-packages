@@ -45,3 +45,8 @@
     packages__whitelist_by_vars: '{{
       ((packages__whitelist_by_vars_combined | d([]) | list) +
       (packages__whitelist_by_vars | d([]) | list)) | unique }}'
+
+- name: Combine variables
+  set_fact:
+    packages__classes_combined: |
+      {{ packages__classes|d({}) | combine(packages__classes_additional|d({})) }}
