@@ -5,7 +5,7 @@
   gather_facts: False
   vars:
     ansible_pkg_mgr: 'apt'
-    ansible_virtualization_role: 'host'
+    ansible_virtualization_role: 'guest'
     packages__mode: 'export'
     packages__export_format: 'yaml'
     packages__export_key_name: 'lmz_paedml_linux__additional_packages'

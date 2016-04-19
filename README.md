@@ -100,9 +100,9 @@ package presets available.
 ### Requirements
 
 This role makes extensive use of some recently introduced features of
-Ansible 2.  One of those features, namely iterating over using a include
-tasks multiple times with `when_*` had a bug so this role currently only
-works with a latest [devel][ansible-devel] version as of 2016-04-18.
+Ansible 2.  One of those features, namely iterating over included
+tasks multiple times with the `when_*` statement had a bug so this role currently only
+works with an [currently unreleased Ansible version][ansible-devel] as of 2016-04-18.
 
 [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
 [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
