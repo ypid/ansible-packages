@@ -1405,6 +1405,7 @@ packages__group_sysadmin_basic: |
     packages__group_tag_works_with_archive_minimal +
     packages__group_tag_admin_backup +
     packages__group_tag_admin_monitoring_basic +
+    packages__group_tag_admin_monitoring_additional +
     []
   }}
 
@@ -2402,14 +2403,13 @@ packages__group_core_minimum:
   - 'tree'
 
 packages__group_core_additional:
-  - 'git-annex'
-
   - 'gnupg-curl'
   - 'curl'
   - 'wget'
 
   - 'rsync'
   - 'unison'
+  - 'git-annex'
 
   - 'nmap'
   - 'dnsutils'
@@ -2556,7 +2556,6 @@ packages__group_user_terminal_programs_minimum:
   - 'openssh-client'
   - 'mosh'
   - 'sshfs'
-  - 'xclip'
   - 'inotify-tools'
 
   - 'ttyrec'
@@ -2798,7 +2797,6 @@ packages__group_wm_gnome_full: |
 
 # .. )))
 
-
 # .. Application finder/launcher (((
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2895,6 +2893,7 @@ packages__group_user_additional:
   - 'grsync'
   - 'gnome-schedule'
   - 'autokey-gtk'
+  - 'xclip'
 
   - 'scrot'
   - 'gtk-redshift'
@@ -2963,6 +2962,7 @@ packages__classes_server: |
   {{
     packages__classes_base +
     packages__group_apt_package_management_server +
+    packages__group_user_terminal_programs_minimum +
     []
   }}
 
