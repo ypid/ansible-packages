@@ -2,16 +2,21 @@
 ---
 {{ pkt_macros.print_comment('##' ) -}}
 {% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item) %}
-{{ packages__export_key_name }}:
-  {{ pkt_macros.gen_package_list(
-      (packages__absent_for_class[class_pattern_for_reject_list] | d([]) | list) +
-      (
-        (packages__reject_for_class[class_pattern_for_reject_list] | d([]) | list) if
-        packages__rejected_ensure_absent else []
-      ),
-      [],
-      [],
-      packages__name_remapping,
-      False,
-    ).split('\n') | to_nice_yaml | indent(2)
-  }}
+{% set packages__list_tpl = pkt_macros.gen_package_list(
+    (packages__absent_for_class[class_pattern_for_reject_list] | d([]) | list) +
+    (
+      (packages__reject_for_class[class_pattern_for_reject_list] | d([]) | list) if
+      packages__rejected_ensure_absent else []
+    ),
+    [],
+    [],
+    packages__name_remapping,
+    False,
+  ).split('\n') | list | reject("equalto", "") | list
+%}
+{#
+
+Don’t use to to_nice_yaml with dict because of bad indentation.
+https://stackoverflow.com/questions/25108581/python-yaml-dump-bad-indentation
+#}
+{{ packages__export_key_name }}:{{ ('\n  ' + (packages__list_tpl | to_nice_yaml | indent(2))) if (packages__list_tpl) else ' []'  }}

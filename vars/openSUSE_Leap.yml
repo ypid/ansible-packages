@@ -1,0 +1,4 @@
+---
+
+packages__name_remapping_by_vars:
+  'smbclient': 'samba-test'

@@ -1,0 +1,9 @@
+---
+
+packages__targets:
+  - 'openSUSE Leap 42.1'
+
+
+## I am not really using openSUSE.
+packages__whitelist_by_vars:
+  - 'samba-test'

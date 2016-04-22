@@ -10,7 +10,8 @@
     ansible_virtualization_role: 'host'
     packages__mode: 'export'
     packages__export_format: 'yaml'
-    packages__export_key_name: 'linuxmuster_net_client__package_preset_ypid_list'
+    packages__export_key_name: 'linuxmuster_net_client__packages_preset_ypid'
+    packages__export_key_absent_name: 'linuxmuster_net_client__packages_preset_ypid_absent'
     packages__export_directory: '{{ inventory_dir | realpath }}/../../apt_package_lists'
     packages__contrib_enabled: True
     packages__non_free_enabled: True

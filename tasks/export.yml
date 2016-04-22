@@ -2,8 +2,8 @@
 
 - name: Set facts for selected distribution
   set_fact:
-    ansible_distribution: '{{ item.ansible_distribution }}'
-    ansible_distribution_release: '{{ item.ansible_distribution_release|d("") }}'
+    ansible_distribution: '{{ item.ansible_distribution|replace(" ", "_") }}'
+    ansible_distribution_release: '{{ item.ansible_distribution_release|d("") | replace(" ", "_") }}'
 
 - name: Run include vars tasks
   include: include_vars.yml
@@ -28,12 +28,16 @@
   when: (packages__export_classes is not string and packages__export_classes is iterable)
   with_flattened: '{{ packages__export_classes }}'
 
+- name: Set variable name for absent package list
+  set_fact:
+    packages__export_key_name: '{{ packages__export_key_absent_name }}'
+
 - name: Write absent package list for all classes
   template:
     src: '{{ "package_" + packages__export_format + "_absent_dict.j2" }}'
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item.key + packages__export_filename_append +
-              "_packages__absent." + packages__export_format }}'
+              "_absent." + packages__export_format }}'
   no_log: True
   ## Because package lists can get long …
   when: (packages__export_classes is string and packages__export_classes == 'all')
@@ -44,6 +48,6 @@
     src: '{{ "package_" + packages__export_format + "_absent.j2" }}'
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item + packages__export_filename_append +
-              "_packages__absent." + packages__export_format }}'
+              "_absent." + packages__export_format }}'
   when: (packages__export_classes is not string and packages__export_classes is iterable)
   with_flattened: '{{ packages__export_classes }}'

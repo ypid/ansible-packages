@@ -206,9 +206,16 @@ packages__export_comment: |
 
 # .. envvar:: packages__export_key_name
 #
-# When exporting in a format which supports lists, use the given string as
-# variable name for the package list.
+# When exporting in a format which supports named lists, use the given string
+# as variable name for the package list.
 packages__export_key_name: 'package_list'
+
+
+# .. envvar:: packages__export_key_absent_name
+#
+# When exporting in a format which supports named lists, use the given string
+# as variable name for the absent package list.
+packages__export_key_absent_name: 'package_list_absent'
 
 # .. )))
 
@@ -2429,6 +2436,7 @@ packages__group_core_additional:
   - 'secure-delete'
   - 'attr'
   - 'cifs-utils'
+  - 'smbclient'
 
   - 'python-setuptools'
   - 'python3-setuptools'
