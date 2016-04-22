@@ -1,7 +1,5 @@
 ---
 
-## FIXME: Support absent with different YAML key name.
-## FIXME: Ensure absent
 - name: Export Linuxmuster.net package lists
   hosts: localhost
   gather_facts: False

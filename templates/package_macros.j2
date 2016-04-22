@@ -15,7 +15,7 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {%- endmacro %}{# ))) #}
 
 
-{% macro gen_package_list(packages, reject_packages=[], whitelist_packages=[], remapped_packages={}, is_present_packages_list=True) %}{# ((( #}
+{% macro gen_package_list(packages, reject_packages=[], revoke_rejected_packages=[], whitelist_packages=[], remapped_packages={}, is_present_packages_list=True) %}{# ((( #}
 {% set packages__list_raw = (
                                (packages                        | list | d([]))
                           + ( ((packages__global_additional     | list | d([]))
@@ -34,7 +34,7 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% for pkt in packages__list_raw %}
 {%   set _ = packages__list.append(remapped_packages[pkt] | d(pkt)) %}
 {% endfor %}
-{% set packages__list_final = (packages__list | difference(reject_packages)) %}
+{% set packages__list_final = (packages__list | difference(reject_packages|difference(revoke_rejected_packages))) %}
 {% if whitelist_packages %}
 {%   set packages__list_final = (packages__list_final | intersect(whitelist_packages)) %}
 {% endif %}

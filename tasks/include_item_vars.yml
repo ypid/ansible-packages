@@ -8,6 +8,9 @@
     packages__blacklist_by_vars_combined: '{{
       ((packages__blacklist_by_vars_combined | d([]) | list) +
       (packages__blacklist_by_vars | d([]) | list)) | unique }}'
+    packages__blacklist_revoke_by_vars_combined: '{{
+      ((packages__blacklist_revoke_by_vars_combined | d([]) | list) +
+      (packages__blacklist_revoke_by_vars | d([]) | list)) | unique }}'
     packages__whitelist_by_vars_combined: '{{
       ((packages__whitelist_by_vars_combined | d([]) | list) +
       (packages__whitelist_by_vars | d([]) | list)) | unique }}'

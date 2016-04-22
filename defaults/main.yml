@@ -473,10 +473,10 @@ packages__name_remapping_by_vars: {}
 #
 packages__blacklist: |
   {{
-    (packages__blacklist_global                         | list) +
-    (packages__blacklist_host_group                     | list) +
-    (packages__blacklist_host                           | list) +
-    (packages__blacklist_by_vars                | d([]) | list)
+    (packages__blacklist_global               | list) +
+    (packages__blacklist_host_group           | list) +
+    (packages__blacklist_host                 | list) +
+    (packages__blacklist_by_vars    | d([])   | list)
   }}
 
 
@@ -503,6 +503,17 @@ packages__blacklist_host: []
 # Used internally to blacklist packages from
 # :file:`vars/`.
 packages__blacklist_by_vars: []
+
+
+# .. envvar:: packages__blacklist_revoke
+#
+# Combined packages revoked from the blacklist (selectable again).
+# This feature can be used when a package was blacklisted for the release, but
+# becomes available again thought backports for example.
+packages__blacklist_revoke: |
+  {{
+    (packages__blacklist_revoke_by_vars | d([]) | list)
+  }}
 
 
 # .. envvar:: packages__whitelist
@@ -701,8 +712,8 @@ packages__conditional_role:
     additional_packages:
       - 'libreoffice-gnome'
 
-    ## Add package ``xfce4-settings`` which is specific to XFCE.
-    ## Used later to check if a XFCE environment is to be installed.
+    ## Add package ``xfce4-settings`` which is specific to Xfce.
+    ## Used later to check if a Xfce environment is to be installed.
   - present_packages:
       - 'xfce4'
       - 'task-xfce-desktop'

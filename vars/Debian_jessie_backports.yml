@@ -1,11 +1,9 @@
 ---
 
-packages__blacklist_by_vars:
-
-
-packages__single_libmonitoring_plugin_perl: 'libmonitoring-plugin-perl'
-packages__single_docker_io: 'docker.io'
-packages__single_borgbackup: 'borgbackup'
-packages__single_borgbackup_doc: 'borgbackup-doc'
-packages__single_firmware_amd_graphics: 'firmware-amd-graphics'
-packages__single_firmware_misc_nonfree: 'firmware-misc-nonfree'
+packages__blacklist_revoke_by_vars:
+  - 'libmonitoring-plugin-perl'
+  - 'docker.io'
+  - 'borgbackup'
+  - 'borgbackup-doc'
+  - 'firmware-amd-graphics'
+  - 'firmware-misc-nonfree'
