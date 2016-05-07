@@ -2,8 +2,8 @@
 ## @license AGPLv3 <https://www.gnu.org/licenses/agpl-3.0.html>
 ## @author Copyright (C) 2015 Robin Schneider <ypid@riseup.net>
 ##
-## Small shell script with no external dependencies except gnu core tools to
+## Small shell script with no external dependencies except GNU core programs to
 ## reformat the install list for apt-get or aptitude.
-## Example usage: aptitude install $(gen_install_list $filepath_to_list)
+## Example usage: aptitude install $(gen_install_list "filepath_to_list")
 
 grep --invert-match '^\s*#' "$1" | xargs
