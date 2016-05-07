@@ -11,7 +11,7 @@
     default_release: '{{ packages__deploy_default_release|d(omit) }}'
     dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
   when: (ansible_pkg_mgr == 'apt')
-  with_flattened: '{{ packages__class_install }}'
+  with_flattened: '{{ packages__class_install|d([]) }}'
 
 - name: Remove packages via APT
   apt:
@@ -25,4 +25,4 @@
     default_release: '{{ packages__deploy_default_release|d(omit) }}'
     dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
   when: (ansible_pkg_mgr == 'apt')
-  with_flattened: '{{ packages__class_absent }}'
+  with_flattened: '{{ packages__class_absent|d([]) }}'
