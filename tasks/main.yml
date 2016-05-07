@@ -32,5 +32,7 @@
 
 - name: Run export tasks
   include: export.yml
+  loop_control:
+    loop_var: 'packages__export_distribution_item'
   when: (packages__mode == 'export')
   with_items: '{{ packages__export_distributions }}'

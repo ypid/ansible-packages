@@ -2,8 +2,8 @@
 
 - name: Set facts for selected distribution
   set_fact:
-    ansible_distribution: '{{ item.ansible_distribution|replace(" ", "_") }}'
-    ansible_distribution_release: '{{ item.ansible_distribution_release|d("") | replace(" ", "_") }}'
+    ansible_distribution: '{{ packages__export_distribution_item.ansible_distribution|replace(" ", "_") }}'
+    ansible_distribution_release: '{{ packages__export_distribution_item.ansible_distribution_release|d("") | replace(" ", "_") }}'
 
 - name: Run include vars tasks
   include: include_vars.yml
