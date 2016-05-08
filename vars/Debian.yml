@@ -1,0 +1,9 @@
+---
+
+packages__targets:
+  - 'Debian GNU/Linux'
+
+
+packages__blacklist_by_vars:
+
+  - 'selfspy'

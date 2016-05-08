@@ -17,3 +17,4 @@ packages__blacklist_by_vars:
   - 'firejail'
   - 'firmware-amd-graphics'
   - 'firmware-misc-nonfree'
+  - 'battery-stats'

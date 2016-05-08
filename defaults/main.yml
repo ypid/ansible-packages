@@ -2043,6 +2043,7 @@ packages__group_tag_devel_lang_perl:
 packages__group_tag_devel_lang_python:
   - 'pep8'
   - 'python3-pep8'
+  - 'python-autopep8'
   - 'ipython'
   - 'ipython3'
   - 'python3-all'
@@ -2065,6 +2066,7 @@ packages__group_tag_devel_lang_python:
   - 'python-vte'
 
   - 'python-tk'
+  - 'python-xlib'
   - 'python3-tk'
   - 'idle'
   - 'python-pmw'
@@ -2129,7 +2131,17 @@ packages__group_tag_devel_lang_python_additional:
   - 'python-git'
   - 'python-gitdb'
   - 'python-sqlite'
+  - 'python-sqlalchemy'
+  - 'python3-sqlalchemy'
+  - 'python-zc.lockfile'
+  - 'python-lockfile'
+  - 'python3-lockfile'
+  - 'python-keyring'
+  - 'python3-keyring'
+  - 'python-pycryptopp'
   - 'python-sklearn'
+  - 'python-zmq'
+  - 'python3-zmq'
 
 # .. )))
 
@@ -2199,6 +2211,9 @@ packages__group_tag_devel_ide:
   - 'eclipse'
 
   # - 'netbeans'
+
+packages__group_devel_x11_library:
+  - 'libxss-dev'
 
 packages__group_devel_additional:
   - 'uuid-dev'
@@ -2355,7 +2370,7 @@ packages__group_devel_full: |
     packages__group_devel_lua +
     packages__group_devel_ai +
     packages__group_devel_additional +
-    packages__group_devel_env_for_borgbackup +
+    packages__group_devel_x11_library +
     []
   }}
 
@@ -2488,9 +2503,25 @@ packages__group_cpu_microcode_non_free:
 packages__group_core_bare_metal_services_not_working_on_all_machines:
   - 'mcelog'
 
+# https://wiki.archlinux.org/index.php/laptop
+packages__group_core_bare_metal_services_laptop:
+
+  ## Log battery charge (batter-stats-collector), show gnuplot graphs (battery-graph).
+  - 'battery-stats'
+
+  ## Recommended by `battery-stats` and needed for `/usr/share/battery-stats/battery-stats-graph`.
+  - 'python-matplotlib'
+
+  ## Hard Drive Active Protection System. Should also work for HP laptops.
+  - 'hdapsd'
+
+  ## Not yet in Debian.
+  # - 'hpfall'
+
 packages__group_core_bare_metal_services: |
   {{
     packages__group_core_bare_metal_services_not_working_on_all_machines +
+    (packages__group_core_bare_metal_services_laptop if ("Notebook" in ansible_form_factor|d("")) else []) +
     []
   }}
 
@@ -2846,6 +2877,59 @@ packages__group_application_launcher:
   ## Written in C#
   # - 'gnome-do'
   # - 'gmrun'
+
+# .. )))
+
+# .. Time tracking (((
+#
+# ~~~~~~~~~~~~~~~~~
+#   Time tracking
+# ~~~~~~~~~~~~~~~~~
+#
+# `Stack Overflow: Automatic time tracking software for computer work (for Windows/Linux/Mac) <https://productivity.stackexchange.com/questions/13913/automatic-time-tracking-software-for-computer-work-for-windows-linux-mac>`__
+
+packages__group_application_time_tracking:
+
+  ## Recent enough version in Debian Jessie.
+  ## Minimalistic. CSV Export.
+  ## Seems to be focused on manually starting activates.
+  # - 'gtimelog'
+
+
+  ## Currently not up-to-date in Debian Jessie.
+  ## https://github.com/projecthamster/hamster
+  ## Tested v2.0-rc1
+  ## Seems to be focused on manually starting activates.
+  ## CSV, iCAL, HTML export. Can pause on idle.
+  ## Can integrate with todo list managers :)
+  # - 'hamster'
+
+
+  ## Recent enough version in Debian Jessie.
+  ## Command line based background logger.
+  - 'arbtt'
+
+
+  ## Currently not in Debian.
+  ## https://github.com/karpathy/ulogme
+  # - 'ulogme'
+  ## Dependencies:
+  - 'xinput'
+  - 'xdotool'
+  - 'wmctrl'
+
+
+  ## Currently not in Debian.
+  ## https://github.com/frans-fuerst/track
+  ## Checkout at a later time.
+  # - 'track'
+
+
+  ## Currently not in Debian.
+  ## https://github.com/gurgeh/selfspy
+  ## Best logging and analysis tool I have found.
+  - 'selfspy'
+
 
 # .. )))
 
