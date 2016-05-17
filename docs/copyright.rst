@@ -4,6 +4,7 @@ Copyright
 ::
 
     Copyright (C) 2016 Robin Schneider <ypid@riseup.net>
+    [see Credits for more details]
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -17,3 +18,10 @@ Copyright
 
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+Credits
+-------
+
+* Robin `ypid` Schneider
+
+  * Author and current project maintainer
