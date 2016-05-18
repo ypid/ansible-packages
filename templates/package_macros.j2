@@ -24,11 +24,11 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
                               ) if is_present_packages_list else [])
                         ) | reject("equalto", "") | unique | list
 %}
-{% for condition in packages__languages_available %}
-{%   set _ = add_conditional_pkts(packages__list_raw, condition, 'language', remapped_packages) %}
-{% endfor %}
 {% for condition in packages__conditional %}
 {%   set _ = add_conditional_pkts(packages__list_raw, condition, 'package', remapped_packages) %}
+{% endfor %}
+{% for condition in packages__languages_available %}
+{%   set _ = add_conditional_pkts(packages__list_raw, condition, 'language', remapped_packages) %}
 {% endfor %}
 {% set packages__list = [] %}
 {% for pkt in packages__list_raw %}
