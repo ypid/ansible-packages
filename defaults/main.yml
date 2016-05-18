@@ -329,7 +329,7 @@ packages__load_distribution_additional_releases: []
 
 # .. envvar:: packages__debconf_enabled
 #
-# Should this role apply the following settings using :command:`debconf`?
+# Should this role apply settings using :command:`debconf`?
 packages__debconf_enabled: True
 
 
@@ -605,6 +605,7 @@ packages__conditional: |
 # Role defaults for ``packages__conditional``.
 packages__conditional_role:
 
+  # .. Programms (((
   - present_packages:
       - 'texlive-full'
     additional_packages:
@@ -640,8 +641,18 @@ packages__conditional_role:
     additional_packages:
       - 'nautilus-owncloud'
 
-    ## Add package ``gnome-themes-standard`` which is specific to Gnome.
-    ## Used later to check if a Gnome environment is to be installed.
+  ## Recommended by `battery-stats` and needed for `/usr/share/battery-stats/battery-stats-graph`.
+  - present_packages:
+      - 'battery-stats'
+      - 'x11-common'
+    additional_packages:
+      - 'python-matplotlib'
+  # .. )))
+
+  # .. Gnome desktop environment (((
+
+  ## Explicitly add the package `gnome-themes-standard` which is specific to Gnome.
+  ## Used later to check if a Gnome environment is to be installed.
   - present_packages:
       - 'gnome-core'
       - 'gnome'
@@ -649,6 +660,17 @@ packages__conditional_role:
     require: 1
     additional_packages:
       - 'gnome-themes-standard'
+
+  ## Explicitly add the package `x11-common` when packages depending on X11 are
+  ## being selected.
+  ## Used later to check if a X11 environment is to be installed.
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'gdm3'
+      - 'lightdm'
+    require: 1
+    additional_packages:
+      - 'x11-common'
 
   - present_packages:
       - 'gnome-themes-standard'
@@ -713,9 +735,22 @@ packages__conditional_role:
     require: 2
     additional_packages:
       - 'libreoffice-gnome'
+  # .. )))
 
-    ## Add package ``xfce4-settings`` which is specific to Xfce.
-    ## Used later to check if a Xfce environment is to be installed.
+  # .. Cinnamon desktop environment (((
+  ## Add package `cinnamon` which is specific to Xfce.
+  ## Used later to check if a Xfce environment is to be installed.
+  - present_packages:
+      - 'task-cinnamon-desktop'
+      - 'cinnamon-common'
+    require: 1
+    additional_packages:
+      - 'cinnamon'
+  # .. )))
+
+  # .. Xfce desktop environment (((
+  ## Add package `xfce4-settings` which is specific to Xfce.
+  ## Used later to check if a Xfce environment is to be installed.
   - present_packages:
       - 'xfce4'
       - 'task-xfce-desktop'
@@ -723,11 +758,11 @@ packages__conditional_role:
     additional_packages:
       - 'xfce4-settings'
 
-    ## Does not include a good launcher.
+  ## Does not include a good launcher.
   - present_packages:
       - 'xfce4-settings'
     additional_packages: '{{ packages__group_application_launcher }}'
-
+  # .. )))
 
 # .. )))
 
@@ -824,6 +859,9 @@ packages__languages_available_global:
   - present_packages: 'kicad'
     ## Based on: task-german-kde-desktop
     additional_packages: 'kicad-doc-LANG_CODE'
+
+  - present_packages: 'cinnamon'
+    additional_packages: 'cinnamon-l10n'
 
 
 # .. envvar:: packages__languages_available_additional_dist
@@ -2124,6 +2162,8 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-jinja2'
   - 'python3-markdown'
   - 'python3-numpy'
+  - 'python-seaborn'
+  - 'python3-seaborn'
   - 'python3-pyqt5'
   - 'python3-sphinx'
   - 'python3-yaml'
@@ -2505,12 +2545,12 @@ packages__group_core_bare_metal_services_not_working_on_all_machines:
 
 # https://wiki.archlinux.org/index.php/laptop
 packages__group_core_bare_metal_services_laptop:
+packages__group_tag_hardware_laptop_accu:
 
   ## Log battery charge (batter-stats-collector), show gnuplot graphs (battery-graph).
   - 'battery-stats'
 
-  ## Recommended by `battery-stats` and needed for `/usr/share/battery-stats/battery-stats-graph`.
-  - 'python-matplotlib'
+packages__group_tag_hardware_laptop_gyroscope_and_hdd:
 
   ## Hard Drive Active Protection System. Should also work for HP laptops.
   - 'hdapsd'
@@ -2521,7 +2561,17 @@ packages__group_core_bare_metal_services_laptop:
 packages__group_core_bare_metal_services: |
   {{
     packages__group_core_bare_metal_services_not_working_on_all_machines +
-    (packages__group_core_bare_metal_services_laptop if ("Notebook" in ansible_form_factor|d("")) else []) +
+    (packages__group_tag_hardware_laptop_accu if ("Notebook" == ansible_form_factor|d("")) else []) +
+    (packages__group_tag_hardware_laptop_gyroscope_and_hdd if (
+        "Notebook" == ansible_form_factor|d("") and
+        (
+          (
+            ansible_devices is defined and
+            ansible_devices.values() | selectattr("rotational", "equalto", "1") | map(attribute="model") | list | length >= 1
+          ) or
+          ansible_devices is undefined
+        )
+      ) else []) +
     []
   }}
 
@@ -2591,11 +2641,11 @@ packages__group_core_full: |
   {{
     packages__group_core_minimum +
     packages__group_core_basic +
-    (packages__group_apt_package_management_minimal if ('apt' in ansible_pkg_mgr) else []) +
+    (packages__group_apt_package_management_minimal if ('apt' == ansible_pkg_mgr) else []) +
     packages__group_core_minimum +
     packages__group_core_cron +
-    (packages__group_core_bare_metal if ('host' in ansible_virtualization_role) else []) +
-    (packages__group_core_hardware   if ('host' in ansible_virtualization_role) else []) +
+    (packages__group_core_bare_metal if ('host' == ansible_virtualization_role) else []) +
+    (packages__group_core_hardware   if ('host' == ansible_virtualization_role) else []) +
     []
   }}
 
@@ -2725,6 +2775,8 @@ packages__group_school_additional:
   - 'gnome-mplayer'
   - 'soundconverter'
   - 'openshot'
+  - 'pitivi'
+  - 'mkvtoolnix-gui'
   - 'melt'
   - 'converseen'
   - 'scribus'
@@ -2857,6 +2909,20 @@ packages__group_wm_gnome_full: |
     packages__group_wm_gnome_normal +
     []
   }}
+
+# .. )))
+
+# .. Cinnamon desktop environment (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Cinnamon desktop environment
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# .. envvar:: packages__group_wm_cinnamon
+#
+packages__group_wm_cinnamon:
+  - 'task-cinnamon-desktop'
+
 
 # .. )))
 
@@ -3311,7 +3377,7 @@ packages__classes:
   client: |
     {{
       packages__classes_client +
-      packages__group_wm_gnome_normal +
+      packages__group_wm_cinnamon +
       packages__group_tag_game +
       (packages__additional_for_class.client|d([])) +
       []
@@ -3321,6 +3387,7 @@ packages__classes:
     {{
       packages__classes_client_explorer +
       packages__group_wm_gnome_normal +
+      packages__group_wm_cinnamon +
       packages__group_tag_game +
       (packages__additional_for_class.client_explorer|d([])) +
       []
