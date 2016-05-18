@@ -23,7 +23,7 @@ packages__blacklist_by_vars:
 
   - 'iceowl-l10n-LANG_CODE'
 
-packages__languages_available_additional_dist:
+packages__localizations_available_additional_dist:
 
   - present_packages: 'iceweasel'
     ## Currently, does not really install much but why not.

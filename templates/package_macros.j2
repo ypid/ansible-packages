@@ -27,7 +27,7 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% for condition in packages__conditional %}
 {%   set _ = add_conditional_pkts(packages__list_raw, condition, 'package', remapped_packages) %}
 {% endfor %}
-{% for condition in packages__languages_available %}
+{% for condition in packages__localizations_available %}
 {%   set _ = add_conditional_pkts(packages__list_raw, condition, 'language', remapped_packages) %}
 {% endfor %}
 {% set packages__list = [] %}
@@ -69,7 +69,7 @@ mode:
 {% if mode == 'package' %}
 {%   set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages) %}
 {% elif mode == 'language' %}
-{%   for lang in packages__languages %}
+{%   for lang in packages__localizations_enabled %}
 {%     set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages, lang) %}
 {%   endfor %}
 {% endif %}

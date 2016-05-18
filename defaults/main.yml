@@ -766,18 +766,18 @@ packages__conditional_role:
 
 # .. )))
 
-# .. Language support (((
+# .. Localization support (((
 #
-# --------------------
-#   Language support
-# --------------------
+# ------------------------
+#   Localization support
+# ------------------------
 
-# .. envvar:: packages__languages
+# .. envvar:: packages__localizations_enabled
 #
 # List of language codes which should be supported.
 # English (en-us) is the default and you should not be required to specify it.
 #
-# For Debian, this feature works by a predefined list for some packages which
+# For Debian, this feature works with a predefined list for packages which
 # provide additional localization files in optional packages.
 #
 # For this to work, you need to provide certain bits about the language which should be supported:
@@ -797,15 +797,15 @@ packages__conditional_role:
 #
 # Example::
 #
-#    packages__languages:
+#    packages__localizations_enabled:
 #      - code: 'de'
 #        culture: 'de-de'
 #        name: 'german'
 #
-packages__languages: []
+packages__localizations_enabled: []
 
 
-# .. envvar:: packages__languages_available
+# .. envvar:: packages__localizations_available
 #
 # Definition of available localization packages. The localization packages will
 # only be installed when one of the ``present_packages`` is tagged for installation.
@@ -813,14 +813,14 @@ packages__languages: []
 # Note that this feature is based on the ``packages__conditional``
 # implementation. Check the documentation of it for more details.
 #
-# The values from each ``packages__languages`` dict will be substituted with the ``LANG_*`` (example: ``LANG_CODE``) placeholders.
-packages__languages_available: '{{ packages__languages_available_global + packages__languages_available_additional_dist }}'
+# The values from each ``packages__localizations_enabled`` dict will be substituted with the ``LANG_*`` (example: ``LANG_CODE``) placeholders.
+packages__localizations_available: '{{ packages__localizations_available_global + packages__localizations_available_additional_dist }}'
 
 
-# .. envvar:: packages__languages_available_global
+# .. envvar:: packages__localizations_available_global
 #
 # Default definition optimized for Debian.
-packages__languages_available_global:
+packages__localizations_available_global:
   - present_packages: 'iceweasel'
     additional_packages: 'iceweasel-l10n-LANG_CODE'
   - present_packages: 'chromium'
@@ -864,11 +864,11 @@ packages__languages_available_global:
     additional_packages: 'cinnamon-l10n'
 
 
-# .. envvar:: packages__languages_available_additional_dist
+# .. envvar:: packages__localizations_available_additional_dist
 #
-# Can be used when you only need to extend ``packages__languages_available_global`` but can otherwise reuse it.
+# Can be used when you only need to extend ``packages__localizations_available_global`` but can otherwise reuse it.
 # Used for Ubuntu.
-packages__languages_available_additional_dist: []
+packages__localizations_available_additional_dist: []
 
 # .. )))
 
