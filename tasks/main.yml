@@ -13,9 +13,10 @@
   set_fact:
     packages__debconf_settings_combined: |
       {{
-        (packages__debconf_settings       | d([]) | list) +
-        (packages__debconf_group_settings | d([]) | list) +
-        (packages__debconf_host_settings  | d([]) | list)
+        (packages__debconf_settings       | list) +
+        (packages__debconf_group_settings | list) +
+        (packages__debconf_host_settings  | list) +
+        (packages__debconf_role_settings  | list)
       }}
   tags:
     - 'role::packages:debconf'

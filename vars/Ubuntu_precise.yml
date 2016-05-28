@@ -4,8 +4,10 @@ packages__targets:
   - 'Ubuntu Ubuntu 12.04 LTS (Precise Pangolin)'
   # - 'linuxmuster.net 6.1 server'
 
-packages__blacklist_distribution_release:
+packages__blacklist_by_vars:
   - 'myrepos'
   - 'needrestart'
   - 'viewnior'
   - 'python3-virtualenv'
+  - 'dateutils'
+  - 'pyhoca-gui'

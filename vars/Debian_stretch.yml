@@ -14,5 +14,8 @@ packages__blacklist_revoke_by_vars:
   - 'borgbackup-doc'
   - 'firejail'
   - 'battery-stats'
+  - 'network-manager-ssh'
+  - 'network-manager-ssh-gnome'
+  - 'xul-ext-ublock-origin'
 
 # .. )))

@@ -382,6 +382,17 @@ packages__debconf_group_settings: []
 # Host definition list for :command:`debconf`.
 packages__debconf_host_settings: []
 
+
+# .. envvar:: packages__debconf_role_settings
+#
+# Role preset list for :command:`debconf`.
+packages__debconf_role_settings:
+  - name: 'firmware-ipw2x00'
+    question: 'firmware-ipw2x00/license/accepted'
+    value: 'true'
+    vtype: 'boolean'
+    when_package: 'firmware-ipw2x00'
+
 # .. )))
 
 # .. Single packages (((
@@ -602,10 +613,79 @@ packages__conditional: |
 
 # .. envvar:: packages__conditional_role
 #
-# Role defaults for ``packages__conditional``.
+# Role defaults for :any:`packages__conditional`.
 packages__conditional_role:
 
-  # .. Programms (((
+  ## Conditionally add packages on which later conditions are based (((
+
+  ## Explicitly add the package `gnome-themes-standard` which is specific to Gnome.
+  ## Used later to check if a Gnome environment is to be installed.
+  - present_packages:
+      - 'gnome-core'
+      - 'gnome'
+      - 'task-gnome-desktop'
+    require: 1
+    additional_packages:
+      - 'gnome-themes-standard'
+
+  ## Cinnamon desktop environment (((
+  ## Add package `cinnamon` which is specific to Cinnamon.
+  ## Used later to check if a Cinnamon environment is to be installed.
+  - present_packages:
+      - 'task-cinnamon-desktop'
+      - 'cinnamon-common'
+    require: 1
+    additional_packages:
+      - 'cinnamon'
+  ## )))
+
+  ## Add package `xfce4-settings` which is specific to Xfce.
+  ## Used later to check if an Xfce environment is to be installed.
+  - present_packages:
+      - 'xfce4'
+      - 'task-xfce-desktop'
+    require: 1
+    additional_packages:
+      - 'xfce4-settings'
+
+  ## Add package `mate-desktop` which is specific to MATE.
+  ## Used later to check if a MATE environment is to be installed.
+  - present_packages:
+      - 'task-mate-desktop'
+      - 'mate-desktop-environment-core'
+      - 'mate-desktop-environment'
+      - 'mate-desktop-environment-extras'
+    require: 1
+    additional_packages:
+      - 'mate-desktop'
+
+  ## Add package `lxde-common` which is specific to LXDE.
+  ## Used later to check if a LXDE environment is to be installed.
+  - present_packages:
+      - 'task-lxde-desktop'
+      - 'lxde'
+      - 'lxde-core'
+      - 'live-image-lxde-desktop'
+    require: 1
+    additional_packages:
+      - 'lxde-common'
+
+  ## Explicitly add the package `x11-common` when packages depending on X11 are
+  ## being selected.
+  ## Used later to check if a X11 environment is to be installed.
+  - present_packages:
+      - 'gnome-themes-standard'
+      - 'mate-desktop'
+      - 'lxde-common'
+      - 'xfce4-settings'
+      - 'gdm3'
+      - 'lightdm'
+    require: 1
+    additional_packages:
+      - 'x11-common'
+  ## )))
+
+  ## Programms (((
   - present_packages:
       - 'texlive-full'
     additional_packages:
@@ -624,6 +704,12 @@ packages__conditional_role:
     require: 2
     additional_packages:
       - 'gedit-latex-plugin'
+
+  - present_packages:
+      - 'cups'
+      - 'x11-common'
+    additional_packages:
+      - 'system-config-printer'
 
   - present_packages: '{{ packages__group_kde_applications }}'
     additional_packages:
@@ -650,27 +736,6 @@ packages__conditional_role:
   # .. )))
 
   # .. Gnome desktop environment (((
-
-  ## Explicitly add the package `gnome-themes-standard` which is specific to Gnome.
-  ## Used later to check if a Gnome environment is to be installed.
-  - present_packages:
-      - 'gnome-core'
-      - 'gnome'
-      - 'task-gnome-desktop'
-    require: 1
-    additional_packages:
-      - 'gnome-themes-standard'
-
-  ## Explicitly add the package `x11-common` when packages depending on X11 are
-  ## being selected.
-  ## Used later to check if a X11 environment is to be installed.
-  - present_packages:
-      - 'gnome-themes-standard'
-      - 'gdm3'
-      - 'lightdm'
-    require: 1
-    additional_packages:
-      - 'x11-common'
 
   - present_packages:
       - 'gnome-themes-standard'
@@ -737,31 +802,28 @@ packages__conditional_role:
       - 'libreoffice-gnome'
   # .. )))
 
-  # .. Cinnamon desktop environment (((
-  ## Add package `cinnamon` which is specific to Xfce.
-  ## Used later to check if a Xfce environment is to be installed.
-  - present_packages:
-      - 'task-cinnamon-desktop'
-      - 'cinnamon-common'
-    require: 1
-    additional_packages:
-      - 'cinnamon'
-  # .. )))
-
   # .. Xfce desktop environment (((
-  ## Add package `xfce4-settings` which is specific to Xfce.
-  ## Used later to check if a Xfce environment is to be installed.
-  - present_packages:
-      - 'xfce4'
-      - 'task-xfce-desktop'
-    require: 1
-    additional_packages:
-      - 'xfce4-settings'
 
   ## Does not include a good launcher.
   - present_packages:
       - 'xfce4-settings'
     additional_packages: '{{ packages__group_application_launcher }}'
+  # .. )))
+
+  # .. MATE desktop environment (((
+
+  - present_packages:
+      - 'mate-desktop'
+      - 'x2goserver'
+    additional_packages: 'x2gomatebindings'
+  # .. )))
+
+  # .. LXDE desktop environment (((
+
+  - present_packages:
+      - 'lxde-common'
+      - 'x2goserver'
+    additional_packages: 'x2golxdebindings'
   # .. )))
 
 # .. )))
@@ -810,7 +872,7 @@ packages__localizations_enabled: []
 # Definition of available localization packages. The localization packages will
 # only be installed when one of the ``present_packages`` is tagged for installation.
 #
-# Note that this feature is based on the ``packages__conditional``
+# Note that this feature is based on the :any:`packages__conditional`
 # implementation. Check the documentation of it for more details.
 #
 # The values from each ``packages__localizations_enabled`` dict will be substituted with the ``LANG_*`` (example: ``LANG_CODE``) placeholders.
@@ -862,6 +924,9 @@ packages__localizations_available_global:
 
   - present_packages: 'cinnamon'
     additional_packages: 'cinnamon-l10n'
+
+  - present_packages: 'owncloud-client'
+    additional_packages: 'owncloud-client-l10n'
 
 
 # .. envvar:: packages__localizations_available_additional_dist
@@ -950,7 +1015,7 @@ packages__apt_preferences__debian_backports_list:
   - package: 'ansible'
     backports: [ 'jessie' ]
 
-  - package: 'owncloud-client nautilus-owncloud libowncloudsync0'
+  - package: 'owncloud-client owncloud-client-* nautilus-owncloud libowncloudsync0'
     backports: [ 'jessie' ]
 
   - package: 'wireshark wireshark-* tshark libwireshark* libwiretap* libwsutil4'
@@ -965,7 +1030,29 @@ packages__apt_preferences__debian_backports_list:
   - package: 'virtualbox virtualbox-*'
     backports: [ 'jessie' ]
 
+  - package: 'qemu qemu-*'
+    backports: [ 'jessie' ]
+
+  - package: 'wine *wine*'
+    backports: [ 'jessie' ]
+
   - package: 'xpra'
+    backports: [ 'jessie' ]
+
+  - package: 'firmware firmware-iwlwifi firmware-* *-firmware'
+    backports: [ 'jessie' ]
+
+  ## Seems to fix: https://bugs.archlinux.org/task/47092
+  - package: 'nvidia-legacy-304xx-driver *-nvidia-*'
+    backports: [ 'jessie' ]
+
+  - package: 'firejail'
+    backports: [ 'jessie' ]
+
+  - package: 'sphinx-common sphinx-* python-sphinx* python3-sphinx* libjs-jquery libjs-sphinxdoc python-alabaster python3-alabaster'
+    backports: [ 'jessie' ]
+
+  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch*'
     backports: [ 'jessie' ]
 
 
@@ -1084,6 +1171,28 @@ packages__group_tag_game_toys:
 
 # .. )))
 
+# .. Debtags: Music (((
+#
+# ~~~~~~~~~
+#   Music
+# ~~~~~~~~~
+
+packages__group_tag_field_arts_audio_guitar:
+  - 'rakarrack'
+  - 'guitarix'
+  - 'tuxguitar'
+  - 'gtkguitune'
+  - 'songwrite'
+
+packages__group_tag_field_arts_audio:
+  - 'freqtweak'
+  - 'hydrogen'
+  - 'ardour3'
+  - 'rosegarden'
+  - 'muse'
+
+# .. )))
+
 # .. Debtags: role::documentation (((
 #
 # ~~~~~~~~~~~~~~~~~
@@ -1139,6 +1248,9 @@ packages__group_imaging:
 
 packages__group_internet_minimum:
   - 'iceweasel'
+
+  ## TODO: Install via Debian? Reevaluate when Stretch is released.
+  # - 'xul-ext-ublock-origin'
 
   - 'chromium'
 
@@ -1210,7 +1322,7 @@ packages__group_tag_protocol_voip_minimum:
 # ~~~~~~~~~~~~
 
 # .. Debtags: works-with::archive (((
-
+#
 # """"""""""""""""""""""""
 #   File archiver/packer
 # """"""""""""""""""""""""
@@ -1286,7 +1398,12 @@ packages__group_tag_admin_monitoring_additional:
   - 'sysdig'
 
   - 'logtop'
-  - 'goaccess'
+
+  ## Include conditionally.
+  # - 'goaccess'
+
+  ## https://github.com/lebinh/ngxtop
+  ## Not yet packaged for Debian: https://github.com/lebinh/ngxtop/issues/13
 
 packages__group_tag_admin_monitoring_network_minimum:
   - 'nethogs'
@@ -1371,7 +1488,6 @@ packages__group_hardware_info:
   - 'lsscsi'
   - 'lshw'
   - 'sg3-utils'
-  - 'superiotool'
 
 packages__group_hardware_info_gui:
   - 'lshw-gtk'
@@ -1387,7 +1503,10 @@ packages__group_hardware_testing_and_benchmarking_minimum:
 packages__group_hardware_testing_and_benchmarking_additional:
   - 'cpuburn'
   - 'stress'
+  - 'stress-ng'
   - 'memtester'
+
+  # - '{{ "phoronix-test-suite" if (packages__non_free_enabled|d()) else "" }}'
 
 packages__group_hardware_testing_and_benchmarking_full: |
   {{
@@ -1486,6 +1605,18 @@ packages__group_sysadmin_full: |
   }}
 
 ##
+
+# .. )))
+
+# .. Printing (((
+#
+# ~~~~~~~~~~~~
+#   Printing
+# ~~~~~~~~~~~~
+
+packages__group_tag_use_printing:
+  - 'cups'
+  - 'cups-pdf'
 
 # .. )))
 
@@ -2019,6 +2150,10 @@ packages__group_tag_field_electronics:
 
   - 'flashrom'
 
+  ## https://www.coreboot.org/Superiotool
+  ## Only needed for low level development.
+  - 'superiotool'
+
 # .. Perl (((
 
 packages__group_tag_devel_lang_perl:
@@ -2132,6 +2267,8 @@ packages__group_tag_devel_lang_python:
   - 'python3-flexmock'
   - 'python-redis'
   - 'python3-redis'
+  - 'python-elasticsearch'
+  - 'python3-elasticsearch'
   - 'python-memcache'
   # - python3-memcache
 
@@ -2140,6 +2277,7 @@ packages__group_tag_devel_lang_python:
 
   - 'python-lxml'
   - 'python3-lxml'
+  - 'python-twisted-web'
 
   ## Don’t use:
   # - 'python-beautifulsoup'
@@ -2185,6 +2323,17 @@ packages__group_tag_devel_lang_python_additional:
 
 # .. )))
 
+# .. Desktop virtualization (((
+#
+# """"""""""""""""""""""""""
+#   Desktop virtualization
+# """"""""""""""""""""""""""
+#
+# Libvirt/KVM with Spice is quite good but at least for running Windows VMs,
+# Virtualbox seems to be a bit on top.
+#
+# Libvirt is handled by `debops.libvirtd`.
+
 packages__group_devel_virtualization:
   # - 'uml-utilities'
 
@@ -2197,6 +2346,7 @@ packages__group_devel_virtualization:
   ## Just provides a wrapper script :file:`/usr/bin/kvm` which runs :program:`qemu-system-x86`.
   - 'qemu-kvm'
 
+  ## GUI for testing/dev only. For real virtualization use either libvirt/KVM or Virtualbox.
   - 'aqemu'
   # - 'qtemu'
   # - 'qemuctl'
@@ -2206,9 +2356,26 @@ packages__group_devel_virtualization:
   - 'spice-client'
   - 'virt-manager'
 
+packages__group_devel_virtualization_desktop_contrib:
+  - 'virtualbox'
+  - 'virtualbox-dkms'
+  - 'virtualbox-qt'
+
+packages__group_devel_virtualization_desktop_non_free:
+  - 'virtualbox-guest-additions-iso'
+
+packages__group_devel_virtualization_desktop: |
+  {{
+    (packages__group_devel_virtualization_desktop_contrib if (packages__contrib_enabled) else []) +
+    (packages__group_devel_virtualization_desktop_non_free if (packages__non_free_enabled) else []) +
+    []
+  }}
+
 packages__group_devel_virtualization_detection:
   - 'virt-what'
   - 'imvirt'
+
+# .. )))
 
 packages__group_devel_live_system:
   - 'live-build'
@@ -2416,10 +2583,10 @@ packages__group_devel_full: |
 
 # .. )))
 
-# .. Package Management (((
+# .. Package management (((
 #
 # ~~~~~~~~~~~~~~~~~~~~~~
-#   Package Management
+#   Package management
 # ~~~~~~~~~~~~~~~~~~~~~~
 
 packages__group_apt_package_management_minimal:
@@ -2447,6 +2614,19 @@ packages__group_apt_package_management_full: |
     packages__group_apt_package_management_additional +
     []
   }}
+# .. )))
+
+# .. Package management GUI (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Package management GUI
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+packages__group_apt_package_management_gui:
+  - 'synaptic'
+  - 'gnome-packagekit'
+  - 'software-center'
+
 # .. )))
 
 # .. Core programs, drivers and firmware files (((
@@ -2488,8 +2668,10 @@ packages__group_core_additional:
   - 'wget'
 
   - 'rsync'
-  - 'unison'
   - 'git-annex'
+
+  ## Include conditionally.
+  # - 'unison'
 
   - 'nmap'
   - 'dnsutils'
@@ -2508,8 +2690,10 @@ packages__group_core_additional:
   - 'nwipe'
   - 'secure-delete'
   - 'attr'
-  - 'cifs-utils'
-  - 'smbclient'
+
+  ## Include conditionally.
+  # - 'cifs-utils'
+  # - 'smbclient'
 
   - 'python-setuptools'
   - 'python3-setuptools'
@@ -2544,7 +2728,6 @@ packages__group_core_bare_metal_services_not_working_on_all_machines:
   - 'mcelog'
 
 # https://wiki.archlinux.org/index.php/laptop
-packages__group_core_bare_metal_services_laptop:
 packages__group_tag_hardware_laptop_accu:
 
   ## Log battery charge (batter-stats-collector), show gnuplot graphs (battery-graph).
@@ -2678,6 +2861,8 @@ packages__group_user_terminal_programs_minimum:
   - 'jq'
   - 'crudini'
   - 'csvtool'
+
+  - 'dateutils'
 
   ## Provides ``xmllint``.
   - 'libxml2-utils'
@@ -2923,6 +3108,43 @@ packages__group_wm_gnome_full: |
 packages__group_wm_cinnamon:
   - 'task-cinnamon-desktop'
 
+  ## Auto select `lightdm` it gdm3 is not selected.
+  # - 'lightdm'
+
+
+# .. )))
+
+# .. MATE desktop environment (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   MATE desktop environment
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# https://wiki.debian.org/Mate
+
+# .. envvar:: packages__group_wm_mate
+#
+packages__group_wm_mate:
+  - 'mate-desktop-environment-core'
+
+  ## Auto select `lightdm` it gdm3 is not selected.
+  # - 'lightdm'
+
+
+# .. )))
+
+# .. LXDE desktop environment (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   LXDE desktop environment
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# https://wiki.debian.org/LXDE
+
+# .. envvar:: packages__group_wm_lxde
+#
+packages__group_wm_lxde:
+  - 'task-lxde-desktop'
 
 # .. )))
 
@@ -3006,6 +3228,7 @@ packages__group_application_time_tracking:
 # ~~~~~~~~~~~~~~~~~~~
 
 packages__group_network_remmina:
+  - 'vinagre'
   - 'freerdp-x11'
   - 'remmina'
   - 'remmina-plugin-gnome'
@@ -3015,15 +3238,31 @@ packages__group_network_remmina:
   - 'remmina-plugin-vnc'
   - 'remmina-plugin-xdmcp'
 
-packages__group_user_desktop_sharing_minimum:
+packages__group_user_desktop_sharing_client:
   - 'x2goclient'
+
+  - 'pyhoca-gui'
+  - 'pyhoca-cli'
 
   ## Totally insecure.
   # - 'gitso'
 
+# Checkout my dedicated role `debops.contrib-x2go_server
+# <https://github.com/debops-contrib/ansible-x2go_server>`_
+# `x2goserver` is listed here to install some additional packages using the
+# :any:`packages__conditional` feature.
+packages__group_user_desktop_sharing_server:
+  - 'x2goserver'
+
+packages__group_user_desktop_sharing_auto: |
+  {{
+    (packages__group_user_desktop_sharing_server if ("debops_service_x2go_server" in hostvars[inventory_hostname]["group_names"]) else []) +
+    []
+  }}
+
 packages__group_user_desktop_sharing_full: |
   {{
-    packages__group_user_desktop_sharing_minimum +
+    packages__group_user_desktop_sharing_client +
     packages__group_network_remmina +
     []
   }}
@@ -3058,6 +3297,10 @@ packages__group_user_optical_media:
   - 'cdrdao'
   - 'qpxtool'
 
+  ## Contains: `geteltorito`
+  ## https://wiki.archlinux.org/index.php/Flashing_BIOS_from_Linux
+  - 'genisoimage'
+
 packages__group_user_file_cleanup:
   - 'bleachbit'
   - 'fslint'
@@ -3068,7 +3311,6 @@ packages__group_user_additional:
   - 'unison-gtk'
   - 'owncloud-client'
   - 'filezilla'
-  - 'wine'
   - 'florence'
   - 'catfish'
   - 'gtkhash'
@@ -3098,7 +3340,9 @@ packages__group_network_manager_vpn_plugin:
   - 'network-manager-iodine'
   - 'network-manager-openvpn'
   - 'network-manager-vpnc'
-  - 'network-manager-ssh'
+
+  ## Currently to many dependencies on Debian Stretch.
+  # - 'network-manager-ssh'
 
 packages__group_user_basic: |
   {{
@@ -3118,6 +3362,25 @@ packages__group_user_full: |
 
 # .. )))
 
+# .. Automatically added packages (((
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   Automatically added packages
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Complete set of automatically added packages based on other parts of your
+# inventory. For example, when the host is also part of the
+# `debops_service_x2go_server` hostgroup, some packages might be added
+# additionally based on what other packages are installed.
+
+packages__group_auto: |
+  {{
+    packages__group_user_desktop_sharing_auto +
+    []
+  }}
+
+# .. )))
+
 # .. )))
 
 # .. Class presets  (((
@@ -3130,11 +3393,13 @@ packages__classes_core: |
   {{
     packages__group_core_minimum +
     packages__group_sysadmin_minimal +
+    packages__group_auto +
     []
   }}
 
 packages__classes_base: |
   {{
+    packages__classes_core +
     packages__group_core_full +
     packages__group_sysadmin_basic +
     []
@@ -3152,10 +3417,11 @@ packages__classes_server: |
     # packages__group_multimedia_basic +
 packages__classes_live_system: |
   {{
+    packages__classes_base +
     packages__group_core_full +
+    packages__group_sysadmin_basic +
     packages__group_wm_gnome_minimal +
     packages__group_hardware_testing_and_benchmarking_full +
-    packages__group_sysadmin_basic +
     packages__group_internet_minimum +
     packages__group_education_minimum +
     packages__group_user_basic +
@@ -3167,11 +3433,13 @@ packages__classes_live_system: |
 
 packages__classes_client: |
   {{
+    packages__classes_base +
     packages__group_core_full +
-    packages__group_apt_package_management_full +
     packages__group_sysadmin_basic +
+    packages__group_apt_package_management_full +
     packages__group_internet_full +
     packages__group_office_basic +
+    packages__group_tag_use_printing +
     packages__group_tag_field_finance_minimum +
     packages__group_user_file_cleanup +
     packages__group_education_basic +
@@ -3190,11 +3458,13 @@ packages__classes_client_explorer: |
     packages__group_tag_field_finance_full +
     packages__group_multimedia_full +
     packages__group_sysadmin_full +
+    packages__group_apt_package_management_gui +
     packages__group_network_manager_vpn_plugin +
     packages__group_education_full +
     packages__group_office_full +
     packages__group_devel_basic +
     packages__group_wm_gnome_power_user +
+    packages__group_devel_virtualization_desktop +
     []
   }}
 
@@ -3301,6 +3571,7 @@ packages__additional_for_class: {}
 #
 packages__reject_for_class:
 
+  # live_system: '{{ packages__reject_for_live_system }}'
   client_school: '{{ packages__reject_for_school }}'
   client_school_linuxmuster: '{{ packages__reject_for_school }}'
 
@@ -3310,6 +3581,18 @@ packages__reject_for_class:
 # Packages to reject for package classes indented for schools.
 # See ``packages__reject_for_class`` for more details.
 packages__reject_for_school: |
+  {{
+    packages__group_network_manager_vpn_plugin +
+    packages__group_core_bare_metal_services_not_working_on_all_machines +
+    []
+  }}
+
+
+# .. envvar:: packages__reject_for_live_system
+#
+# Packages to reject for package classes indented for live systems.
+# See ``packages__reject_for_class`` for more details.
+packages__reject_for_live_system: |
   {{
     packages__group_network_manager_vpn_plugin +
     packages__group_core_bare_metal_services_not_working_on_all_machines +
@@ -3378,6 +3661,7 @@ packages__classes:
     {{
       packages__classes_client +
       packages__group_wm_cinnamon +
+      packages__group_wm_mate +
       packages__group_tag_game +
       (packages__additional_for_class.client|d([])) +
       []
@@ -3388,6 +3672,7 @@ packages__classes:
       packages__classes_client_explorer +
       packages__group_wm_gnome_normal +
       packages__group_wm_cinnamon +
+      packages__group_wm_mate +
       packages__group_tag_game +
       (packages__additional_for_class.client_explorer|d([])) +
       []

@@ -22,7 +22,7 @@ different distribution/OS. Also, when you have groups of packages in the
 order of hundreds (to keep it generic), you would probably mess up your
 Ansible inventory and your configuration would be distributed over hundreds
 of files. Also this approach would not be practical because seeing all
-those package groups which apply for a given hosts is not easy to
+those package groups which apply for a given host is not easy to
 understand when you just want the big picture of software installed on this
 host. Therefore this role puts its focus on packages, groups of packages
 and classes of hosts while allowing to overwrite package names to match the
@@ -62,7 +62,7 @@ Furthermore, there are a number of variable namespaces:
 
   * core: CLI only, does not require X
 
-* class: List of all packages for a specific class of hosts.
+* class: List of all packages for a specific class of host.
 
 * deploy: Options related to the installation and removal of packages as
   provided by the package management modules in Ansible.
@@ -100,14 +100,19 @@ package presets available.
 ### Requirements
 
 This role makes extensive use of some recently introduced features of
-Ansible 2.  One of those features, namely iterating over included
-tasks multiple times with the `when_*` statement had a bug so this role currently only
-works with an [currently unreleased Ansible version][ansible-devel] as of 2016-04-18.
+Ansible 2. One of those features, namely iterating over included
+tasks multiple times with the `when_*` statement had a bug so this role
+requires at least Ansible 2.1.
+
+Additionally, this role uses features recently introduced in Jinja2, namely
+the `equalto` filter which was added with
+[Jinja 2.8](http://jinja.pocoo.org/docs/dev/changelog/#version-2-8).
+Jinja 2.8 is currently only
+[available in Debian Stretch](https://packages.debian.org/search?keywords=python-jinja2).
 
 [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
 [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
 [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml
-[ansible-devel]: https://github.com/ansible/ansible/tree/devel
 
 
 

@@ -6,6 +6,10 @@
   vars:
     ansible_pkg_mgr: 'apt'
     ansible_virtualization_role: 'host'
+    ansible_form_factor: 'Notebook'
+    ansible_devices:
+      'sda':
+        rotational: '1'
     packages__mode: 'export'
     packages__export_format: 'yaml'
     packages__export_key_name: 'linuxmuster_net_client__packages_preset_ypid'

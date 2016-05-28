@@ -18,3 +18,7 @@ packages__blacklist_by_vars:
   - 'firmware-amd-graphics'
   - 'firmware-misc-nonfree'
   - 'battery-stats'
+  - 'network-manager-ssh'
+  - 'network-manager-ssh-gnome'
+  - 'xul-ext-ublock-origin'
+  - 'phoronix-test-suite'

@@ -7,3 +7,4 @@ packages__blacklist_revoke_by_vars:
   - 'borgbackup-doc'
   - 'firmware-amd-graphics'
   - 'firmware-misc-nonfree'
+  - 'firejail'

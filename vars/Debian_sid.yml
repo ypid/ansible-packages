@@ -2,3 +2,7 @@
 
 packages__targets:
   - 'Debian GNU/Linux (sid/unstable)'
+
+
+packages__blacklist_revoke_by_vars:
+  - 'phoronix-test-suite'
