@@ -10,7 +10,7 @@
 #
 # .. role:: jinja_code(code)
 #    :language: jinja
-#
+
 # Basic options [[[
 # -------------
 
@@ -1032,6 +1032,10 @@ packages__apt_preferences__debian_backports_list:
   - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch*'
     backports: [ 'jessie' ]
 
+  - package: 'hplip hplip* printer-* libsane-hpaio'
+    backports: [ 'jessie' ]
+    delete: True
+
 
 # .. envvar:: packages__debian_stretch_from_jessie_list:
 #
@@ -1213,9 +1217,17 @@ packages__group_email_minimum:
   - 'enigmail'
   - 'xul-ext-sogo-connector'
 
+
+# https://wiki.debian.org/Flash
+
 packages__group_internet_flash:
-  # - 'browser-plugin-gnash'
-  - '{{ "flashplugin-nonfree" if (packages__non_free_enabled|d()) else "" }}'
+  - 'browser-plugin-gnash'
+
+  ## `flashplugin-nonfree` is constantly lagging behind.
+  ## https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814316
+  # - '{{ "flashplugin-nonfree" if (packages__non_free_enabled|d()) else "" }}'
+
+  # - '{{ "browser-plugin-freshplayer-pepperflash" if (packages__contrib_enabled|d()) else "" }}'
 
 packages__group_internet_additional:
   # - 'epiphany-browser'
@@ -1439,6 +1451,7 @@ packages__group_hardware_info:
   - 'lsscsi'
   - 'lshw'
   - 'sg3-utils'
+  - 'cpuid'
 
 packages__group_hardware_info_gui:
   - 'lshw-gtk'
@@ -1567,6 +1580,11 @@ packages__group_sysadmin_full: |
 packages__group_tag_use_printing:
   - 'cups'
   - 'cups-pdf'
+
+  - 'hplip'
+  - 'hplip-gui'
+  - 'printer-driver-hpcups'
+  # - 'printer-driver-ptouch'
 
 # .. ]]]
 
@@ -1859,6 +1877,7 @@ packages__group_typesetting_converters:
   - 'wkhtmltopdf'
   - 'rst2pdf'
   - 'pdf2htmlex'
+  - 'grip'
 
 packages__group_typesetting_additional:
   - 'texlive-full'
@@ -1901,6 +1920,10 @@ packages__group_office_additional:
   - 'libreoffice'
   - 'libreoffice-writer2xhtml'
   - 'libreoffice-wiki-publisher'
+
+  ## CLI file converter based on LibreOffice.
+  - 'unoconv'
+
   # - 'libreoffice-java-common'
 
   - 'rednotebook'
@@ -1917,6 +1940,8 @@ packages__group_office_additional:
   - 'gtg'
 
   - 'simple-scan'
+
+  # - 'glabels'
 
 packages__group_office_basic: |
   {{
@@ -2161,6 +2186,8 @@ packages__group_tag_devel_lang_python:
   - 'pep8'
   - 'python3-pep8'
   - 'python-autopep8'
+  - 'python-coverage'
+  - 'python3-coverage'
   - 'ipython'
   - 'ipython3'
   - 'python3-all'
@@ -2286,6 +2313,9 @@ packages__group_devel_virtualization:
 
   ## Just provides a wrapper script :file:`/usr/bin/kvm` which runs :program:`qemu-system-x86`.
   - 'qemu-kvm'
+
+  ## `kvm-ok` has been separated (https://bugs.launchpad.net/ubuntu/+source/qemu-kvm/+bug/429443). Seems to not be in Debian?
+  - 'cpu-checker'
 
   ## GUI for testing/dev only. For real virtualization use either libvirt/KVM or Virtualbox.
   - 'aqemu'
@@ -2798,7 +2828,13 @@ packages__group_user_terminal_programs_minimum:
   - 'dos2unix'
   - 'jq'
   - 'crudini'
+
   - 'csvtool'
+
+  - 'python3-csvkit'
+  ## Dependency of `/usr/bin/in2csv`. `python3-csvkit` only suggests it.
+  ## FIXME: File bug report. https://bugs.debian.org/cgi-bin/pkgreport.cgi?pkg=python3-csvkit;dist=unstable
+  - 'python3-openpyxl'
 
   - 'dateutils'
 
@@ -3049,7 +3085,16 @@ packages__group_wm_cinnamon:
 # .. envvar:: packages__group_wm_mate
 #
 packages__group_wm_mate:
-  - 'mate-desktop-environment-core'
+
+  ## Depends on `lightdm`.
+  # - 'task-mate-desktop'
+
+  # - 'mate-desktop-environment-core'
+  - 'mate-desktop-environment'
+  # - 'mate-desktop-environment-extras'
+
+  - 'mate-applets'
+  - 'mate-media'
 
   ## Auto select `lightdm` it gdm3 is not selected.
   # - 'lightdm'

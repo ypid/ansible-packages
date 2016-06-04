@@ -8,3 +8,4 @@ packages__blacklist_revoke_by_vars:
   - 'firmware-amd-graphics'
   - 'firmware-misc-nonfree'
   - 'firejail'
+  - 'browser-plugin-gnash'

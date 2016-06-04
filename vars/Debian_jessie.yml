@@ -22,3 +22,5 @@ packages__blacklist_by_vars:
   - 'network-manager-ssh-gnome'
   - 'xul-ext-ublock-origin'
   - 'phoronix-test-suite'
+  - 'browser-plugin-gnash'
+  - 'grip'
