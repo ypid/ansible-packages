@@ -1669,7 +1669,6 @@ packages__group_tag_field_medical:
   - 'invesalius-examples'
 
 packages__group_tag_field_linguistics_minimum:
-  - 'ding'
   - 'dict'
   - 'dictd'
   - 'dict-de-en'
@@ -1682,8 +1681,17 @@ packages__group_tag_field_linguistics_additional:
   ## Based on education-language (only makes recommendations).
   - 'parley'
   - 'wordnet-gui'
-  - 'gnome-dictionary'
+
+  ## As of 3.14.1-1, it seems to have dropped the ability to configure other dict servers in the GUI?
+  # - 'gnome-dictionary'
+
   - 'goldendict'
+
+  ## TODO: Try.
+  # - 'artha'
+
+  ## Uncommon UI:
+  # - 'ding'
 
 packages__group_tag_field_genealogy:
   - 'gramps'
@@ -2734,6 +2742,15 @@ packages__group_core_bare_metal: |
     []
   }}
 
+packages__group_core_hypervisor_guest_tools_vmware:
+  - 'open-vm-tools'
+
+packages__group_core_hypervisor_guest_tools: |
+  {{
+    (packages__group_core_hypervisor_guest_tools_vmware if ('vmware' == (ansible_virtualization_type|d(omit)|lower)) else []) +
+    []
+  }}
+
 # .. ]]]
 
 # Firmware blobs [[[
@@ -2800,6 +2817,7 @@ packages__group_core_full: |
     packages__group_core_cron +
     (packages__group_core_bare_metal if ('host' == ansible_virtualization_role) else []) +
     (packages__group_core_hardware   if ('host' == ansible_virtualization_role) else []) +
+    (packages__group_core_hypervisor_guest_tools if ('guest' == ansible_virtualization_role) else []) +
     []
   }}
 
@@ -3202,7 +3220,7 @@ packages__group_user_desktop_sharing_client:
   ## Totally insecure.
   # - 'gitso'
 
-# Checkout my dedicated role `debops.contrib-x2go_server
+# Checkout my dedicated role `debops-contrib.x2go_server
 # <https://github.com/debops-contrib/ansible-x2go_server>`_
 # `x2goserver` is listed here to install some additional packages using the
 # :any:`packages__conditional` feature.
