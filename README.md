@@ -90,7 +90,7 @@ resulting in for the different classes and if that is what you intended.
 <!-- Check the [docs][/docs/getting-started.rst] and the [example -->
 <!-- playbooks][/playbooks] for more details. -->
 
-Check the [example playbooks][/playbooks] for more documentation.
+Check the [example playbooks][/playbooks] to get started.
 
 ### Role variables
 
@@ -105,7 +105,7 @@ tasks multiple times with the `when_*` statement had a bug so this role
 requires at least Ansible 2.1.
 
 Additionally, this role uses features recently introduced in Jinja2, namely
-the `equalto` filter which was added with
+the `equalto` filter which was released with
 [Jinja 2.8](http://jinja.pocoo.org/docs/dev/changelog/#version-2-8).
 Jinja 2.8 is currently only
 [available in Debian Stretch](https://packages.debian.org/search?keywords=python-jinja2).
