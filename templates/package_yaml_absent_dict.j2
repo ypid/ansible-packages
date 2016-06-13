@@ -4,8 +4,10 @@
 {% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item.key) %}
 {% set packages__list_tpl = pkt_macros.gen_package_list(
     (packages__absent_for_class[class_pattern_for_reject_list] | d([]) | list) +
-    (packages__reject_for_class[class_pattern_for_reject_list] | d([]) | list) if
-      packages__rejected_ensure_absent else [],
+    (packages__absent | list) +
+    ((packages__reject_for_class[class_pattern_for_reject_list] | d([]) | list) if
+      packages__rejected_ensure_absent else []) +
+    ((packages__blacklist | list) if (packages__blacklisted_ensure_absent | bool) else []),
     [],
     [],
     [],

@@ -11,3 +11,4 @@ packages__blacklist_by_vars:
   - 'python3-virtualenv'
   - 'dateutils'
   - 'pyhoca-gui'
+  - 'grip'

@@ -19,6 +19,22 @@
     packages__non_free_enabled: True
     packages__export_classes:
       - 'client_school_linuxmuster'
+    packages__reject_for_gymnasium: []
+    packages__reject_for_class:
+
+      client_school: '{{ packages__reject_for_school }}'
+      client_school_linuxmuster: |
+        {{
+          packages__reject_for_school +
+          packages__reject_for_gymnasium +
+          packages__group_education_junior +
+          packages__group_education_games +
+          []
+        }}
+
+
+    packages__load_distribution_additional:
+      - 'Linuxmint_qiana'
     packages__export_distributions:
 
       - ansible_distribution: 'Ubuntu'

@@ -43,11 +43,21 @@ packages__blacklist_by_vars:
   - 'sysdig'
   - 'apt-venv'
   - 'ffmpeg'
+  - 'grip'
   - 'pdf2htmlex'
+  - 'python-elasticsearch'
+  - 'python-seaborn'
+  - 'python3-csvkit'
+  - 'python3-elasticsearch'
+  - 'python3-lockfile'
+  - 'python3-openpyxl'
+  - 'python3-seaborn'
 
   ## At least on Linuxmint 17:
   ## gedit-latex-plugin : Hängt ab von: gedit (>= 3.8) aber 2.30.5+qiana ist installiert.
   - 'gedit-latex-plugin'
+
+  - 'cinnamon'
 
 
 packages__group_firmware_free: []

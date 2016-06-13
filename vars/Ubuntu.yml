@@ -1,10 +1,36 @@
 ---
 
+# The repository components are:
+#
+# ``Main``
+#   Officially supported software.
+#
+# ``Restricted``
+#   Supported software that is not available under a completely free license.
+#
+# ``Universe``
+#   Community maintained software, i.e. not officially supported software.
+#
+# ``Multiverse``
+#   Software that is not free.
+#
+# https://help.ubuntu.com/community/Repositories/Ubuntu
+
 
 ## https://askubuntu.com/questions/15408/flashplugin-installer-vs-flashplugin-nonfree-vs-adobe-flashplugin
 ## https://askubuntu.com/questions/49298/whats-the-difference-between-flashplugin-installer-and-adobe-flashplugin
+
+
+packages__group_internet_flash:
+  - '{{ "adobe-flashplugin" if (packages__non_free_enabled|d()) else "" }}'
+
 packages__name_remapping_by_vars:
-  'flashplugin-nonfree': 'adobe-flashplugin'
+
+  ## Expected to be more up-to-date than `flashplugin-nonfree` from Debian.
+  ## Commented out because `flashplugin-nonfree` also exists in Ubuntu.
+  ## Selection is done via :any:`packages__group_internet_flash`.
+  # 'flashplugin-nonfree': 'adobe-flashplugin'
+
   'google-earth': 'google-earth-stable'
   'iceweasel': 'firefox'
   'iceweasel-l10n-LANG_CODE': 'firefox-locale-LANG_CODE'
@@ -14,6 +40,10 @@ packages__name_remapping_by_vars:
   'icedove': 'thunderbird'
   'icedove-l10n-LANG_CODE': 'thunderbird-locale-LANG_CODE'
   'iceowl-extension': 'xul-ext-lightning'
+
+  ## FIXME conditional include of `system-config-printer-gnome` if `x11-common`
+  ## is selected.
+  'system-config-printer': 'system-config-printer-common'
 
 
 packages__blacklist_by_vars:

@@ -6,6 +6,7 @@ packages__targets:
 
 packages__blacklist_by_vars:
 
+  - 'gtklp'
   - 'bats'
   - 'haxe'
   - 'libmonitoring-plugin-perl'

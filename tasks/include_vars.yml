@@ -26,15 +26,17 @@
 - name: Preserve current packages__targets for later use
   set_fact:
     packages__targets_real: '{{ packages__targets }}'
-  when: (packages__load_distribution_additional_releases)
+  when: (packages__load_distribution_additional_releases or packages__load_distribution_additional)
 
 - name: Run include additional vars tasks
   include: include_item_vars.yml
   when: (item|d())
   with_items: '{{
-    (packages__load_distribution_additional_releases | list) |
-      map("regex_replace", "^", ((ansible_distribution|d("")|replace(" ", "_")) + "_")) |
-      map("regex_replace", "$", ".yml") | list }}'
+    ((packages__load_distribution_additional_releases | list)
+      | map("regex_replace", "^", ((ansible_distribution|d("")|replace(" ", "_")) + "_"))
+      | map("regex_replace", "$", ".yml") | list) +
+    ((packages__load_distribution_additional | list)
+      | map("regex_replace", "$", ".yml") | list) }}'
 
 - name: Restore packages__targets_real to packages__targets
   set_fact:

@@ -1,0 +1,14 @@
+---
+# .. vim: foldmarker=[[[,]]]:foldmethod=marker
+
+## linuxmuster.net client
+packages__targets:
+  - 'Linux Mint 17 LTS Qiana (based on Ubuntu 14.04)'
+
+packages__blacklist_revoke_by_vars:
+  - 'cinnamon'
+
+packages__name_remapping_by_vars:
+
+  'cinnamon-l10n': 'cinnamon-translations'
+  'task-cinnamon-desktop': 'cinnamon'

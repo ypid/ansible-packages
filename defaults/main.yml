@@ -310,6 +310,23 @@ packages__load_distribution_release_vars: True
 #
 packages__load_distribution_additional_releases: []
 
+
+# .. envvar:: packages__load_distribution_additional
+#
+# Should the additional distribution specific variables which are
+# bundled with this role under :file:`vars/` be loaded?
+# Refer to `packages__load_distribution_release_vars` for details.
+#
+# This list allows you to define additional distributions from which packages
+# can be installed.
+#
+# Example::
+#
+#    packages__load_distribution_additional:
+#      - 'Linuxmint_qiana'
+#
+packages__load_distribution_additional: []
+
 # .. ]]]
 
 # debconf settings [[[
@@ -476,18 +493,23 @@ packages__blacklist: |
 # .. envvar:: packages__blacklist_global
 #
 # Global blacklisted packages.
+# This variable is intended to be used in Ansible’s global inventory.
+# More specific variables can overrule less specific variables.
 packages__blacklist_global: []
 
 
 # .. envvar:: packages__blacklist_host_group
 #
 # Host group blacklisted packages.
+# This variable is intended to be used in a host inventory group of Ansible
+# (only one host group is supported).
 packages__blacklist_host_group: []
 
 
 # .. envvar:: packages__blacklist_host
 #
 # Host blacklisted packages.
+# This variable is intended to be used in the inventory of the host.
 packages__blacklist_host: []
 
 
@@ -507,6 +529,14 @@ packages__blacklist_revoke: |
   {{
     (packages__blacklist_revoke_by_vars | d([]) | list)
   }}
+
+
+# .. envvar:: packages__blacklisted_ensure_absent
+#
+# If ``True`` ensure that blacklisted packages are absent. Note that the
+# blacklisting feature is also used to filter out packages which are not
+# available for the target system.
+packages__blacklisted_ensure_absent: False
 
 
 # .. envvar:: packages__whitelist
@@ -659,6 +689,7 @@ packages__conditional_role:
   - present_packages:
       - 'gnome-themes-standard'
       - 'mate-desktop'
+      - 'cinnamon'
       - 'lxde-common'
       - 'xfce4-settings'
       - 'gdm3'
@@ -1190,10 +1221,10 @@ packages__group_imaging:
   # - 'ddrescue'
   # - 'myrescue'
 
-  ## Not yet in stable:
+  ## TODO: Not yet in stable:
   # - 'ddrescueview'
 
-  ## Not yet packaged: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=730429
+  ## TODO: Not yet packaged: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=730429
   # - 'ddrutility'
 
   - 'clonezilla'
@@ -1205,6 +1236,9 @@ packages__group_imaging:
 
 packages__group_internet_minimum:
   - 'iceweasel'
+
+  ## TODO: Check
+  # - 'firefox-esr'
 
   ## TODO: Install via Debian? Reevaluate when Stretch is released.
   # - 'xul-ext-ublock-origin'
@@ -1338,6 +1372,12 @@ packages__group_ansible:
   - 'python-passlib'
 
   - 'python-netaddr'
+
+packages__group_ansible_additional:
+
+  ## Additional system information: https://docs.ansible.com/ansible/setup_module.html
+  - 'facter'
+  - 'ohai'
 
 # .. ]]]
 
@@ -1582,9 +1622,12 @@ packages__group_tag_use_printing:
   - 'cups-pdf'
 
   - 'hplip'
-  - 'hplip-gui'
   - 'printer-driver-hpcups'
   # - 'printer-driver-ptouch'
+
+packages__group_tag_use_printing_additional:
+  - 'hplip-gui'
+  # - 'gtklp'
 
 # .. ]]]
 
@@ -1711,22 +1754,14 @@ packages__group_education_junior:
   - 'numptyphysics'
   - 'pysiogame'
   - 'pysycache'
-  - 'stellarium'
   - 'xball'
   - 'xmakemol-gl'
 
-
 packages__group_education_games:
   - 'animals'
-  - 'atomix'
-  - 'childsplay'
   - 'gamine'
-  - 'gcompris'
-  - 'pysiogame'
-  - 'pysycache'
   - 'tuxmath'
   - 'tuxtype'
-  - 'xball'
 
 packages__group_education_minimum: |
   {{
@@ -1786,6 +1821,7 @@ packages__group_multimedia_minimum:
 
 packages__group_multimedia_editing_minimum:
   - 'gimp'
+  - 'inkscape'
   - 'audacity'
 
 packages__group_multimedia_editing_additional:
@@ -1794,7 +1830,7 @@ packages__group_multimedia_editing_additional:
 
   - 'frogr'
 
-  ## Not in stable
+  ## TODO: Not in stable
   # - 'autotrace'
 
   - 'blender'
@@ -2840,6 +2876,8 @@ packages__group_user_terminal_programs_minimum:
   - 'sshfs'
   - 'inotify-tools'
 
+  - 'rpl'
+
   - 'ttyrec'
 
   - 'uniutils'
@@ -3295,7 +3333,7 @@ packages__group_user_additional:
 
   - 'cdcat'
 
-  ## Screenkey fork not yet in Debian stable.
+  ## TODO: Screenkey fork not yet in Debian stable.
   ## Use the source: https://github.com/wavexx/screenkey
   # - 'screenkey'
 
@@ -3546,6 +3584,8 @@ packages__reject_for_school: |
   {{
     packages__group_network_manager_vpn_plugin +
     packages__group_core_bare_metal_services_not_working_on_all_machines +
+    packages__group_network_avahi +
+    [ "cheese" ] +
     []
   }}
 
@@ -3562,6 +3602,12 @@ packages__reject_for_live_system: |
   }}
 
 
+# .. envvar:: packages__rejected_ensure_absent
+#
+# If ``True`` ensure that rejected packages are absent.
+packages__rejected_ensure_absent: True
+
+
 # .. envvar:: packages__absent_for_class
 #
 # Ensure that the listed packages are absent.
@@ -3572,10 +3618,78 @@ packages__reject_for_live_system: |
 packages__absent_for_class: {}
 
 
-# .. envvar:: packages__rejected_ensure_absent
+# .. envvar:: packages__absent
 #
-# If ``True`` ensure that rejected and blacklisted packages are absent.
-packages__rejected_ensure_absent: True
+# Combined list of packages which should be absent. To make packages absent for
+# individual classes, checkout ``packages__absent_for_class``.
+#
+# .. note:: Packages to be absent will be enforced to be absent the same way as
+#           rejected packages are, when ``packages__rejected_ensure_absent`` is
+#           set to ``True``.
+#
+packages__absent: |
+  {{
+    (packages__absent_preset               | list) +
+    (packages__absent_global               | list) +
+    (packages__absent_host_group           | list) +
+    (packages__absent_host                 | list)
+  }}
+
+
+# .. envvar:: packages__absent_preset
+#
+# Preset list of packages to be absent. The packages listed here have been
+# replaced/superseded by better suited packages as decided by the role maintainers.
+packages__absent_preset:
+  - 'gnucash'
+  - 'gnucash-docs'
+  - 'python-gnucash'
+  - 'ddrescue'
+  - 'myrescue'
+  - 'flashplugin-nonfree'
+  - 'browser-plugin-freshplayer-pepperflash'
+  - 'pidgin-openpgp'
+  - 'lat'
+  - 'msmtp'
+  - 'ding'
+  - 'minitube'
+  - 'smtube'
+  - 'ack-grep'
+  - 'memtest86'
+  - 'kupfer'
+  - 'launchy'
+  - 'gnome-do'
+  - 'gmrun'
+  - 'gitso'
+
+  ## Is superseded by tmux but don’t automatically reject by this preset:
+  # - 'screen'
+
+  ## Not yet ensure absent.
+  # - 'gnome-dictionary'
+
+
+# .. envvar:: packages__absent_global
+#
+# Global absented packages.
+# This variable is intended to be used in Ansible’s global inventory.
+# More specific variables can overrule less specific variables.
+packages__absent_global: []
+
+
+# .. envvar:: packages__absent_host_group
+#
+# Host group absented packages.
+# This variable is intended to be used in a host inventory group of Ansible
+# (only one host group is supported).
+packages__absent_host_group: []
+
+
+# .. envvar:: packages__absent_host
+#
+# Host absented packages.
+# This variable is intended to be used in the inventory of the host.
+packages__absent_host: []
 
 
 # .. envvar:: packages__classes
@@ -3650,6 +3764,7 @@ packages__classes:
   client_school_linuxmuster: |
     {{
       packages__classes_client_school_linuxmuster +
+      packages__group_wm_cinnamon +
       (packages__additional_for_class.client_school_linuxmuster|d([])) +
       []
     }}
