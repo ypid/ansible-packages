@@ -5,6 +5,7 @@ packages__targets:
 
 # .. Only defined here to overrule Debian_jessie.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:
+  - 'vagrant-libvirt'
   - 'gtklp'
   - 'bats'
   - 'haxe'

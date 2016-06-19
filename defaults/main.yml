@@ -3,13 +3,15 @@
 
 # Default variables
 # =================
-
+#
 # .. contents:: Sections
 #    :local:
-#    :depth: 3
+#
+# .. include:: includes/all.rst
 #
 # .. role:: jinja_code(code)
 #    :language: jinja
+#
 
 # Basic options [[[
 # -------------
@@ -1235,6 +1237,7 @@ packages__group_imaging:
 # ~~~~~~~~
 
 packages__group_internet_minimum:
+  # FIXME: https://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=iceweasel
   - 'iceweasel'
 
   ## TODO: Check
@@ -3629,17 +3632,18 @@ packages__absent_for_class: {}
 #
 packages__absent: |
   {{
-    (packages__absent_preset               | list) +
-    (packages__absent_global               | list) +
-    (packages__absent_host_group           | list) +
-    (packages__absent_host                 | list)
+    (packages__absent_preset     | list) +
+    (packages__absent_global     | list) +
+    (packages__absent_host_group | list) +
+    (packages__absent_host       | list)
   }}
 
 
 # .. envvar:: packages__absent_preset
 #
 # Preset list of packages to be absent. The packages listed here have been
-# replaced/superseded by better suited packages as decided by the role maintainers.
+# replaced/superseded by better suited packages as decided by the role
+# maintainers.
 packages__absent_preset:
   - 'gnucash'
   - 'gnucash-docs'
@@ -3662,7 +3666,7 @@ packages__absent_preset:
   - 'gmrun'
   - 'gitso'
 
-  ## Is superseded by tmux but don’t automatically reject by this preset:
+  ## Is superseded by `tmux` but don’t automatically ensure absence `screen` by this preset:
   # - 'screen'
 
   ## Not yet ensure absent.
@@ -3778,12 +3782,6 @@ packages__classes_additional: {}
 
 # .. ]]]
 
-# .. reStructuredText link definitions [[[
+# ..Role maintainer helpers [[[
 # .. Vim search/replace to add quotes: :%s/\v^(  - )(\w.*)$/\1'\2'/g
-#
-# .. _debops.apt: https://github.com/debops/ansible-apt
-# .. _debops.apt_preferences: https://github.com/debops/ansible-apt_preferences
-# .. _debops.reprepro: https://github.com/debops/ansible-reprepro
-# .. _`Debian Backports`: http://backports.debian.org/
-# .. _debops.apt_cacher_ng: https://github.com/debops/ansible-apt_cacher_ng
 # .. ]]]

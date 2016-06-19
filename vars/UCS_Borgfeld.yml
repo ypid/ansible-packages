@@ -25,6 +25,7 @@ packages__whitelist_by_vars:
   - 'git'
   - 'parted'
   - 'tcpdump'
+  - 'p7zip-full'
 
 
 # "ansible_lsb": {
