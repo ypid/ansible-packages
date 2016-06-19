@@ -622,7 +622,7 @@ packages__conditional: |
 
 # .. envvar:: packages__conditional_role
 #
-# Role defaults for :any:`packages__conditional`.
+# Role defaults for :envvar:`packages__conditional`.
 packages__conditional_role:
 
   ## Conditionally add packages on which later conditions are based [[[
@@ -885,7 +885,7 @@ packages__localizations_enabled: []
 # Definition of available localization packages. The localization packages will
 # only be installed when one of the ``present_packages`` is tagged for installation.
 #
-# Note that this feature is based on the :any:`packages__conditional`
+# Note that this feature is based on the :envvar:`packages__conditional`
 # implementation. Check the documentation of it for more details.
 #
 # The values from each ``packages__localizations_enabled`` dict will be substituted with the ``LANG_*`` (example: ``LANG_CODE``) placeholders.
@@ -3264,7 +3264,7 @@ packages__group_user_desktop_sharing_client:
 # Checkout my dedicated role `debops-contrib.x2go_server
 # <https://github.com/debops-contrib/ansible-x2go_server>`_
 # `x2goserver` is listed here to install some additional packages using the
-# :any:`packages__conditional` feature.
+# :envvar:`packages__conditional` feature.
 packages__group_user_desktop_sharing_server:
   - 'x2goserver'
 

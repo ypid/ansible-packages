@@ -28,7 +28,7 @@ packages__name_remapping_by_vars:
 
   ## Expected to be more up-to-date than `flashplugin-nonfree` from Debian.
   ## Commented out because `flashplugin-nonfree` also exists in Ubuntu.
-  ## Selection is done via :any:`packages__group_internet_flash`.
+  ## Selection is done via :envvar:`packages__group_internet_flash`.
   # 'flashplugin-nonfree': 'adobe-flashplugin'
 
   'google-earth': 'google-earth-stable'
