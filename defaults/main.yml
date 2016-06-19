@@ -1062,7 +1062,7 @@ packages__apt_preferences__debian_backports_list:
   - package: 'sphinx-common sphinx-* python-sphinx* python3-sphinx* libjs-jquery libjs-sphinxdoc python-alabaster python3-alabaster'
     backports: [ 'jessie' ]
 
-  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch*'
+  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-nose* python3-nose*'
     backports: [ 'jessie' ]
 
   - package: 'hplip hplip* printer-* libsane-hpaio'
@@ -3379,7 +3379,7 @@ packages__group_user_full: |
 #
 # Complete set of automatically added packages based on other parts of your
 # inventory. For example, when the host is also part of the
-# `debops_service_x2go_server` hostgroup, some packages might be added
+# `debops_service_x2go_server` host group, some packages might be added
 # additionally based on what other packages are installed.
 
 packages__group_auto: |
@@ -3782,6 +3782,6 @@ packages__classes_additional: {}
 
 # .. ]]]
 
-# ..Role maintainer helpers [[[
+# .. Role maintainer helpers [[[
 # .. Vim search/replace to add quotes: :%s/\v^(  - )(\w.*)$/\1'\2'/g
 # .. ]]]

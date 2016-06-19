@@ -4,6 +4,7 @@
      instead have a look at the files in the ./meta/ directory. -->
 
 [![Travis CI](http://img.shields.io/travis/ypid/ansible-packages.svg?style=flat)](http://travis-ci.org/ypid/ansible-packages)
+[![Ansible Galaxy](http://img.shields.io/badge/galaxy-ypid.packages-660198.svg?style=flat)](https://galaxy.ansible.com/ypid/packages)
 [![Platforms](http://img.shields.io/badge/platforms-debian%20/%20ubuntu-lightgrey.svg?style=flat)](#)
 [![GitHub Tags](https://img.shields.io/github/tag/ypid/ansible-packages.svg)](https://github.com/ypid/ansible-packages)
 [![GitHub Stars](https://img.shields.io/github/stars/ypid/ansible-packages.svg)](https://github.com/ypid/ansible-packages)
@@ -78,6 +79,10 @@ For `group` variables, certain suffixes are defined:
 * minimal: Minimal set of packages of the group.
 * basic: Basic set of packages of the group (including minimal).
 * additional: Additional set of packages.
+* auto: Automatically added packages based on other parts of your
+        inventory. For example, when the host is also part of the
+        `debops_service_x2go_server` host group, some packages might be
+        added additionally based on what other packages are installed.
 * full: Union of the minimal, basic and all the additional sets.
 
 ### How to deal with the abstraction this role introduces?
@@ -107,13 +112,27 @@ requires at least Ansible 2.1.
 Additionally, this role uses features recently introduced in Jinja2, namely
 the `equalto` filter which was released with
 [Jinja 2.8](http://jinja.pocoo.org/docs/dev/changelog/#version-2-8).
-Jinja 2.8 is currently only
-[available in Debian Stretch](https://packages.debian.org/search?keywords=python-jinja2).
+Jinja 2.8 is [available in Debian Jessie Backports](https://packages.debian.org/search?keywords=python-jinja2).
+
 
 [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
 [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
 [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml
 
+### Installation
+
+This role requires at least Ansible `v2.1.0`. To install it, run:
+
+```Shell
+ansible-galaxy install ypid.packages
+```
+
+To install via git, run either:
+
+```Shell
+git clone https://github.com/ypid/ansible-packages.git ypid.packages
+git submodule add https://github.com/ypid/ansible-packages.git ypid.packages
+```
 
 
 List of internal variables used by the role:
