@@ -1678,6 +1678,7 @@ packages__group_tag_field_geography:
 
 packages__group_tag_field_mathematics_minimum:
   - 'convertall'
+  - 'units'
   - 'kcalc'
 
 packages__group_tag_field_mathematics_additional:
@@ -2221,6 +2222,7 @@ packages__group_tag_devel_lang_perl:
   - 'libconfig-simple-perl'
   - 'libdata-ical-perl'
   - 'libpod-markdown-perl'
+  # - 'libtext-dhcpleases-perl'
 
   - 'libmonitoring-plugin-perl'
 
@@ -3251,6 +3253,12 @@ packages__group_network_remmina:
   - 'remmina-plugin-telepathy'
   - 'remmina-plugin-vnc'
   - 'remmina-plugin-xdmcp'
+
+  ## Seems to be catching up as of 2015-08.
+  ## Problem: https://gettoweb.de/linux/rdesktop-und-credssp-required-by-server/
+  ## https://github.com/rdesktop/rdesktop/issues/8
+  # - 'rdesktop'
+  # - 'grdesktop'
 
 packages__group_user_desktop_sharing_client:
   - 'x2goclient'

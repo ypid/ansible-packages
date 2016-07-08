@@ -111,6 +111,22 @@ ansigenome_info:
     [Jinja 2.8](http://jinja.pocoo.org/docs/dev/changelog/#version-2-8).
     Jinja 2.8 is [available in Debian Jessie Backports](https://packages.debian.org/search?keywords=python-jinja2).
 
+    ### Related projects
+
+    * [`debops.apt_install`](https://github.com/debops/ansible-apt_install)
+
+      A more focused and easier to use Ansible role for installing common
+      software for a Debian-based server environment.
+      @ypid uses this role in conjunction with `ypid.packages` so both roles
+      complement each other.
+
+    * [abe-metapackages](https://github.com/xtaran/abe-metapackages)
+
+      Nice setup of meta packages for Debian. It has been an inspiration for
+      this Ansible role. The reason @ypid has decided not to use meta packages
+      to select packages was because of the limited flexibility compared to
+      Ansible.  Ansible facts allow `ypid.packages` to automatically select
+      packages based on attributes/facts of the hosts.
 
     [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
     [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
