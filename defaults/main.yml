@@ -993,8 +993,7 @@ packages__localizations_available_additional_dist: []
 # specific roles. For example the debops.apt_cacher_ng_ role might also set
 # APT preferences. This will be configured by this role directly.
 
-
-# .. envvar:: packages__debian_backports_list:
+# .. envvar:: packages__debian_backports_list
 #
 # Preset of available `Debian Backports`_.
 #
@@ -1012,65 +1011,94 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'vim vim-*'
     backports: [ 'wheezy' ]
+    state: '{{ packages__apt_preferences__backports_vim_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'torbrowser-launcher'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_torbrowser_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'borgbackup borgbackup-* python3-msgpack'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'git-annex'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'ansible'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'owncloud-client owncloud-client-* nautilus-owncloud libowncloudsync0'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_owncloud_client_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'wireshark wireshark-* tshark libwireshark* libwiretap* libwsutil4'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_wireshark_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'exfat-fuse exfat-utils'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_exfat_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'libreoffice libreoffice-* uno-libs3 ure python3-uno'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'virtualbox virtualbox-*'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_virtualbox_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'qemu qemu-*'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_qemu_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'wine *wine*'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_wine_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'xpra'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_wine_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'firmware firmware-iwlwifi firmware-* *-firmware'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_firmware_state | d(packages__apt_preferences__backports_state) }}'
 
   ## Seems to fix: https://bugs.archlinux.org/task/47092
   - package: 'nvidia-legacy-304xx-driver *-nvidia-*'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_nvidia_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'firejail'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'sphinx-common sphinx-* python-sphinx* python3-sphinx* libjs-jquery libjs-sphinxdoc python-alabaster python3-alabaster'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_sphinx_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-nose* python3-nose*'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_python_state | d(packages__apt_preferences__backports_state) }}'
 
   - package: 'hplip hplip* printer-* libsane-hpaio'
     backports: [ 'jessie' ]
-    delete: True
+    state: '{{ packages__apt_preferences__backports_hplip_state | d(packages__apt_preferences__backports_state) }}'
 
 
-# .. envvar:: packages__debian_stretch_from_jessie_list:
+# .. envvar:: packages__apt_preferences__backports_state
+#
+# Default state of backports presets.
+packages__apt_preferences__backports_state: 'present'
+
+
+# .. envvar:: packages__apt_preferences__backports_hplip_state
+#
+packages__apt_preferences__backports_hplip_state: 'absent'
+
+
+# .. envvar:: packages__debian_stretch_from_jessie_list
 #
 # Preset of packages from the Debian Stretch release which can be installed on
 # Debian Jessie.
