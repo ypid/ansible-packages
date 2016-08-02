@@ -1011,80 +1011,98 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'vim vim-*'
     backports: [ 'wheezy' ]
-    state: '{{ packages__apt_preferences__backports_vim_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_vim_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'torbrowser-launcher'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_torbrowser_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_torbrowser_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'borgbackup borgbackup-* python3-msgpack'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'git-annex'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'ansible'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'owncloud-client owncloud-client-* nautilus-owncloud libowncloudsync0'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_owncloud_client_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_owncloud_client_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'wireshark wireshark-* tshark libwireshark* libwiretap* libwsutil4'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_wireshark_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_wireshark_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'exfat-fuse exfat-utils'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_exfat_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_exfat_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'libreoffice libreoffice-* uno-libs3 ure python3-uno'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'virtualbox virtualbox-*'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_virtualbox_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_virtualbox_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'qemu qemu-*'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_qemu_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_qemu_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'wine *wine*'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_wine_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_wine_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'xpra'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_wine_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_wine_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'firmware firmware-iwlwifi firmware-* *-firmware'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_firmware_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_firmware_state | d(packages__apt_preferences__core_backports_state) }}'
 
   ## Seems to fix: https://bugs.archlinux.org/task/47092
   - package: 'nvidia-legacy-304xx-driver *-nvidia-*'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_nvidia_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_nvidia_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'firejail'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'sphinx-common sphinx-* python-sphinx* python3-sphinx* libjs-jquery libjs-sphinxdoc python-alabaster python3-alabaster'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_sphinx_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_sphinx_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-nose* python3-nose*'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_python_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_python_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'hplip hplip* printer-* libsane-hpaio'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_hplip_state | d(packages__apt_preferences__backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_hplip_state | d(packages__apt_preferences__client_backports_state) }}'
+
+
+# .. envvar:: packages__apt_preferences__core_backports_state
+#
+# Default state of backports presets indented for servers and clients.
+packages__apt_preferences__core_backports_state: '{{ packages__apt_preferences__backports_state }}'
+
+
+# .. envvar:: packages__apt_preferences__server_backports_state
+#
+# Default state of backports presets indented for servers.
+packages__apt_preferences__server_backports_state: '{{ packages__apt_preferences__backports_state }}'
+
+
+# .. envvar:: packages__apt_preferences__client_backports_state
+#
+# Default state of backports presets indented for clients.
+packages__apt_preferences__client_backports_state: '{{ packages__apt_preferences__backports_state }}'
 
 
 # .. envvar:: packages__apt_preferences__backports_state
@@ -1231,7 +1249,7 @@ packages__group_tag_role_documentation:
   - 'ansible-doc'
   - 'git-doc'
 
-packages__group_tag_role_documentation_additinal:
+packages__group_tag_role_documentation_additional:
   - 'doc-rfc'
 
 # .. ]]]
@@ -1354,6 +1372,7 @@ packages__group_tag_works_with_archive_minimal:
   - 'gzip'
   - 'zip'
   - 'unzip'
+  - 'binutils'
 
 packages__group_tag_works_with_archive_additional:
 
@@ -2292,6 +2311,7 @@ packages__group_tag_devel_lang_python:
   - 'idle'
   - 'python-pmw'
 
+  - 'python3-git'
   - 'python-dateutil'
   - 'python3-dateutil'
   - 'python-twill'
@@ -2310,7 +2330,7 @@ packages__group_tag_devel_lang_python:
   - 'python3-traceback2'
   - 'python-unittest2'
   - 'python-tox'
-  - 'python3-nose'
+  - 'python3-nose2-cov'
   - 'python-flexmock'
   - 'python3-flexmock'
   - 'python-redis'
