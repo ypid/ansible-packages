@@ -69,7 +69,7 @@ mode:
 {% if mode == 'package' %}
 {%   set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages) %}
 {% elif mode == 'language' %}
-{%   for lang in packages__localizations_enabled %}
+{%   for lang in packages__localizations %}
 {%     set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages, lang) %}
 {%   endfor %}
 {% endif %}

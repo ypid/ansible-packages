@@ -32,8 +32,8 @@ packages__name_remapping_by_vars:
   # 'flashplugin-nonfree': 'adobe-flashplugin'
 
   'google-earth': 'google-earth-stable'
-  'iceweasel': 'firefox'
-  'iceweasel-l10n-LANG_CODE': 'firefox-locale-LANG_CODE'
+  'firefox-esr': 'firefox'
+  'firefox-esr-l10n-LANG_CODE': 'firefox-locale-LANG_CODE'
   'chromium': 'chromium-browser'
   'chromium-inspector': 'chromium-browser-inspector'
   'chromium-l10n': 'chromium-browser-l10n'
@@ -55,7 +55,7 @@ packages__blacklist_by_vars:
 
 packages__localizations_available_additional_dist:
 
-  - present_packages: 'iceweasel'
+  - present_packages: 'firefox-esr'
     ## Currently, does not really install much but why not.
     additional_packages:
       - 'language-pack-LANG_CODE'

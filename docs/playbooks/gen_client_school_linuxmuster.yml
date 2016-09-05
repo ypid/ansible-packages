@@ -10,6 +10,10 @@
     ansible_devices:
       'sda':
         rotational: '1'
+    packages__localizations:
+      - code: 'de'
+        culture: 'de-de'
+        name: 'german'
     packages__mode: 'export'
     packages__export_format: 'yaml'
     packages__export_key_name: 'linuxmuster_net_client__packages_preset_ypid'

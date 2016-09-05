@@ -12,6 +12,7 @@ packages__blacklist_by_vars:
   - 'haxe'
   - 'libmonitoring-plugin-perl'
   - 'python-aiml'
+  - 'python3-humanize'
   - 'docker-io'
   - 'borgbackup'
   - 'borgbackup-doc'
@@ -26,3 +27,5 @@ packages__blacklist_by_vars:
   - 'phoronix-test-suite'
   - 'browser-plugin-gnash'
   - 'grip'
+  - 'funny-manpages'
+  - 'asr-manpages'

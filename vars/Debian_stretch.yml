@@ -11,6 +11,7 @@ packages__blacklist_revoke_by_vars:
   - 'haxe'
   - 'libmonitoring-plugin-perl'
   - 'python-aiml'
+  - 'python3-humanize'
   - 'docker.io'
   - 'borgbackup'
   - 'borgbackup-doc'
