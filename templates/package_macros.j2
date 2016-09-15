@@ -1,4 +1,7 @@
-{% macro get_regex_match(classes_regex_pattern, class_name) %}{# ((( #}
+{# vim: foldmarker=[[[,]]]:foldmethod=marker
+#}
+
+{% macro get_regex_match(classes_regex_pattern, class_name) %}{# [[[ #}
 {{ class_name -}}
 {#
 Don’t overdo it. This feature is currently disabled until a real need occurs.
@@ -12,10 +15,9 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% endfor %}
 {{ class_regex_match.exact_match|d(class_regex_match.pattern) -}}
 #}
-{%- endmacro %}{# ))) #}
+{%- endmacro %}{# ]]] #}
 
-
-{% macro gen_package_list(packages, reject_packages=[], revoke_rejected_packages=[], whitelist_packages=[], remapped_packages={}, is_present_packages_list=True) %}{# ((( #}
+{% macro gen_package_list(packages, reject_packages=[], revoke_rejected_packages=[], whitelist_packages=[], remapped_packages={}, is_present_packages_list=True) %}{# [[[ #}
 {% set packages__list_raw = (
                                (packages                        | list | d([]))
                           + ( ((packages__global_additional     | list | d([]))
@@ -39,10 +41,9 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {%   set packages__list_final = (packages__list_final | intersect(whitelist_packages)) %}
 {% endif %}
 {{ packages__list_final | reject("equalto", "") | sort | unique | join('\n') }}
-{%- endmacro %}{# ))) #}
+{%- endmacro %}{# ]]] #}
 
-
-{% macro add_conditional_pkts(packages__list, condition, mode, remapped_packages) %}{# ((( #}
+{% macro add_conditional_pkts(packages__list, condition, mode, remapped_packages) %}{# [[[ #}
 {#
 mode:
 
@@ -73,10 +74,9 @@ mode:
 {%     set _ = set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages, lang) %}
 {%   endfor %}
 {% endif %}
-{%- endmacro %}{# ))) #}
+{%- endmacro %}{# ]]] #}
 
-
-{% macro set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages, lang=None) %}{# ((( #}
+{% macro set_conditional_pkts(packages__list, condition, found_main_package, present_packages, mode, remapped_packages, lang=None) %}{# [[[ #}
 {% if condition.require|d('all') == 'all' %}
 {%   set require = present_packages|length %}
 {% elif condition.require|d('all') is number %}
@@ -95,21 +95,19 @@ mode:
 {%     endif %}
 {%   endif %}
 {% endif %}
-{%- endmacro %}{# ))) #}
+{%- endmacro %}{# ]]] #}
 
-
-{% macro get_lang_pkt(pkt, lang) %}{# ((( #}
+{% macro get_lang_pkt(pkt, lang) %}{# [[[ #}
 {% if lang is defined and lang is mapping -%}
 {{   pkt|replace("LANG_NAME", lang.name)|replace("LANG_CODE", lang.code)|replace("LANG_CULTURE", lang.culture) }}
 {%- else %}
 {{   pkt }}
 {%- endif %}
-{%- endmacro %}{# ))) #}
+{%- endmacro %}{# ]]] #}
 
-
-{% macro print_comment(comment_sign) %}{# ((( #}
+{% macro print_comment(comment_sign) %}{# [[[ #}
 {% for line in packages__export_comment.split('\n') if line != 'empty' %}
 {{   comment_sign }}{{ (" " + line) if (line|length) else "" }}
 {# {{ comment_sign }} {{ line|wordwrap(wrapstring='\n' + comment_sign + ' ') }} #}
 {% endfor %}
-{%- endmacro %}{# ))) #}
+{%- endmacro %}{# ]]] #}
