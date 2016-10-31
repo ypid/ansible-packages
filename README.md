@@ -155,7 +155,7 @@ List of internal variables used by the role:
 
     packages__export_key_name
     packages__targets
-    packages__debconf_settings_combined
+    packages__debconf_combined_settings
     ansible_distribution
     packages__classes_combined
     packages__blacklist_by_vars_combined

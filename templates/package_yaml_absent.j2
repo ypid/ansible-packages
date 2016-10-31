@@ -1,7 +1,7 @@
 {% import 'package_macros.j2' as pkt_macros with context %}
 ---
 {{ pkt_macros.print_comment('##' ) -}}
-{% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item) %}
+{% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item|d(packages__host_class)) %}
 {% set packages__list_tpl = pkt_macros.gen_package_list(
     (packages__absent_for_class[class_pattern_for_reject_list] | d([]) | list) +
     (packages__absent | list) +
@@ -20,4 +20,8 @@
 Don’t use to to_nice_yaml with dict because of bad indentation.
 https://stackoverflow.com/questions/25108581/python-yaml-dump-bad-indentation
 #}
+{% if packages__export_raw|d(False) | bool %}
+{{ packages__list_tpl | to_nice_yaml }}
+{% else %}
 {{ packages__export_key_name }}:{{ ('\n  ' + (packages__list_tpl | to_nice_yaml | indent(2))) if (packages__list_tpl) else ' []'  }}
+{% endif %}

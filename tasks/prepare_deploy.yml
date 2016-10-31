@@ -1,55 +1,22 @@
 ---
 
+- name: Test for supported package managers
+  assert:
+    that: ansible_pkg_mgr in [
+            'apt',
+          ]
+
 - name: Run include vars tasks
   include: include_vars.yml
 
-- name: Set packages__export_key_name to packages__class_install
+- name: Set packages__export_raw to get a raw list YAML output from the following templates
   set_fact:
-    packages__export_key_name: 'packages__class_install'
+    packages__export_raw: True
 
-- name: Write package list to temporary file
-  template:
-    src: 'package_yaml.j2'
-    dest: '/tmp/ansible-ypid-packages__class_install.yml'
-  no_log: True
-  changed_when: False
-  always_run: True
-  delegate_to: 'localhost'
-  become: False
-  with_items: '{{ packages__host_class }}'
-
-- name: Set packages__export_key_name to packages__class_absent
+- name: Set packages__export_key_name to package_list
   set_fact:
-    packages__export_key_name: 'packages__class_absent'
-
-- name: Write absent package list to temporary file
-  template:
-    src: 'package_yaml_absent.j2'
-    dest: '/tmp/ansible-ypid-packages__class_absent.yml'
-  no_log: True
-  changed_when: False
-  always_run: True
-  delegate_to: 'localhost'
-  become: False
-  with_items: '{{ packages__host_class }}'
-
-- name: Include templated package lists
-  include_vars: '/tmp/ansible-ypid-{{ item }}.yml'
-  with_items:
-    - 'packages__class_install'
-    - 'packages__class_absent'
-
-- name: Ensure temporary package list files are absent
-  file:
-    path: '/tmp/ansible-ypid-{{ item }}.yml'
-    state: 'absent'
-  always_run: True
-  delegate_to: 'localhost'
-  become: False
-  changed_when: False
-  with_items:
-    - 'packages__class_install'
-    - 'packages__class_absent'
+    packages__class_install: '{{ lookup("template", "package_yaml.j2") | from_yaml }}'
+    packages__class_absent: '{{ lookup("template", "package_yaml_absent.j2") | from_yaml }}'
 
 - name: Fail when a package has a conflicting state
   fail:
@@ -64,4 +31,4 @@
     vtype: '{{ item.vtype|d() }}'
   when: (packages__mode == 'deploy' and packages__debconf_enabled and ansible_os_family == 'Debian' and
          (item.name in packages__class_install or (item.when_package|d() and item.when_package in packages__class_install)))
-  with_items: '{{ packages__debconf_settings_combined }}'
+  with_items: '{{ packages__debconf_combined_settings }}'

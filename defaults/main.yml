@@ -386,6 +386,18 @@ packages__debconf_group_settings: []
 packages__debconf_host_settings: []
 
 
+# .. envvar:: packages__debconf_combined_settings
+#
+# Combined definition list for :command:`debconf` as it is used by the role.
+packages__debconf_combined_settings: |
+  {{
+    (packages__debconf_settings       | list) +
+    (packages__debconf_group_settings | list) +
+    (packages__debconf_host_settings  | list) +
+    (packages__debconf_role_settings  | list)
+  }}
+
+
 # .. envvar:: packages__debconf_role_settings
 #
 # Role preset list for :command:`debconf`.

@@ -1,26 +1,5 @@
 ---
 
-- name: Test for supported package managers
-  assert:
-    that: ansible_pkg_mgr in [
-            'apt',
-          ]
-  when: (packages__mode == 'deploy')
-  tags:
-    - 'role::packages:debconf'
-
-- name: Combine variables
-  set_fact:
-    packages__debconf_settings_combined: |
-      {{
-        (packages__debconf_settings       | list) +
-        (packages__debconf_group_settings | list) +
-        (packages__debconf_host_settings  | list) +
-        (packages__debconf_role_settings  | list)
-      }}
-  tags:
-    - 'role::packages:debconf'
-
 - name: Run prepare deploy tasks
   include: prepare_deploy.yml
   when: (packages__mode == 'deploy')
