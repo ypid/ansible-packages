@@ -21,5 +21,7 @@ packages__blacklist_revoke_by_vars:
   - 'network-manager-ssh-gnome'
   - 'xul-ext-ublock-origin'
   - 'grip'
+  - 'w3c-markup-validator'
+  - 'yamllint'
 
 # .. )))

@@ -29,3 +29,5 @@ packages__blacklist_by_vars:
   - 'grip'
   - 'funny-manpages'
   - 'asr-manpages'
+  - 'w3c-markup-validator'
+  - 'yamllint'
