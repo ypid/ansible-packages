@@ -6,6 +6,8 @@ packages__targets:
 
 packages__blacklist_by_vars:
 
+  - 'ubuntu-restricted-extras'
+  - 'google-earth'
   - 'selfspy'
   - 'software-center'
   - 'cpu-checker'

@@ -6,6 +6,7 @@ ansigenome_info:
   git_branch: 'master'
 
   travis: True
+  docs: False
 
   synopsis: |
     This role allows you to select/manage packages over a heterogeneous set of
@@ -81,6 +82,7 @@ ansigenome_info:
             `debops_service_x2go_server` host group, some packages might be
             added additionally based on what other packages are installed.
     * full: Union of the minimal, basic and all the additional sets.
+    * extra: Extra set of packages not included in full.
 
     ### How to deal with the abstraction this role introduces?
 

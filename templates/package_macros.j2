@@ -21,7 +21,7 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% set packages__list_raw = (
                                (packages                        | list | d([]))
                           + ( ((packages__global_additional     | list | d([]))
-                          +    (packages__host_group_additional | list | d([]))
+                          +    (packages__group_additional | list | d([]))
                           +    (packages__host_additional       | list | d([]))
                               ) if is_present_packages_list else [])
                         ) | reject("equalto", "") | unique | list

@@ -1,10 +1,10 @@
 {% import 'package_macros.j2' as pkt_macros with context %}
 {{ pkt_macros.print_comment('##' ) -}}
-{% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__reject_for_class.keys(), item.key) %}
+{% set class_pattern_for_reject_list = pkt_macros.get_regex_match(packages__combined_reject_for_class.keys(), item.key) %}
 {{ pkt_macros.gen_package_list(
     (packages__absent_for_class[class_pattern_for_reject_list] | d([]) | list) +
     (packages__absent | list) +
-    ((packages__reject_for_class[class_pattern_for_reject_list] | d([]) | list) if
+    ((packages__combined_reject_for_class[class_pattern_for_reject_list] | d([]) | list) if
       packages__rejected_ensure_absent else []) +
     ((packages__blacklist | list) if (packages__blacklisted_ensure_absent | bool) else []),
     [],

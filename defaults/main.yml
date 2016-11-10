@@ -650,10 +650,12 @@ packages__conditional_role:
   ## Used later to check if a Cinnamon environment is to be installed.
   - present_packages:
       - 'task-cinnamon-desktop'
+      - 'cinnamon-desktop-environment'
       - 'cinnamon-common'
+      - 'cinnamon-core'
     require: 1
     additional_packages:
-      - 'cinnamon'
+      - 'cinnamon-common'
   ## ]]]
 
   ## Xfce desktop environment [[[
@@ -699,7 +701,7 @@ packages__conditional_role:
   - present_packages:
       - 'gnome-themes-standard'
       - 'mate-desktop'
-      - 'cinnamon'
+      - 'cinnamon-common'
       - 'lxde-common'
       - 'xfce4-settings'
       - 'gdm3'
@@ -944,7 +946,7 @@ packages__localizations_available_global:
     ## Based on: task-german-kde-desktop
     additional_packages: 'kicad-doc-LANG_CODE'
 
-  - present_packages: 'cinnamon'
+  - present_packages: 'cinnamon-common'
     additional_packages: 'cinnamon-l10n'
 
   - present_packages: 'owncloud-client'
@@ -1032,7 +1034,9 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'borgbackup borgbackup-* python3-msgpack'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__core_backports_state) }}'
+    # Does default to "present" because this pinning is required to install
+    # BorgBackup on Jessie in case you pinned Debian Jessie packages as preferred.
+    state: '{{ packages__apt_preferences__backports_borgbackup_state | d("present") }}'
 
   - package: 'git-annex'
     backports: [ 'jessie' ]
@@ -1068,7 +1072,11 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'qemu qemu-*'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_qemu_state | d(packages__apt_preferences__client_backports_state) }}'
+    # Disabled because backport seems broken:
+    # qemu-system-sparc : Hängt ab von: openbios-sparc (>= 1.1+svn1395-1~) aber es soll nicht installiert werden.
+    # However openbios-sparc (>= 1.1+svn1395-1~) is not in jessie-backports
+    state: 'absent'
+    # state: '{{ packages__apt_preferences__backports_qemu_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'wine *wine*'
     backports: [ 'jessie' ]
@@ -1382,12 +1390,6 @@ packages__group_internet_additional:
   #
   - 'liferea'
 
-  - 'keepassx'
-  # - 'kpcli'
-
-  ## Sometimes still useful for import or the like.
-  - 'keepass2'
-
   - 'chromium-inspector'
 
   - 'pidgin'
@@ -1519,7 +1521,6 @@ packages__group_tag_admin_monitoring_minimum:
 packages__group_tag_admin_monitoring_additional:
   - 'nmon'
   - 'dstat'
-  - 'sysstat'
   - 'strace'
   - 'sysdig'
 
@@ -1527,6 +1528,7 @@ packages__group_tag_admin_monitoring_additional:
 
   ## Include conditionally.
   # - 'goaccess'
+  # - 'sysstat'
 
   ## https://github.com/lebinh/ngxtop
   ## Not yet packaged for Debian: https://github.com/lebinh/ngxtop/issues/13
@@ -1551,6 +1553,8 @@ packages__group_tag_admin_monitoring_network_additional:
   - 'tshark'
   - 'geoip-bin'
   - '{{ "" if (packages__contrib_enabled|d()) else "geoip-database-extra" }}'
+
+packages__group_tag_admin_monitoring_network_extra:
   - '{{ "geoip-database-contrib" if (packages__contrib_enabled|d()) else "geoip-database" }}'
 
 packages__group_tag_admin_monitoring_basic: |
@@ -1604,9 +1608,11 @@ packages__group_networking_analysis_minimum:
 packages__group_core_hardware:
   - 'hdparm'
   - 'smartmontools'
-  - 'lm-sensors'
   - 'powertop'
   - 'ethtool'
+
+  ## Include conditionally.
+  # - 'lm-sensors'
 
   ## Install manually in the rare case this is required.
   # - 'idle3-tools'
@@ -1988,6 +1994,7 @@ packages__group_multimedia_additional:
   - 'ffmpeg'
 
   ## For MPEG-4
+  ## Collides with libavcodec56 from 6:11.8-1~deb8u1
   - 'libavcodec-extra'
 
   - 'winff'
@@ -2651,7 +2658,6 @@ packages__group_devel_additional:
   - 'famfamfam-silk'
   - 'famfamfam-flag-png'
   - 'exuberant-ctags'
-  - 'pidgin-dev'
   - 'libsqlite3-dev'
 
 
@@ -3056,6 +3062,7 @@ packages__group_user_terminal_programs_minimum:
   - 'pwgen'
   # - 'mosh'
   - 'sshfs'
+  - 'encfs'
   - 'inotify-tools'
 
   - 'rpl'
@@ -3115,6 +3122,8 @@ packages__group_live_system_additional:
 packages__group_linuxmuster:
   ## Packaged by linuxmuster.net:
   - 'linuxmuster-client-truecrypt'
+  ## Preferred but not yet sure for which versions of Ubuntu this package is available:
+  # - 'linuxmuster-client-veracrypt'
   - 'linuxmuster-client-extras'
 
 packages__group_school_additional_dev:
@@ -3124,7 +3133,6 @@ packages__group_school_additional_dev:
   - 'xemacs21'
   - 'auto-complete-el'
   - 'libx11-dev'
-  - 'linux-kernel-generic'
   - 'freeglut3'
   - 'freeglut3-dev'
   - 'libglew-dev'
@@ -3153,11 +3161,12 @@ packages__group_school_additional_dev:
   - 'aria2'
 
 packages__group_school_additional:
-  - '{{ "google-earth" if (packages__contrib_enabled|d()) else "" }}'
+  - '{{ "google-earth" if (packages__non_free_enabled|d()) else "" }}'
 
   ## FIXME(ypid): Use DebOps roles to set this up.
-  - 'php5'
-  - 'php5-mysql'
+  # Also installs Apache2 on Debian Jessie:
+  # - 'php5'
+  # - 'php5-mysql'
   - 'python-mysqldb'
 
   - 'monkeysign'
@@ -3309,10 +3318,10 @@ packages__group_wm_gnome_full: |
 # .. envvar:: packages__group_wm_cinnamon
 #
 packages__group_wm_cinnamon:
-  - 'task-cinnamon-desktop'
-
-  ## Auto select `lightdm` it gdm3 is not selected.
-  # - 'lightdm'
+  - 'cinnamon-core'
+  - 'xdg-user-dirs-gtk'
+  - 'gnome-terminal'
+  - 'gnome-screenshot'
 
 # .. ]]]
 
@@ -3501,6 +3510,13 @@ packages__group_user_text_editor:
   - 'gedit'
   - 'vim-gnome'
 
+packages__group_user_password_manager:
+  - 'keepassx'
+  # - 'kpcli'
+
+  ## Sometimes still useful for import or the like.
+  - 'keepass2'
+
 packages__group_user_optical_media:
   - 'brasero'
   - 'k3b'
@@ -3562,6 +3578,7 @@ packages__group_user_basic: |
   {{
     packages__group_user_file_manager +
     packages__group_user_text_editor +
+    packages__group_user_password_manager +
     packages__group_user_optical_media +
     []
   }}
@@ -3626,7 +3643,8 @@ packages__classes_live_system: |
   {{
     packages__classes_base +
     packages__group_core_full +
-    packages__group_sysadmin_basic +
+    packages__group_tag_admin_filesystem_cryptography +
+    packages__group_sysadmin_full +
     packages__group_wm_gnome_minimal +
     packages__group_hardware_testing_and_benchmarking_full +
     packages__group_internet_minimum +
@@ -3727,11 +3745,11 @@ packages__classes_server_school: |
 packages__global_additional: []
 
 
-# .. envvar:: packages__host_group_additional
+# .. envvar:: packages__group_additional
 #
 # Additional packages for all classes indented for use from the inventory for
 # one host group.
-packages__host_group_additional: []
+packages__group_additional: []
 
 
 # .. envvar:: packages__host_additional
@@ -3774,10 +3792,26 @@ packages__additional_for_class: {}
 # ..
 # .. This means that :jinja_code:`needrestart` will be rejected for ``container`` and ``container_app1`` (everything which the pattern matches).
 #
-packages__reject_for_class:
+packages__reject_for_class: {}
+
+
+# .. envvar:: packages__group_reject_for_class
+#
+packages__group_reject_for_class: {}
+
+
+# .. envvar:: packages__group_reject_for_class
+#
+packages__host_reject_for_class: {}
+
+
+# .. envvar:: packages__preset_reject_for_class
+#
+packages__preset_reject_for_class:
 
   # live_system: '{{ packages__reject_for_live_system }}'
   client_school: '{{ packages__reject_for_school }}'
+  client_primary_school: '{{ packages__reject_for_primary_school }}'
   client_school_linuxmuster: '{{ packages__reject_for_school }}'
 
 
@@ -3795,6 +3829,18 @@ packages__reject_for_school: |
   }}
 
 
+# .. envvar:: packages__reject_for_primary_school
+#
+# Packages to reject for package classes indented for primary schools.
+# See ``packages__reject_for_class`` for more details.
+packages__reject_for_primary_school: |
+  {{
+    packages__reject_for_school +
+    packages__group_internet_additional +
+    ["pidgin", "pidgin-latex"]
+  }}
+
+
 # .. envvar:: packages__reject_for_live_system
 #
 # Packages to reject for package classes indented for live systems.
@@ -3805,6 +3851,16 @@ packages__reject_for_live_system: |
     packages__group_core_bare_metal_services_not_working_on_all_machines +
     []
   }}
+
+
+# .. envvar:: packages__combined_reject_for_class
+#
+packages__combined_reject_for_class: '{{
+  packages__preset_reject_for_class
+  | combine(
+      packages__reject_for_class,
+      packages__group_reject_for_class,
+      packages__host_reject_for_class) }}'
 
 
 # .. envvar:: packages__rejected_ensure_absent
@@ -3835,9 +3891,9 @@ packages__absent_for_class: {}
 packages__absent: |
   {{
     (packages__absent_preset     | list) +
-    (packages__absent_global     | list) +
-    (packages__absent_host_group | list) +
-    (packages__absent_host       | list)
+    (packages__global_absent     | list) +
+    (packages__group_absent | list) +
+    (packages__host_absent       | list)
   }}
 
 
@@ -3876,30 +3932,31 @@ packages__absent_preset:
 
 
   ## Limited security support:
-  - 'libqt5webkit5'
-  - 'qtwebkit5-doc-html'
+  # - 'libqt5webkit5'
+  # - 'qtwebkit5-doc-html'
+  ## Removing this also removes: calibre qtcreator stellarium
 
-# .. envvar:: packages__absent_global
+# .. envvar:: packages__global_absent
 #
 # Global absented packages.
 # This variable is intended to be used in Ansible’s global inventory.
 # More specific variables can overrule less specific variables.
-packages__absent_global: []
+packages__global_absent: []
 
 
-# .. envvar:: packages__absent_host_group
+# .. envvar:: packages__group_absent
 #
 # Host group absented packages.
 # This variable is intended to be used in a host inventory group of Ansible
 # (only one host group is supported).
-packages__absent_host_group: []
+packages__group_absent: []
 
 
-# .. envvar:: packages__absent_host
+# .. envvar:: packages__host_absent
 #
 # Host absented packages.
 # This variable is intended to be used in the inventory of the host.
-packages__absent_host: []
+packages__host_absent: []
 
 
 # .. envvar:: packages__classes
@@ -3967,7 +4024,18 @@ packages__classes:
   client_school: |
     {{
       packages__classes_client_school +
+      packages__group_wm_cinnamon +
+      packages__group_wm_mate +
       (packages__additional_for_class.client_school|d([])) +
+      []
+    }}
+
+  client_primary_school: |
+    {{
+      packages__classes_client_school +
+      packages__group_wm_cinnamon +
+      packages__group_wm_mate +
+      (packages__additional_for_class.client_primary_school|d([])) +
       []
     }}
 
