@@ -40,3 +40,4 @@ packages__blacklist_by_vars:
   - 'asr-manpages'
   - 'w3c-markup-validator'
   - 'yamllint'
+  - 'magic-wormhole'

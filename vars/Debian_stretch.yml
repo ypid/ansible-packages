@@ -3,6 +3,9 @@
 packages__targets:
   - 'Debian GNU/Linux 9 (stretch)'
 
+packages__blacklist_by_vars:
+  - 'ddrescue'
+
 # .. Only defined here to overrule Debian_jessie.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:
   - 'vagrant-libvirt'
@@ -28,5 +31,6 @@ packages__blacklist_revoke_by_vars:
   - 'grip'
   - 'w3c-markup-validator'
   - 'yamllint'
+  - 'magic-wormhole'
 
 # .. )))

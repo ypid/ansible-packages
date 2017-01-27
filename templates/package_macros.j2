@@ -19,10 +19,10 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 
 {% macro gen_package_list(packages, reject_packages=[], revoke_rejected_packages=[], whitelist_packages=[], remapped_packages={}, is_present_packages_list=True) %}{# [[[ #}
 {% set packages__list_raw = (
-                               (packages                        | list | d([]))
-                          + ( ((packages__global_additional     | list | d([]))
+                               (packages                   | list | d([]))
+                          + ( ((packages__additional       | list | d([]))
                           +    (packages__group_additional | list | d([]))
-                          +    (packages__host_additional       | list | d([]))
+                          +    (packages__host_additional  | list | d([]))
                               ) if is_present_packages_list else [])
                         ) | reject("equalto", "") | unique | list
 %}

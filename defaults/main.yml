@@ -907,14 +907,19 @@ packages__localizations_available: '{{ packages__localizations_available_global 
 #
 # Default definition optimized for Debian.
 packages__localizations_available_global:
+
   - present_packages: 'firefox-esr'
+    ## Bundles the language pack which includes spell checking.
     additional_packages: 'firefox-esr-l10n-LANG_CODE'
+
   - present_packages: 'chromium'
     additional_packages: 'chromium-l10n'
   - present_packages: 'icedove'
     additional_packages: 'icedove-l10n-LANG_CODE'
   - present_packages: 'iceowl-extension'
     additional_packages: 'iceowl-l10n-LANG_CODE'
+  - present_packages: 'josm'
+    additional_packages: 'josm-l10n'
 
   - present_packages: 'libreoffice'
     additional_packages:
@@ -1042,10 +1047,6 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
 
-  - package: 'ansible'
-    backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
-
   - package: 'owncloud-client owncloud-client-* nautilus-owncloud libowncloudsync0'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_owncloud_client_state | d(packages__apt_preferences__client_backports_state) }}'
@@ -1054,7 +1055,11 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_josm | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'wireshark wireshark-* tshark libwireshark* libwiretap* libwsutil4'
+  - package: 'electrum python-electrum'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_electrum | d(packages__apt_preferences__client_backports_state) }}'
+
+  - package: 'wireshark wireshark-* tshark libwireshark* libwiretap* libwsutil4 geoip-database-extra'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_wireshark_state | d(packages__apt_preferences__client_backports_state) }}'
 
@@ -1084,9 +1089,9 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'xpra'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_wine_state | d(packages__apt_preferences__client_backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_xpra_state | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'firmware firmware-iwlwifi firmware-* *-firmware'
+  - package: 'firmware firmware-* *-firmware'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_firmware_state | d(packages__apt_preferences__core_backports_state) }}'
 
@@ -1094,6 +1099,11 @@ packages__apt_preferences__debian_backports_list:
   - package: 'nvidia-legacy-304xx-driver *-nvidia-*'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_nvidia_state | d(packages__apt_preferences__client_backports_state) }}'
+
+  - package: 'needrestart'
+    reason: 'Properly handle LXC or other containers.'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_needrestart_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'firejail'
     backports: [ 'jessie' ]
@@ -1103,15 +1113,19 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_apparmor_profiles_state | d(packages__apt_preferences__core_backports_state) }}'
 
+  - package: 'ansible'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
+
+  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-netaddr python3-netaddr python-nose* python3-nose*'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_python_state | d(packages__apt_preferences__client_backports_state) }}'
+
   - package: 'sphinx-common sphinx-* python-sphinx* python3-sphinx* libjs-jquery libjs-sphinxdoc python-alabaster python3-alabaster'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_sphinx_state | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-nose* python3-nose* python-netaddr python3-netaddr'
-    backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_python_state | d(packages__apt_preferences__client_backports_state) }}'
-
-  - package: 'hplip hplip* printer-* libsane-hpaio'
+  - package: 'hplip hplip* printer-* libsane-hpaio libhpmud0'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_hplip_state | d(packages__apt_preferences__client_backports_state) }}'
 
@@ -1224,6 +1238,9 @@ packages__group_kde_applications:
 packages__group_tag_field_finance_minimum:
   - 'kmymoney'
 
+packages__group_tag_field_finance_bitcoin:
+  - 'electrum'
+
 packages__group_tag_field_finance_additional:
   - 'aqbanking-tools'
   - 'libaqbanking-doc'
@@ -1317,6 +1334,8 @@ packages__group_tag_field_arts_audio:
 # Documentation [[[
 # ~~~~~~~~~~~~~
 
+# TODO: Move to packages__conditional_role
+
 packages__group_tag_role_documentation:
   - 'linux-doc'
   - 'rsyslog-doc'
@@ -1325,6 +1344,7 @@ packages__group_tag_role_documentation:
   - 'apparmor-docs'
   - 'ansible-doc'
   - 'git-doc'
+  - 'borgbackup-doc'
 
 packages__group_tag_role_documentation_additional:
   - 'doc-rfc'
@@ -1383,7 +1403,7 @@ packages__group_internet_flash:
   ## https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814316
   # - '{{ "flashplugin-nonfree" if (packages__non_free_enabled|d()) else "" }}'
 
-  # - '{{ "browser-plugin-freshplayer-pepperflash" if (packages__contrib_enabled|d()) else "" }}'
+  # - '{{ "browser-plugin-freshplayer-pepperflash" if (packages__contrib_enabled|d() | bool) else "" }}'
 
 packages__group_internet_additional:
   # - 'epiphany-browser'
@@ -1401,8 +1421,9 @@ packages__group_internet_additional:
   - 'hexchat'
   - 'mumble'
 
-  - 'uget'
+  # - 'uget'
   - 'webhttrack'
+  - 'youtube-dl'
 
   ## Might be buggy:
   # - 'pidgin-openpgp'
@@ -1470,7 +1491,13 @@ packages__group_tag_works_with_archive_full: |
 # Handled by a separate Ansible role.
 packages__group_tag_admin_backup:
   - 'borgbackup'
-  - 'borgbackup-doc'
+
+  ## Scripts by ypid use this to interact with borgmatic:
+  - 'crudini'
+
+  ## Needed to install borgmatic:
+  - 'python-setuptools'
+  - 'python3-setuptools'
 
 # .. ]]]
 
@@ -1486,25 +1513,45 @@ packages__group_tag_admin_filesystem_cryptography:
 # Ansible [[[
 # """""""
 
-packages__group_ansible:
-  - 'ansible'
-  - 'sshpass'
-  - 'python-paramiko'
+packages__group_ansible_depends:
+  - 'python-crypto'
+  - 'python-httplib2'
   - 'python-jinja2'
+  - 'python-netaddr'
+  - 'python-paramiko'
+  - 'python-pkg-resources'
   - 'python-yaml'
 
-  # - 'facter'
-
-    ## passlib must be installed to encrypt vars_prompt values.
+  ## passlib must be installed to encrypt vars_prompt values.
   - 'python-passlib'
 
-  - 'python-netaddr'
+  ## Needed for the `dig` lookup.
+  - 'python-dnspython'
 
-packages__group_ansible_additional:
+packages__group_ansible_depends_additional:
 
   ## Additional system information: https://docs.ansible.com/ansible/setup_module.html
   - 'facter'
   - 'ohai'
+
+  - 'sshpass'
+
+packages__group_ansible_depends_full: |
+  {{
+    packages__group_ansible_depends +
+    packages__group_ansible_depends_additional +
+    []
+  }}
+
+packages__group_ansible:
+  - 'ansible'
+
+packages__group_ansible_full: |
+  {{
+    packages__group_ansible_depends_full +
+    packages__group_ansible +
+    []
+  }}
 
 # .. ]]]
 
@@ -1552,10 +1599,10 @@ packages__group_tag_admin_monitoring_network_additional:
   - 'lua-cjson-dev'
   - 'tshark'
   - 'geoip-bin'
-  - '{{ "" if (packages__contrib_enabled|d()) else "geoip-database-extra" }}'
+  - '{{ "" if (packages__contrib_enabled|d() | bool) else "geoip-database-extra" }}'
 
 packages__group_tag_admin_monitoring_network_extra:
-  - '{{ "geoip-database-contrib" if (packages__contrib_enabled|d()) else "geoip-database" }}'
+  - '{{ "geoip-database-contrib" if (packages__contrib_enabled|d() | bool) else "geoip-database" }}'
 
 packages__group_tag_admin_monitoring_basic: |
   {{
@@ -1601,7 +1648,7 @@ packages__group_networking_analysis_minimum:
   - 'python-scapy'
 
   - 'snmp'
-  - 'snmp-mibs-downloader'
+  - '{{ "snmp-mibs-downloader" if (packages__non_free_enabled|d()) else "" }}'
   - 'tkmib'
 
 ## Works with hardware, unlikely that this is needed on non bare metal systems.
@@ -1642,6 +1689,7 @@ packages__group_hardware_testing_and_benchmarking_additional:
   - 'stress'
   - 'stress-ng'
   - 'memtester'
+  - 'sysbench'
 
   # - '{{ "phoronix-test-suite" if (packages__non_free_enabled|d()) else "" }}'
 
@@ -1679,6 +1727,7 @@ packages__group_tag_protocol_ldap:
 
 packages__group_tag_protocol_smtp:
   - 'swaks'
+  - 'libnet-ssleay-perl'
 
   ## Superseded clients:
   # - 'lat'
@@ -1810,6 +1859,7 @@ packages__group_tag_field_geography:
   - 'qgis'
 
 packages__group_tag_field_mathematics_minimum:
+  - 'gnome-calculator'
   - 'convertall'
   - 'units'
   - 'kcalc'
@@ -2050,6 +2100,10 @@ packages__group_pdf_editing:
 packages__group_typesetting_minimal:
   - 'texlive-latex-base'
 
+  ## To install TeX Live manually if needed.
+  ## https://www.tug.org/texlive/debian.html
+  - 'equivs'
+
 packages__group_typesetting_converters:
   - 'latex2rtf'
   - 'gnuhtml2latex'
@@ -2120,6 +2174,9 @@ packages__group_office_additional:
   - 'blogilo'
   - 'gscan2pdf'
   - 'gtg'
+  - 'taskwarrior'
+  ## TODO: Test when in stable.
+  # - 'bugwarrior'
 
   - 'simple-scan'
 
@@ -2155,6 +2212,7 @@ packages__group_office_full: |
 packages__group_tag_devel_rcs_minimal:
   - 'myrepos'
   - 'git'
+  - 'git-remote-gcrypt'
   - 'git-svn'
 
   - 'tig'
@@ -2178,7 +2236,7 @@ packages__group_tag_devel_rcs_additional:
   - 'mercurial'
 
   ## Best to run this on a server as cron job:
-  - 'github-backup'
+  # - 'github-backup'
 
   - 'gitstats'
 
@@ -2320,6 +2378,7 @@ packages__group_tag_devel_lang_perl:
 
   - 'libconst-fast-perl'
   - 'libboolean-perl'
+  - 'libdata-dumper-simple-perl'
 
   - 'libterm-readline-perl-perl'
   - 'libipc-system-simple-perl'
@@ -2843,6 +2902,8 @@ packages__group_core_minimum:
 
   - 'byobu'
   - 'tmux'
+
+  - 'gnupg'
 
   ## Superseded by tmux:
   # - 'screen'
@@ -3520,6 +3581,7 @@ packages__group_user_password_manager:
 packages__group_user_optical_media:
   - 'brasero'
   - 'k3b'
+  - 'dvd+rw-tools'
   - 'cdrdao'
   - 'qpxtool'
 
@@ -3548,6 +3610,9 @@ packages__group_user_additional:
   - 'gnome-schedule'
   - 'autokey-gtk'
   - 'xclip'
+
+  ## TODO: Not yet in stable:
+  # - 'magic-wormhole'
 
   - 'scrot'
   - 'gtk-redshift'
@@ -3738,11 +3803,11 @@ packages__classes_server_school: |
 # Classes [[[
 # -------
 
-# .. envvar:: packages__global_additional
+# .. envvar:: packages__additional
 #
 # Additional packages for all classes indented for use from the global
 # inventory.
-packages__global_additional: []
+packages__additional: []
 
 
 # .. envvar:: packages__group_additional
@@ -3890,10 +3955,10 @@ packages__absent_for_class: {}
 #
 packages__absent: |
   {{
-    (packages__absent_preset     | list) +
-    (packages__global_absent     | list) +
-    (packages__group_absent | list) +
-    (packages__host_absent       | list)
+    (packages__absent_preset | list) +
+    (packages__global_absent | list) +
+    (packages__group_absent  | list) +
+    (packages__host_absent   | list)
   }}
 
 
