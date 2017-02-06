@@ -1,0 +1,5 @@
+---
+# vim: foldmarker=[[[,]]]:foldmethod=marker
+
+packages__targets:
+  - 'Ubuntu 16.04 LTS (Xenial Xerus)'

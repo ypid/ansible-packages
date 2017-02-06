@@ -56,9 +56,8 @@ All variables are prefixed by the name of this role to avoid conflicts.
 
 Furthermore, there are a number of variable namespaces:
 
-* single: Name of a single package defaulting to the name in Debian stable.
-  This can be used if other distributions (for instance Ubuntu) call a
-  package differently.
+* single: Name of a single package defaulting to the name in Debian stable
+  or Debian testing.
 
 * group: A set of packages which fit in the same topic.
 
@@ -108,8 +107,8 @@ package presets available.
 
 This role makes extensive use of some recently introduced features of
 Ansible 2. One of those features, namely iterating over included
-tasks multiple times with the `when_*` statement had a bug so this role
-requires at least Ansible 2.1.
+tasks multiple times with the `when_*` statement had a bug in v2.0 so this
+role requires at least Ansible 2.1.
 
 Additionally, this role uses features recently introduced in Jinja2, namely
 the `equalto` filter which was released with

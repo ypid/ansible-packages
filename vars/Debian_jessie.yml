@@ -4,6 +4,10 @@ packages__targets:
   - 'Debian GNU/Linux 8 (jessie)'
 
 
+packages__name_remapping_by_vars:
+  'adb': 'android-tools-adb'
+  'iptraf-ng': 'iptraf'
+
 packages__blacklist_by_vars:
 
   ## Should be available but "Unable to locate package eagle"?

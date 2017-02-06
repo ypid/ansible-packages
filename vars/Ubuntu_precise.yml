@@ -1,7 +1,8 @@
 ---
+# vim: foldmarker=[[[,]]]:foldmethod=marker
 
 packages__targets:
-  - 'Ubuntu Ubuntu 12.04 LTS (Precise Pangolin)'
+  - 'Ubuntu 12.04 LTS (Precise Pangolin)'
   # - 'linuxmuster.net 6.1 server'
 
 packages__blacklist_by_vars:

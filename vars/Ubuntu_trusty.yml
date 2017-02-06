@@ -1,9 +1,10 @@
 ---
+# vim: foldmarker=[[[,]]]:foldmethod=marker
 
-## linuxmuster.net client
 packages__targets:
   - 'Ubuntu 14.04 LTS (Trusty Tahr)'
   - 'Linux Mint 17 LTS Qiana'
+  # - 'linuxmuster.net client'
 
 
 packages__blacklist_by_vars:

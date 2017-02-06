@@ -412,11 +412,10 @@ packages__debconf_role_settings:
 
 # Single packages [[[
 # ---------------
-#
-# Default definitions of packages as they are called in Debian Jessie or if it
-# did not yet exist in Debian Jessie then use the package name from the first Debian
-# release which contained the package or testing or unstable in case it has not
-# been released yet.
+
+# Default definitions of packages as they are called in Debian stable or if it
+# did not yet exist in Debian stable then use the package name from Debian
+# testing or unstable in case it has not been released yet.
 #
 # The variables and there values are pinned when they are first introduced to
 # provide backwards compatibility in case some names change in further releases
@@ -695,7 +694,7 @@ packages__conditional_role:
       - 'lxde-common'
   ## ]]]
 
-  ## Explicitly add the package `x11-common` when packages depending on X11 are
+  ## Explicitly add the package `xserver-xorg` when packages depending on X11 are
   ## being selected.
   ## Used later to check if a X11 environment is to be installed.
   - present_packages:
@@ -708,7 +707,8 @@ packages__conditional_role:
       - 'lightdm'
     require: 1
     additional_packages:
-      - 'x11-common'
+      - 'xserver-xorg'
+      - 'task-desktop'
   ## ]]]
 
   ## Programms [[[
@@ -732,10 +732,8 @@ packages__conditional_role:
       - 'gedit-latex-plugin'
 
   - present_packages:
-      - 'cups'
-      - 'x11-common'
-    additional_packages:
-      - 'system-config-printer'
+      - 'xserver-xorg'
+    additional_packages: '{{ packages__group_core_hypervisor_guest_tools_kvm }}'
 
   - present_packages: '{{ packages__group_kde_applications }}'
     additional_packages:
@@ -756,7 +754,7 @@ packages__conditional_role:
   ## Recommended by `battery-stats` and needed for `/usr/share/battery-stats/battery-stats-graph`.
   - present_packages:
       - 'battery-stats'
-      - 'x11-common'
+      - 'xserver-xorg'
     additional_packages:
       - 'python-matplotlib'
   ## ]]]
@@ -1047,6 +1045,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
 
+  - package: 'openvpn'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_openvpn_state | d(packages__apt_preferences__core_backports_state) }}'
+
   - package: 'owncloud-client owncloud-client-* nautilus-owncloud libowncloudsync0'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_owncloud_client_state | d(packages__apt_preferences__client_backports_state) }}'
@@ -1271,7 +1273,7 @@ packages__group_tag_accessibility_ocr:
   - 'ocrad'
   - 'ocrfeeder'
 
-  - '{{ "cuneiform" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "cuneiform" if (packages__non_free_enabled|d() | bool) else "" }}'
 
 # .. ]]]
 
@@ -1401,7 +1403,7 @@ packages__group_internet_flash:
 
   ## `flashplugin-nonfree` is constantly lagging behind.
   ## https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814316
-  # - '{{ "flashplugin-nonfree" if (packages__non_free_enabled|d()) else "" }}'
+  # - '{{ "flashplugin-nonfree" if (packages__non_free_enabled|d() | bool) else "" }}'
 
   # - '{{ "browser-plugin-freshplayer-pepperflash" if (packages__contrib_enabled|d() | bool) else "" }}'
 
@@ -1409,8 +1411,6 @@ packages__group_internet_additional:
   # - 'epiphany-browser'
   #
   - 'liferea'
-
-  - 'chromium-inspector'
 
   - 'pidgin'
   - 'pidgin-otr'
@@ -1470,8 +1470,8 @@ packages__group_tag_works_with_archive_additional:
   - 'xz-utils'
   - 'lzip'
 
-  - '{{ "p7zip-rar" if (packages__non_free_enabled|d()) else "" }}'
-  - '{{ "unrar"     if (packages__non_free_enabled|d()) else "unrar-free" }}'
+  - '{{ "p7zip-rar" if (packages__non_free_enabled|d() | bool) else "" }}'
+  - '{{ "unrar"     if (packages__non_free_enabled|d() | bool) else "unrar-free" }}'
 
   ## Used for Firmware files.
   - 'cabextract'
@@ -1591,7 +1591,7 @@ packages__group_tag_admin_monitoring_network_minimum:
   - 'mtr-tiny'
 
   - 'tcpdump'
-  - 'iptraf'
+  - 'iptraf-ng'
   - 'speedtest-cli'
 
 packages__group_tag_admin_monitoring_network_additional:
@@ -1648,7 +1648,7 @@ packages__group_networking_analysis_minimum:
   - 'python-scapy'
 
   - 'snmp'
-  - '{{ "snmp-mibs-downloader" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "snmp-mibs-downloader" if (packages__non_free_enabled|d() | bool) else "" }}'
   - 'tkmib'
 
 ## Works with hardware, unlikely that this is needed on non bare metal systems.
@@ -1691,7 +1691,7 @@ packages__group_hardware_testing_and_benchmarking_additional:
   - 'memtester'
   - 'sysbench'
 
-  # - '{{ "phoronix-test-suite" if (packages__non_free_enabled|d()) else "" }}'
+  # - '{{ "phoronix-test-suite" if (packages__non_free_enabled|d() | bool) else "" }}'
 
 packages__group_hardware_testing_and_benchmarking_full: |
   {{
@@ -2053,7 +2053,7 @@ packages__group_multimedia_additional:
   - 'id3v2'
 
   - 'gespeaker'
-  - 'mbrola'
+  - '{{ "mbrola" if (packages__non_free_enabled|d() | bool) else "" }}'
 
 packages__group_multimedia_cd_ripping:
   - 'asunder'
@@ -2143,7 +2143,7 @@ packages__group_office_sweethome:
   - 'sweethome3d-furniture'
   - 'sweethome3d-furniture-editor'
   - 'sweethome3d-textures-editor'
-  - '{{ "sweethome3d-furniture-nonfree" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "sweethome3d-furniture-nonfree" if (packages__non_free_enabled|d() | bool) else "" }}'
 
 packages__group_office_minimal:
   - 'libreoffice-writer'
@@ -2275,7 +2275,7 @@ packages__group_devel_ai:
 
 packages__group_devel_android:
   - 'androidsdk-ddms'
-  - 'android-tools-adb'
+  - 'adb'
   - 'pidcat'
   - 'heimdall-flash'
   - 'heimdall-flash-frontend'
@@ -2316,6 +2316,7 @@ packages__group_devel_javascript:
   - 'nodejs'
   - 'node-uglify'
   - 'node-mysql'
+  - 'node-debug'
   - 'nodejs-legacy'
   - 'coffeescript'
 
@@ -2342,7 +2343,7 @@ packages__group_tag_field_electronics:
 
   - 'kicad'
   - 'kicad-doc-en'
-  - '{{ "eagle" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "eagle" if (packages__non_free_enabled|d() | bool) else "" }}'
 
   - 'oregano'
   - 'gnucap'
@@ -2448,6 +2449,7 @@ packages__group_tag_devel_lang_python:
   - 'python3-dev'
   - 'python-virtualenv'
   - 'python3-virtualenv'
+  - 'virtualenvwrapper'
   - 'python-feedparser'
   - 'python-pip'
   - 'python3-pip'
@@ -2507,6 +2509,8 @@ packages__group_tag_devel_lang_python:
   - 'python-lxml'
   - 'python3-lxml'
   - 'python-twisted-web'
+
+  - 'python-scrypt'
 
   ## Don’t use:
   # - 'python-beautifulsoup'
@@ -2604,9 +2608,7 @@ packages__group_devel_virtualization:
   # - 'qtemu'
   # - 'qemuctl'
 
-  - 'python-spice-client-gtk'
-  - 'gir1.2-spice-client-gtk-3.0'
-  - 'spice-client'
+  - 'spice-client-gtk'
   - 'virt-manager'
 
 packages__group_devel_virtualization_desktop_contrib:
@@ -2924,7 +2926,6 @@ packages__group_core_minimum:
   - 'tree'
 
 packages__group_core_additional:
-  - 'gnupg-curl'
   - 'curl'
   - 'wget'
 
@@ -2980,8 +2981,8 @@ packages__group_boot_image_hardware_testing_and_benchmarking:
 # Allows you to overwrite this when you want to install it even when
 # ``packages__non_free_enabled`` is ``False``.
 packages__group_cpu_microcode_non_free:
-  - '{{ "intel-microcode" if (packages__non_free_enabled|d()) else "" }}'
-  - '{{ "amd64-microcode" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "intel-microcode" if (packages__non_free_enabled|d() | bool) else "" }}'
+  - '{{ "amd64-microcode" if (packages__non_free_enabled|d() | bool) else "" }}'
 
 packages__group_core_bare_metal_services_not_working_on_all_machines:
   - 'mcelog'
@@ -3027,6 +3028,10 @@ packages__group_core_bare_metal: |
 
 packages__group_core_hypervisor_guest_tools_vmware:
   - 'open-vm-tools'
+
+packages__group_core_hypervisor_guest_tools_kvm:
+  - 'xserver-xorg-video-qxl'
+  - 'spice-vdagent'
 
 packages__group_core_hypervisor_guest_tools: |
   {{
@@ -3080,8 +3085,8 @@ packages__group_firmware_dist: []
 packages__group_firmware_full: |
   {{
     packages__group_firmware_free +
-    (packages__group_firmware_contrib   if (packages__contrib_enabled)  else []) +
-    (packages__group_firmware_non_free  if (packages__non_free_enabled) else []) +
+    (packages__group_firmware_contrib  if (packages__contrib_enabled|d() | bool)  else []) +
+    (packages__group_firmware_non_free if (packages__non_free_enabled|d() | bool) else []) +
     packages__group_firmware_dist +
     []
   }}
@@ -3222,7 +3227,7 @@ packages__group_school_additional_dev:
   - 'aria2'
 
 packages__group_school_additional:
-  - '{{ "google-earth" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "google-earth" if (packages__non_free_enabled|d() | bool) else "" }}'
 
   ## FIXME(ypid): Use DebOps roles to set this up.
   # Also installs Apache2 on Debian Jessie:
@@ -3285,7 +3290,6 @@ packages__group_wm_gnome_core_debian_jessie:
   - 'evince'
   - 'evolution-data-server'
   - 'sound-theme-freedesktop'
-  - 'gdm3'
   - 'glib-networking'
   - 'gnome-backgrounds'
   - 'gnome-bluetooth'
@@ -3335,7 +3339,6 @@ packages__group_wm_gnome_core_debian_jessie:
 packages__group_wm_gnome_minimal:
   - 'desktop-base'
   - 'xdg-user-dirs-gtk'
-  - 'network-manager'
 
 packages__group_wm_gnome_additional:
   - 'gnome-clocks'
@@ -3404,6 +3407,8 @@ packages__group_wm_mate:
 
   - 'mate-applets'
   - 'mate-media'
+
+  - 'xscreensaver'
 
   ## Auto select `lightdm` it gdm3 is not selected.
   # - 'lightdm'
@@ -3630,6 +3635,9 @@ packages__group_user_additional:
 packages__group_network_avahi:
   - 'avahi-discover'
   - 'avahi-utils'
+
+packages__group_network_manager_basic:
+  - 'network-manager'
 
 packages__group_network_manager_vpn_plugin:
   - 'network-manager-iodine'
@@ -4061,6 +4069,7 @@ packages__classes:
     {{
       packages__classes_live_system +
       packages__group_wm_gnome_minimal +
+      packages__group_network_manager_basic +
       (packages__additional_for_class.live_system|d([])) +
       []
     }}
@@ -4081,6 +4090,7 @@ packages__classes:
       packages__group_wm_gnome_normal +
       packages__group_wm_cinnamon +
       packages__group_wm_mate +
+      packages__group_network_manager_basic +
       packages__group_tag_game +
       (packages__additional_for_class.client_explorer|d([])) +
       []
@@ -4091,6 +4101,7 @@ packages__classes:
       packages__classes_client_school +
       packages__group_wm_cinnamon +
       packages__group_wm_mate +
+      packages__group_network_manager_basic +
       (packages__additional_for_class.client_school|d([])) +
       []
     }}
@@ -4100,6 +4111,7 @@ packages__classes:
       packages__classes_client_school +
       packages__group_wm_cinnamon +
       packages__group_wm_mate +
+      packages__group_network_manager_basic +
       (packages__additional_for_class.client_primary_school|d([])) +
       []
     }}
@@ -4108,6 +4120,7 @@ packages__classes:
     {{
       packages__classes_client_school_linuxmuster +
       packages__group_wm_cinnamon +
+      packages__group_network_manager_basic +
       (packages__additional_for_class.client_school_linuxmuster|d([])) +
       []
     }}

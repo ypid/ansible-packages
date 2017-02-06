@@ -5,6 +5,28 @@ packages__targets:
 
 packages__blacklist_by_vars:
   - 'ddrescue'
+  - 'linux-wlan-ng-firmware'
+  - 'eagle'
+  - 'asr-manpages'
+  - 'ansible-doc'
+  - 'apparmor-docs'
+  - 'ipython-doc'
+  - 'openjdk-7-jdk'
+  - 'pulseview'
+  - 'rednotebook'
+  - 'ruby-bluecloth'
+  - 'sflphone-gnome'
+  - 'sigrok'
+  - 'tpm-tools'
+  - 'celestia'
+  - 'celestia-gnome'
+  - 'freemind'
+  - 'cuneiform'
+  - 'gnome-schedule'
+
+  - 'virtualbox'
+  - 'virtualbox-dkms'
+  - 'virtualbox-qt'
 
 # .. Only defined here to overrule Debian_jessie.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:

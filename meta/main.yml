@@ -20,6 +20,12 @@ galaxy_info:
       versions:
         - trusty
         - precise
+        - xenial
+
+    # - name: QubesOS
+    #   versions:
+    #     - R3.2
+
 
   galaxy_tags:
     - system
