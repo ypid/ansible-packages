@@ -1119,7 +1119,7 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
-  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-netaddr python3-netaddr python-nose* python3-nose*'
+  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-netaddr python3-netaddr python-nose* python3-nose* pylint python-astroid python-logilab-common'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_python_state | d(packages__apt_preferences__client_backports_state) }}'
 
@@ -1135,6 +1135,11 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     reason: 'https://stackoverflow.com/questions/28265225/go-get-sys-textflag-h-missing'
     state: '{{ packages__apt_preferences__backports_golang_state | d(packages__apt_preferences__client_backports_state) }}'
+
+  - package: 'openjdk-8-jdk openjdk-8-jdk-headless openjdk-8-jre openjdk-8-jre-headless ca-certificates-java'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_openjdk_8_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
 
 
 # .. envvar:: packages__apt_preferences__core_backports_state
@@ -1153,6 +1158,13 @@ packages__apt_preferences__server_backports_state: '{{ packages__apt_preferences
 #
 # Default state of backports presets indented for clients.
 packages__apt_preferences__client_backports_state: '{{ packages__apt_preferences__backports_state }}'
+
+
+# .. envvar:: packages__apt_preferences__only_available_backports_state
+#
+# Default state of backports presets for packages which are only available from
+# backports.
+packages__apt_preferences__only_available_backports_state: 'present'
 
 
 # .. envvar:: packages__apt_preferences__backports_state
@@ -1375,6 +1387,9 @@ packages__group_imaging:
   # - 'ddrutility'
 
   - 'clonezilla'
+  - 'partimage'
+  - 'partclone'
+  - 'grub2'
 
 # .. ]]]
 
@@ -2251,6 +2266,8 @@ packages__group_tag_devel_rcs_additional:
   - 'colordiff'
   - 'rdiff'
 
+  - 'meld'
+
 packages__group_tag_devel_rcs_full: |
   {{
     packages__group_tag_devel_rcs_minimal +
@@ -2388,6 +2405,8 @@ packages__group_tag_devel_lang_perl:
   - 'libdbi-perl'
   - 'libdbd-sqlite3-perl'
 
+  - 'libjson-perl'
+
   - 'libdatetime-set-perl'
   - 'libdatetime-format-ical-perl'
   - 'libtime-duration-perl'
@@ -2436,6 +2455,8 @@ packages__group_tag_devel_lang_perl:
 
 packages__group_tag_devel_lang_python:
   - 'pep8'
+  - 'yapf'
+  - 'yapf3'
   - 'twine'
   - 'python-wheel'
   - 'python3-wheel'
@@ -2461,6 +2482,25 @@ packages__group_tag_devel_lang_python:
   - 'python-dulwich'
   - 'python-pycalendar'
   - 'python-termcolor'
+  - 'python-monotonic'
+  - 'python3-monotonic'
+  - 'python-naturalsort'
+  - 'python-colorama'
+  - 'python3-colorama'
+  - 'python-unidiff'
+  - 'python3-unidiff'
+  - 'python-appdirs'
+  - 'python3-appdirs'
+  - 'python-pygraphviz'
+  - 'python3-pygraphviz'
+  - 'libgv-python'
+
+  - 'python-xmltodict'
+  - 'python3-xmltodict'
+  - 'python-defusedxml'
+  - 'python3-defusedxml'
+  - 'python-lxml'
+  - 'python3-lxml'
 
   ## For reportbug:
   - 'python-vte'
@@ -2488,6 +2528,10 @@ packages__group_tag_devel_lang_python:
   - 'python-paramiko'
   - 'python-pexpect'
   - 'python-configparser'
+  - 'python-yaml'
+  - 'python3-yaml'
+  - 'python-pretty-yaml'
+  - 'python3-pretty-yaml'
   - 'python-traceback2'
   - 'python3-traceback2'
   - 'python-unittest2'
@@ -2506,8 +2550,6 @@ packages__group_tag_devel_lang_python:
   - 'python-unidecode'
   - 'python3-unidecode'
 
-  - 'python-lxml'
-  - 'python3-lxml'
   - 'python-twisted-web'
 
   - 'python-scrypt'
@@ -2527,6 +2569,7 @@ packages__group_tag_devel_lang_python_additional:
   - 'python-flake8'
   - 'python3-flake8'
   - 'pylint'
+  - 'pylint3'
   - 'yamllint'
 
   ## In jessie-backports and requires a few dependencies from jessie-backports
@@ -2577,6 +2620,10 @@ packages__group_tag_devel_lang_python_additional:
   - 'python-sklearn'
   - 'python-zmq'
   - 'python3-zmq'
+  - 'python-pyquery'
+  - 'python3-pyquery'
+  - 'python-freezegun'
+  - 'python3-freezegun'
 
 # .. ]]]
 
@@ -3607,6 +3654,7 @@ packages__group_user_additional:
   - 'mat'
   - 'unison-gtk'
   - 'owncloud-client'
+  - 'seahorse'
   - 'filezilla'
   - 'florence'
   - 'catfish'
@@ -3631,6 +3679,13 @@ packages__group_user_additional:
   - 'key-mon'
 
   - 'gtk-vector-screenshot'
+
+packages__group_applied_cryptography_basic:
+  - 'signing-party'
+
+packages__group_applied_cryptography_additional:
+  - 'hopenpgp-tools'
+  - 'pgpdump'
 
 packages__group_network_avahi:
   - 'avahi-discover'
@@ -3762,6 +3817,7 @@ packages__classes_client_explorer: |
     packages__group_education_full +
     packages__group_office_full +
     packages__group_devel_basic +
+    packages__group_applied_cryptography_basic +
     packages__group_wm_gnome_power_user +
     packages__group_devel_virtualization_desktop +
     []
