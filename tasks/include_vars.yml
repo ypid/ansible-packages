@@ -7,6 +7,7 @@
     - skip: True
       files:
         - '{{ (ansible_distribution + ".yml") | replace(" ", "_") }}'
+      paths: 'vars'
 
 - name: Include distribution release specific variables
   include: include_item_vars.yml
@@ -14,6 +15,7 @@
     - skip: True
       files:
         - '{{ (ansible_distribution + "_" + ansible_distribution_release + ".yml") | replace(" ", "_") }}'
+      paths: 'vars'
 
 - name: Include distribution release backports specific variables
   include: include_item_vars.yml
@@ -22,6 +24,7 @@
     - skip: True
       files:
         - '{{ (ansible_distribution + "_" + ansible_distribution_release + "_backports.yml") | replace(" ", "_") }}'
+      paths: 'vars'
 
 - name: Preserve current packages__targets for later use
   set_fact:
