@@ -1027,6 +1027,11 @@ packages__localizations_available_additional_dist: []
 # Note that debops.apt_preferences_ will need to run in the same context as this role.
 packages__apt_preferences__debian_backports_list:
 
+  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-tools linux-base'
+    ## linux-base is required by linux-image-686-pae
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_linux_image|d(packages__apt_preferences__core_backports_state) }}'
+
   - package: 'vim vim-*'
     backports: [ 'wheezy' ]
     state: '{{ packages__apt_preferences__backports_vim_state | d(packages__apt_preferences__core_backports_state) }}'
@@ -1037,9 +1042,11 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'borgbackup borgbackup-* python3-msgpack'
     backports: [ 'jessie' ]
-    # Does default to "present" because this pinning is required to install
-    # BorgBackup on Jessie in case you pinned Debian Jessie packages as preferred.
-    state: '{{ packages__apt_preferences__backports_borgbackup_state | d("present") }}'
+    state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
+  - package: 'zfs-dkms spl-dkms dkms'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_zfs_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
   - package: 'git-annex'
     backports: [ 'jessie' ]
@@ -1048,6 +1055,12 @@ packages__apt_preferences__debian_backports_list:
   - package: 'openvpn'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_openvpn_state | d(packages__apt_preferences__core_backports_state) }}'
+
+  - package: 'apt-cacher-ng libssl1.0.0'
+    # Depending on your APT pinning configuration you might need to specific all packages to install or upgrade to from backports.
+    # This is needed for example if you use `apt_preferences__debian_stable_default_preset_list`.
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_apt_cacher_ng_state | d(packages__apt_preferences__server_backports_state) }}'
 
   - package: 'owncloud-client owncloud-client-* nautilus-owncloud libowncloudsync0'
     backports: [ 'jessie' ]
@@ -1102,14 +1115,9 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_nvidia_state | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'needrestart'
-    reason: 'Properly handle LXC or other containers.'
-    backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_needrestart_state | d(packages__apt_preferences__core_backports_state) }}'
-
   - package: 'firejail'
     backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__core_backports_state) }}'
+    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
   - package: 'apparmor-profiles apparmor-profiles-extra'
     backports: [ 'jessie' ]
@@ -1119,7 +1127,7 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
-  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-netaddr python3-netaddr python-nose* python3-nose* pylint python-astroid python-logilab-common'
+  - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-netaddr python3-netaddr python-nose* python3-nose* pylint python-astroid python3-astroid python-logilab-common python3-logilab-common python-pexpect* python3-pexpect*'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_python_state | d(packages__apt_preferences__client_backports_state) }}'
 
@@ -1144,7 +1152,7 @@ packages__apt_preferences__debian_backports_list:
 
 # .. envvar:: packages__apt_preferences__core_backports_state
 #
-# Default state of backports presets indented for servers and clients.
+# Default state of backports presets indented for all systems.
 packages__apt_preferences__core_backports_state: '{{ packages__apt_preferences__backports_state }}'
 
 
@@ -1587,10 +1595,10 @@ packages__group_tag_admin_monitoring_additional:
   - 'sysdig'
 
   - 'logtop'
+  - 'sysstat'
 
   ## Include conditionally.
   # - 'goaccess'
-  # - 'sysstat'
 
   ## https://github.com/lebinh/ngxtop
   ## Not yet packaged for Debian: https://github.com/lebinh/ngxtop/issues/13
@@ -2526,7 +2534,9 @@ packages__group_tag_devel_lang_python:
   - 'python-prettytable'
   - 'python3-prettytable'
   - 'python-paramiko'
+  - 'python3-paramiko'
   - 'python-pexpect'
+  - 'python3-pexpect'
   - 'python-configparser'
   - 'python-yaml'
   - 'python3-yaml'
@@ -2604,6 +2614,8 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-sphinx-rtd-theme'
   - 'python-sphinxcontrib.programoutput'
   - 'python3-sphinxcontrib.programoutput'
+  - 'python-sphinx-argparse'
+  - 'python3-sphinx-argparse'
   - 'python3-yaml'
   - 'python-bibtex'
   - 'python-git'
@@ -2767,6 +2779,7 @@ packages__group_devel_additional:
   - 'famfamfam-flag-png'
   - 'exuberant-ctags'
   - 'libsqlite3-dev'
+  - 'cloc'
 
 
 # Development environment for projects [[[
@@ -2953,6 +2966,7 @@ packages__group_core_minimum:
   - 'tmux'
 
   - 'gnupg'
+  - 'gnupg-curl'
 
   ## Superseded by tmux:
   # - 'screen'
@@ -2971,6 +2985,8 @@ packages__group_core_minimum:
 
   - 'safe-rm'
   - 'tree'
+
+  - 'man-db'
 
 packages__group_core_additional:
   - 'curl'
@@ -3366,7 +3382,6 @@ packages__group_wm_gnome_core_debian_jessie:
   - 'gstreamer1.0-pulseaudio'
   - 'libgtk-3-common'
   - 'gtk2-engines'
-  - 'gucharmap'
   - 'gvfs-backends'
   - 'gvfs-bin'
   - 'gvfs-fuse'
@@ -3651,6 +3666,7 @@ packages__group_user_compartmentalization:
   - 'xpra'
 
 packages__group_user_additional:
+  - 'gucharmap'
   - 'mat'
   - 'unison-gtk'
   - 'owncloud-client'
