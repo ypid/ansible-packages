@@ -430,8 +430,8 @@ packages__debconf_role_settings:
 #
 # Examples::
 #
-#    packages__single_icedove: 'icedove'
-#    packages__single_icedove_l10n: 'icedove-l10n-LANG_CODE'
+#    packages__single_thunderbird: 'thunderbird'
+#    packages__single_thunderbird_l10n: 'thunderbird-l10n-LANG_CODE'
 #
 # .. ]]]
 
@@ -912,8 +912,8 @@ packages__localizations_available_global:
 
   - present_packages: 'chromium'
     additional_packages: 'chromium-l10n'
-  - present_packages: 'icedove'
-    additional_packages: 'icedove-l10n-LANG_CODE'
+  - present_packages: 'thunderbird'
+    additional_packages: 'thunderbird-l10n-LANG_CODE'
   - present_packages: 'iceowl-extension'
     additional_packages: 'iceowl-l10n-LANG_CODE'
   - present_packages: 'josm'
@@ -1417,7 +1417,7 @@ packages__group_internet_minimum:
 
 
 packages__group_email_minimum:
-  - 'icedove'
+  - 'thunderbird'
   - 'enigmail'
   - 'xul-ext-sogo-connector'
 
