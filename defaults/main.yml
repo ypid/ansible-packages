@@ -1048,6 +1048,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_zfs_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
+  - package: 'certbot python-certbot python-acme python-cryptography python-setuptools python-openssl python-pkg-resources python-cffi-backend-api-9729 python-pyasn1'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_certbot_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
   - package: 'git-annex'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
@@ -1055,12 +1059,6 @@ packages__apt_preferences__debian_backports_list:
   - package: 'openvpn'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_openvpn_state | d(packages__apt_preferences__core_backports_state) }}'
-
-  - package: 'apt-cacher-ng libssl1.0.0'
-    # Depending on your APT pinning configuration you might need to specific all packages to install or upgrade to from backports.
-    # This is needed for example if you use `apt_preferences__debian_stable_default_preset_list`.
-    backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_apt_cacher_ng_state | d(packages__apt_preferences__server_backports_state) }}'
 
   - package: 'owncloud-client owncloud-client-* nautilus-owncloud libowncloudsync0'
     backports: [ 'jessie' ]
@@ -1206,6 +1204,11 @@ packages__debian_unstable_from_jessie_list:
     pin: 'release o=Debian,n=stretch'
     priority: 800
     state: '{{ packages__apt_preferences__unstable_tidy_state | d(packages__apt_preferences__client_unstable_state) }}'
+
+  - package: 'doc-rfc doc-rfc*'
+    pin: 'release o=Debian,n=stretch'
+    priority: 800
+    state: '{{ packages__apt_preferences__unstable_doc_rfc_state | d(packages__apt_preferences__client_unstable_state) }}'
 
 # Ubuntu
 #
