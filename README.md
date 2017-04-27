@@ -109,6 +109,10 @@ This role makes extensive use of some recently introduced features of
 Ansible 2. One of those features, namely iterating over included
 tasks multiple times with the `when_*` statement had a bug in v2.0 so this
 role requires at least Ansible 2.1.
+Furthermore, the `packages__name_remapping_by_vars` feature is based on the
+ability to update Ansible variables in place. This does not seem to work on
+Ansible 2.2 yet and it has not been checked yet if that is a bug in Ansible or
+a feature. Use Ansible 2.1 for now to run this role.
 
 Additionally, this role uses features recently introduced in Jinja2, namely
 the `equalto` filter which was released with
