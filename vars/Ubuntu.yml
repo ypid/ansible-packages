@@ -34,6 +34,7 @@ packages__name_remapping_by_vars:
   'google-earth': 'google-earth-stable'
   'firefox-esr': 'firefox'
   'firefox-esr-l10n-LANG_CODE': 'firefox-locale-LANG_CODE'
+  'thunderbird-l10n-LANG_CODE': 'thunderbird-locale-LANG_CODE'
   'chromium': 'chromium-browser'
   'chromium-inspector': 'chromium-browser-inspector'
   'chromium-l10n': 'chromium-browser-l10n'
@@ -43,6 +44,7 @@ packages__name_remapping_by_vars:
   ## is selected.
   'system-config-printer': 'system-config-printer-common'
 
+  'linux-headers-amd64': 'linux-headers-generic'
 
 packages__blacklist_by_vars:
 

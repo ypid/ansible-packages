@@ -7,6 +7,9 @@ packages__targets:
   # - 'linuxmuster.net client'
 
 
+packages__name_remapping_by_vars:
+  'adb': 'android-tools-adb'
+
 packages__blacklist_by_vars:
   - 'pidcat'
   - 'python3-nmap'
@@ -60,6 +63,44 @@ packages__blacklist_by_vars:
 
   - 'cinnamon'
 
+  - 'printer-driver-cups-pdf'
+  - 'pylint3'
+  - 'python-freezegun'
+  - 'python-humanize'
+  - 'python-monotonic'
+  - 'python-pretty-yaml'
+  - 'python-pytimeparse'
+  - 'python-sphinx-argparse'
+  - 'python-sphinx-rtd-theme'
+  - 'python-sphinxcontrib.programoutput'
+  - 'python-unidiff'
+  - 'python-xmltodict'
+  - 'python3-defusedxml'
+  - 'python3-freezegun'
+  - 'python3-git'
+  - 'python3-humanize'
+  - 'python3-monotonic'
+  - 'python3-nose2-cov'
+  - 'python3-paramiko'
+  - 'python3-pretty-yaml'
+  - 'python3-pyftpdlib'
+  - 'python3-pygraphviz'
+  - 'python3-pyquery'
+  - 'python3-pytimeparse'
+  - 'python3-sphinx-argparse'
+  - 'python3-sphinx-rtd-theme'
+  - 'python3-sphinxcontrib.programoutput'
+  - 'python3-sphinxcontrib.spelling'
+  - 'python3-unidiff'
+  - 'python3-xmltodict'
+  - 'python-q'
+  - 'python3-q'
+  - 'task-desktop'
+  - 'taskwarrior'
+  - 'twine'
+  - 'yamllint'
+  - 'yapf'
+  - 'yapf3'
 
 packages__group_firmware_free: []
 packages__group_firmware_non_free:

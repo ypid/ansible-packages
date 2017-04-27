@@ -2677,7 +2677,7 @@ packages__group_devel_virtualization_desktop_contrib:
   - 'virtualbox'
   - 'virtualbox-dkms'
   - 'virtualbox-qt'
-  # FIXME: More generic
+  # FIXME: More generic. `linux-headers-generic` is available on Ubuntu.
   - 'linux-headers-amd64'
 
 packages__group_devel_virtualization_desktop_non_free:
