@@ -62,6 +62,7 @@ packages__blacklist_by_vars:
   - 'gedit-latex-plugin'
 
   - 'cinnamon'
+  - 'cinnamon-core'
 
   - 'printer-driver-cups-pdf'
   - 'pylint3'
