@@ -23,6 +23,7 @@ packages__blacklist_by_vars:
   - 'freemind'
   - 'cuneiform'
   - 'gnome-schedule'
+  - 'gnupg-curl'
 
   - 'virtualbox'
   - 'virtualbox-dkms'
