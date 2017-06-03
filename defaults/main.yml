@@ -3204,6 +3204,7 @@ packages__group_user_terminal_programs_minimum:
   - '{{ "git-annex-standalone"
         if ("debops_service_neurodebian" in group_names)
         else "git-annex" }}'
+  - 'nocache'
 
   - 'setserial'
   - 'minicom'
