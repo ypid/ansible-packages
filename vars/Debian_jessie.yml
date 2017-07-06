@@ -49,3 +49,4 @@ packages__blacklist_by_vars:
   - 'w3c-markup-validator'
   - 'yamllint'
   - 'magic-wormhole'
+  - 'gcc-arm-linux-gnueabi'

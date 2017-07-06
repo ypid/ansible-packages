@@ -24,6 +24,7 @@ packages__blacklist_by_vars:
   - 'cuneiform'
   - 'gnome-schedule'
   - 'gnupg-curl'
+  - 'libgee-dev'
 
   - 'virtualbox'
   - 'virtualbox-dkms'
@@ -59,5 +60,8 @@ packages__blacklist_revoke_by_vars:
   - 'w3c-markup-validator'
   - 'yamllint'
   - 'magic-wormhole'
+
+  # tmp
+  - 'perl-modules'
 
 # .. )))

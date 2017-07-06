@@ -1222,6 +1222,11 @@ packages__debian_unstable_from_jessie_list:
     priority: 800
     state: '{{ packages__apt_preferences__unstable_doc_rfc_state | d(packages__apt_preferences__client_unstable_state) }}'
 
+  - package: 'shellcheck'
+    pin: 'release o=Debian,n=stretch'
+    priority: 800
+    state: '{{ packages__apt_preferences__unstable_shellcheck_state | d(packages__apt_preferences__client_unstable_state) }}'
+
 # Ubuntu
 #
 # https://askubuntu.com/questions/656794/how-to-install-libreoffice-5-0-in-ubuntu
@@ -2054,8 +2059,6 @@ packages__group_multimedia_editing_additional:
   - 'gaupol'
   - 'gcstar'
 
-  - 'frogr'
-
   ## TODO: Not in stable
   # - 'autotrace'
 
@@ -2221,6 +2224,12 @@ packages__group_office_additional:
 
   # - 'glabels'
 
+  ## For Paperwork:
+  - 'python3-dev'
+  - 'python3-pil'
+  - 'python3-whoosh'
+  - 'libenchant-dev'
+
 packages__group_office_basic: |
   {{
     packages__group_pdf_viewing +
@@ -2289,6 +2298,7 @@ packages__group_tag_devel_rcs_additional:
   - 'patchutils'
   - 'colordiff'
   - 'rdiff'
+  - 'vbindiff'
 
   - 'meld'
 
@@ -2308,8 +2318,9 @@ packages__group_tag_devel_i18n:
   - 'isoquery'
 
 packages__group_devel_hex_editor:
-  - 'wxhexeditor'
+  - 'ht'
   - 'bless'
+  - 'wxhexeditor'
 
 packages__group_devel_ai:
   - 'python-aiml'
@@ -2331,6 +2342,7 @@ packages__group_devel_debian:
 packages__group_devel_java:
   - 'openjdk-7-jdk'
   - 'openjdk-8-jdk'
+  - 'libtrove3-java'
 
 packages__group_devel_qt:
 
@@ -2403,6 +2415,7 @@ packages__group_tag_field_electronics:
   - 'pulseview'
 
   - 'flashrom'
+  - 'nvramtool'
 
   ## https://www.coreboot.org/Superiotool
   ## Only needed for low level development.
@@ -2936,7 +2949,9 @@ packages__group_apt_package_management_minimal:
   - 'apt-transport-https'
   - 'wajig'
   - 'aptitude'
-  - 'apt-show-versions'
+
+  # "Error: No information about packages! (Maybe no deb entries?)" on BeagleBone Black.
+  - '{{ "apt-show-versions" if ("armv7l" not in ansible_architecture|d("")) else "" }}'
 
   ## In case unattended-upgrades is not installed.
   # - 'reboot-notifier'
@@ -3717,6 +3732,7 @@ packages__group_user_additional:
   - 'key-mon'
 
   - 'gtk-vector-screenshot'
+  - 'gnome-screenshot'
 
 packages__group_applied_cryptography_basic:
   - 'signing-party'
@@ -4090,6 +4106,9 @@ packages__absent_preset:
   - 'gnome-do'
   - 'gmrun'
   - 'gitso'
+  - 'frogr'
+  - 'frogr-data'
+  - 'iceweasel'
 
   ## Is superseded by `tmux` but don’t automatically ensure absence `screen` by this preset:
   # - 'screen'
