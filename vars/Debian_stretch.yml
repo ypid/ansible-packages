@@ -30,6 +30,15 @@ packages__blacklist_by_vars:
   - 'virtualbox-dkms'
   - 'virtualbox-qt'
 
+  - 'npm'
+  - 'remmina'
+  - 'remmina-plugin-gnome'
+  - 'remmina-plugin-nx'
+  - 'remmina-plugin-rdp'
+  - 'remmina-plugin-telepathy'
+  - 'remmina-plugin-vnc'
+  - 'remmina-plugin-xdmcp'
+
 # .. Only defined here to overrule Debian_jessie.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:
   - 'vagrant-libvirt'
