@@ -1343,6 +1343,8 @@ packages__group_tag_game:
   # - 'assaultcube'
 
   - 'bsdgames'
+  - 'gnome-games'
+  - 'xmoto'
 
 packages__group_tag_game_puzzle:
   - 'knetwalk'
