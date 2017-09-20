@@ -111,8 +111,7 @@ tasks multiple times with the `when_*` statement had a bug in v2.0 so this
 role requires at least Ansible 2.1.
 Furthermore, the `packages__name_remapping_by_vars` feature is based on the
 ability to update Ansible variables in place. This does not seem to work on
-Ansible 2.2 yet and it has not been checked yet if that is a bug in Ansible or
-a feature. Use Ansible 2.1 for now to run this role.
+Ansible 2.2. Either use Ansible 2.1 or 2.3.1.0 or later.
 
 Additionally, this role uses features recently introduced in Jinja2, namely
 the `equalto` filter which was released with
@@ -142,7 +141,7 @@ Jinja 2.8 is [available in Debian Jessie Backports](https://packages.debian.org/
 
 ### Installation
 
-This role requires at least Ansible `v2.1.0`. To install it, run:
+This role requires at least Ansible `v2.3.1`. To install it, run:
 
 ```Shell
 ansible-galaxy install ypid.packages

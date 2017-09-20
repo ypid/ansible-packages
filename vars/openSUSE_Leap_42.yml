@@ -1,9 +1,18 @@
 ---
 
+## Currently not used. Ansible facts are different than I expected.
+## "ansible_distribution": "openSUSE Leap",
+## "ansible_distribution_major_version": "42",
+## "ansible_distribution_release": "3",
+## "ansible_distribution_version": "42.3",
+
 packages__targets:
-  - 'openSUSE Leap 42.1'
+  - 'openSUSE Leap 42.3'
 
 
 ## I am not really using openSUSE.
 packages__whitelist_by_vars:
   - 'samba-test'
+
+packages__name_remapping_by_vars:
+  'bundler': 'ruby2.4-rubygem-bundler'

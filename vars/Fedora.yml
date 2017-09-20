@@ -10,5 +10,5 @@ packages__name_remapping_by_vars:
 
 
 packages__blacklist_by_vars:
-  - 'safe_rm'
+  - 'safe-rm'
   - 'jstest_gtk'

@@ -1,5 +1,6 @@
 {# vim: foldmarker=[[[,]]]:foldmethod=marker
 #}
+# {% import 'templates/import/debops__tpl_macros.j2' as debops__tpl_macros with context %}
 
 {% macro get_regex_match(classes_regex_pattern, class_name) %}{# [[[ #}
 {{ class_name -}}
@@ -34,7 +35,7 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% endfor %}
 {% set packages__list = [] %}
 {% for pkt in packages__list_raw %}
-{%   set _ = packages__list.append(remapped_packages[pkt] | d(pkt)) %}
+{%   set _ = packages__list.extend(debops__tpl_macros.flattened(remapped_packages[pkt] | d(pkt)) | from_json) %}
 {% endfor %}
 {% set packages__list_final = (packages__list | difference(reject_packages|difference(revoke_rejected_packages))) %}
 {% if whitelist_packages %}
@@ -84,25 +85,24 @@ mode:
 {% endif %}
 {% if (found_main_package|length and not ((require is string or require is number) and found_main_package|length < require)) %}
 {%   if mode == 'package' or (mode == 'language' and condition.when|d(lang.code) == lang.code) %}
-{%     if condition.additional_packages is string %}
-{%       set pkt = condition.additional_packages %}
-{%       set _ = packages__list.append(get_lang_pkt((remapped_packages[pkt] | d(pkt)), lang)) %}
-{%     elif condition.additional_packages is iterable %}
-{%       for new_pkt in condition.additional_packages %}
-{%         set pkt = get_lang_pkt(get_lang_pkt((remapped_packages[new_pkt] | d(new_pkt)), lang)) %}
-{%         set _ = packages__list.append(pkt) %}
-{%       endfor %}
-{%     endif %}
+{%     for pkt in (debops__tpl_macros.flattened(condition.additional_packages) | from_json) %}
+{%       set _ = packages__list.extend(get_lang_pkts(debops__tpl_macros.flattened(remapped_packages[pkt] | d(pkt)) | from_json, lang) | from_json) %}
+{{ pkt }}
+{%     endfor %}
 {%   endif %}
 {% endif %}
 {%- endmacro %}{# ]]] #}
 
-{% macro get_lang_pkt(pkt, lang) %}{# [[[ #}
-{% if lang is defined and lang is mapping -%}
-{{   pkt|replace("LANG_NAME", lang.name)|replace("LANG_CODE", lang.code)|replace("LANG_CULTURE", lang.culture) }}
-{%- else %}
-{{   pkt }}
-{%- endif %}
+{% macro get_lang_pkts(pkts, lang) %}{# [[[ #}
+{% set lang_pkts = [] %}
+{% for pkt in pkts %}
+{%   if lang is defined and lang is mapping -%}
+{%    set _ = lang_pkts.append(pkt|replace("LANG_NAME", lang.name)|replace("LANG_CODE", lang.code)|replace("LANG_CULTURE", lang.culture)) %}
+{%-  else %}
+{%    set _ = lang_pkts.append(pkt) %}
+{%-  endif %}
+{% endfor %}
+{{ lang_pkts | to_json }}
 {%- endmacro %}{# ]]] #}
 
 {% macro print_comment(comment_sign) %}{# [[[ #}
