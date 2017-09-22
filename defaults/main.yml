@@ -2283,8 +2283,6 @@ packages__group_tag_devel_rcs_minimal:
   - 'git-svn'
 
   - 'tig'
-  - 'git-gui'
-  - 'gitk'
 
 packages__group_tag_devel_rcs_additional:
   - 'git-el'
@@ -2292,6 +2290,8 @@ packages__group_tag_devel_rcs_additional:
   - 'git-bzr'
   - 'git-cvs'
   - 'git-email'
+  - 'git-gui'
+  - 'gitk'
 
   # ypid does not use it:
   # - 'vcsh'
@@ -2961,9 +2961,6 @@ packages__group_devel_minimum: |
   {{
     packages__group_tag_devel_rcs_minimal +
     packages__group_devel_language_independent_unit_testing +
-    packages__group_devel_web +
-    packages__group_devel_javascript +
-    packages__group_tag_devel_lang_python +
     packages__group_devel_shellscript +
     []
   }}
@@ -2972,6 +2969,9 @@ packages__group_devel_basic: |
   {{
     packages__group_devel_minimum +
     packages__group_devel_hex_editor +
+    packages__group_devel_web +
+    packages__group_devel_javascript +
+    packages__group_tag_devel_lang_python +
     packages__group_tag_devel_lang_ruby +
     packages__group_devel_java +
     packages__group_devel_qt +
@@ -3882,6 +3882,7 @@ packages__classes_base: |
     packages__classes_core +
     packages__group_core_full +
     packages__group_sysadmin_basic +
+    packages__group_devel_minimum +
     []
   }}
 
