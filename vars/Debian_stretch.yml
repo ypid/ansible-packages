@@ -29,6 +29,7 @@ packages__blacklist_by_vars:
   - 'virtualbox'
   - 'virtualbox-dkms'
   - 'virtualbox-qt'
+  - 'virtualbox-guest-additions-iso'
 
   - 'npm'
   - 'remmina'
@@ -69,6 +70,7 @@ packages__blacklist_revoke_by_vars:
   - 'w3c-markup-validator'
   - 'yamllint'
   - 'magic-wormhole'
+  - 'gnome-software'
 
   # tmp
   - 'perl-modules'

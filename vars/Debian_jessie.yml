@@ -50,3 +50,4 @@ packages__blacklist_by_vars:
   - 'yamllint'
   - 'magic-wormhole'
   - 'gcc-arm-linux-gnueabi'
+  - 'gnome-software'

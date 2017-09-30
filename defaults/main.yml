@@ -714,6 +714,90 @@ packages__conditional_role:
     additional_packages:
       - 'xserver-xorg'
       - 'task-desktop'
+
+  ## Documentation packages [[[
+
+  - present_packages:
+      - 'git-doc'
+      - 'bash'
+    additional_packages:
+      - 'bash-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'zypper'
+    additional_packages:
+      - 'zypper-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'perl'
+    additional_packages:
+      - 'perl-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'debconf-utils'
+    additional_packages:
+      - 'debconf-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'ansible'
+    additional_packages:
+      - 'ansible-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'borgbackup'
+    additional_packages:
+      - 'borgbackup-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'digikam'
+    additional_packages:
+      - 'digikam-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'shorewall'
+    additional_packages:
+      - 'shorewall-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'wireshark'
+    additional_packages:
+      - 'wireshark-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'ant'
+    additional_packages:
+      - 'ant-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'antlr4'
+    additional_packages:
+      - 'antlr4-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'imagemagick'
+    additional_packages:
+      - 'imagemagick-doc'
+
+  - present_packages:
+      - 'git-doc'
+      - 'sqlite3'
+    additional_packages:
+      - 'sqlite3-doc'
+
+
+  ## ]]]
+
   ## ]]]
 
   ## Programms [[[
@@ -1396,17 +1480,15 @@ packages__group_tag_field_arts_audio:
 # Documentation [[[
 # ~~~~~~~~~~~~~
 
-# TODO: Move to packages__conditional_role
-
 packages__group_tag_role_documentation:
+  ## 'git-doc' being selected causes all known docs packages to get installed
+  ## conditionally if the main application is installed.
+  - 'git-doc'
+
+  - '{{ "apt-doc" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - 'linux-doc'
   - 'rsyslog-doc'
-  - 'perl-doc'
-  - 'debconf-doc'
   - 'apparmor-docs'
-  - 'ansible-doc'
-  - 'git-doc'
-  - 'borgbackup-doc'
 
 packages__group_tag_role_documentation_additional:
   - 'doc-rfc'
@@ -1437,7 +1519,7 @@ packages__group_imaging:
   - 'clonezilla'
   - 'partimage'
   - 'partclone'
-  - 'grub2'
+  - 'grub-common'
 
 # .. ]]]
 
@@ -2066,7 +2148,7 @@ packages__group_multimedia_minimum:
   # - 'smtube'
 
   - 'cheese'
-  - 'shotwell'
+  - 'digikam'
   - 'viewnior'
 
 packages__group_multimedia_editing_minimum:
@@ -2447,6 +2529,7 @@ packages__group_tag_field_electronics:
 # """"
 
 packages__group_tag_devel_lang_perl:
+  - 'perl'
   - 'perl-modules'
 
   - 'perltidy'
@@ -3006,7 +3089,6 @@ packages__group_devel_full: |
 packages__group_apt_package_management_minimal:
   - '{{ "apt-transport-https" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "wajig" if (ansible_pkg_mgr in ["apt"]) else "" }}'
-  - '{{ "aptitude" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
   # "Error: No information about packages! (Maybe no deb entries?)" on BeagleBone Black.
   - '{{ "apt-show-versions" if (ansible_pkg_mgr in ["apt"] and "armv7l" not in ansible_architecture|d("")) else "" }}'
@@ -3064,6 +3146,7 @@ packages__group_core_minimum:
 
   - 'git'
   - 'myrepos'
+  - 'bash'
   - 'zsh'
   - 'make'
   - 'less'
@@ -3106,10 +3189,6 @@ packages__group_core_additional:
   - 'attr'
   - 'rename'
   - 'socat'
-
-  ## Include conditionally.
-  # - 'cifs-utils'
-  # - 'smbclient'
 
   - 'python-setuptools'
   - 'python3-setuptools'
@@ -3789,6 +3868,10 @@ packages__group_user_additional:
   - 'autokey-gtk'
   - 'sikulix'
   - 'xclip'
+  - 'gnome-software'
+
+  - 'cifs-utils'
+  - 'smbclient'
 
   ## TODO: Not yet in stable:
   # - 'magic-wormhole'
@@ -3945,6 +4028,7 @@ packages__classes_client_explorer: |
     packages__group_education_full +
     packages__group_office_full +
     packages__group_devel_basic +
+    packages__group_tag_role_documentation +
     packages__group_applied_cryptography_basic +
     packages__group_wm_gnome_power_user +
     packages__group_devel_virtualization_desktop +
@@ -3959,7 +4043,6 @@ packages__classes_client_school: |
     packages__group_education_junior +
     packages__group_office_full +
     packages__group_tag_field_electronics +
-    packages__group_tag_role_documentation +
     packages__group_devel_full +
     packages__group_tag_devel_lang_python_additional +
     packages__group_database_tools +
@@ -4183,6 +4266,9 @@ packages__absent_preset:
   - 'frogr'
   - 'frogr-data'
   - 'iceweasel'
+
+  ## Nothing against it but the new default is digikam:
+  - 'shotwell'
 
   ## Is superseded by `tmux` but don’t automatically ensure absence `screen` by this preset:
   # - 'screen'
