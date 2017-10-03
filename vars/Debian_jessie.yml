@@ -51,3 +51,4 @@ packages__blacklist_by_vars:
   - 'magic-wormhole'
   - 'gcc-arm-linux-gnueabi'
   - 'gnome-software'
+  - 'sikulix'

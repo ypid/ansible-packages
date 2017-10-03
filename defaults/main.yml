@@ -649,6 +649,22 @@ packages__conditional_role:
     additional_packages:
       - 'gnome-themes-standard'
 
+  ## DKMS [[[
+
+  - present_packages:
+      - 'zfs-dkms'
+      - 'spl-dkms'
+      - 'virtualbox-dkms'
+      - 'broadcom-sta-dkms'
+    require: 1
+    additional_packages:
+      - 'dkms'
+
+      ## FIXME: More generic. `linux-headers-generic` is available on Ubuntu.
+      - 'linux-headers-amd64'
+
+  ## ]]]
+
   ## Cinnamon desktop environment [[[
   ## Add package `cinnamon` which is specific to Cinnamon.
   ## Used later to check if a Cinnamon environment is to be installed.
@@ -779,6 +795,12 @@ packages__conditional_role:
 
   - present_packages:
       - 'git-doc'
+      - 'libcommons-openpgp-java'
+    additional_packages:
+      - 'libcommons-openpgp-java-doc'
+
+  - present_packages:
+      - 'git-doc'
       - 'antlr4'
     additional_packages:
       - 'antlr4-doc'
@@ -846,6 +868,17 @@ packages__conditional_role:
       - 'xserver-xorg'
     additional_packages:
       - 'python-matplotlib'
+  ## ]]]
+
+  ## Application launcher [[[
+
+  ## Does not include a good launcher.
+  - present_packages:
+      - 'xfce4-settings'
+      - 'mate-desktop'
+    require: 1
+    additional_packages: '{{ packages__group_application_launcher }}'
+
   ## ]]]
 
   ## Gnome desktop environment [[[
@@ -916,11 +949,6 @@ packages__conditional_role:
   ## ]]]
 
   ## Xfce desktop environment [[[
-
-  ## Does not include a good launcher.
-  - present_packages:
-      - 'xfce4-settings'
-    additional_packages: '{{ packages__group_application_launcher }}'
 
   - present_packages:
       - 'xfce4-settings'
@@ -1028,8 +1056,9 @@ packages__localizations_available_global:
       - 'aspell-LANG_CODE'
 
   - present_packages: 'vim'
-    ## Based on: task-german
+    ## Based on: task-german (dependencies and recommended)
     additional_packages:
+      - 'task-german'
       - 'wngerman'
       - 'ingerman'
       - 'aspell-de-alt'
@@ -1776,6 +1805,7 @@ packages__group_networking_analysis_minimum:
   - 'hping3'
   - 'fping'
   - 'iperf'
+  - 'iperf3'
   # - 'bing'
   - 'httpie'
 
@@ -1808,6 +1838,10 @@ packages__group_core_hardware:
 
   ## Install manually in the rare case this is required.
   # - 'idle3-tools'
+
+packages__group_core_hardware_wireless:
+  - 'iw'
+  - 'rfkill'
 
 packages__group_hardware_info:
   - 'sysinfo'
@@ -2051,6 +2085,8 @@ packages__group_tag_field_linguistics_minimum:
   - 'dict-jargon'
   - 'dict-vera'
   - 'dict-elements'
+
+  - 'wordnet'
 
 packages__group_tag_field_linguistics_additional:
   ## Based on education-language (only makes recommendations).
@@ -2446,6 +2482,10 @@ packages__group_devel_java:
   - 'libtrove3-java'
   - 'gradle'
   - 'maven'
+  - 'ant'
+  - 'ant-optional'
+
+  - 'libcommons-openpgp-java'
 
 packages__group_devel_qt:
 
@@ -2701,6 +2741,12 @@ packages__group_tag_devel_lang_python:
 
   - 'python-scrypt'
 
+  - 'python-future'
+  - 'python3-future'
+
+  - 'python-apt'
+  - 'python3-apt'
+
   ## Don’t use:
   # - 'python-beautifulsoup'
 
@@ -2818,8 +2864,6 @@ packages__group_devel_virtualization_desktop_contrib:
   - 'virtualbox'
   - 'virtualbox-dkms'
   - 'virtualbox-qt'
-  # FIXME: More generic. `linux-headers-generic` is available on Ubuntu.
-  - 'linux-headers-amd64'
 
 packages__group_devel_virtualization_desktop_non_free:
   - 'virtualbox-guest-additions-iso'
@@ -3055,7 +3099,6 @@ packages__group_devel_basic: |
     packages__group_devel_web +
     packages__group_devel_javascript +
     packages__group_tag_devel_lang_python +
-    packages__group_tag_devel_lang_ruby +
     packages__group_devel_java +
     packages__group_devel_qt +
     packages__group_tag_devel_ide +
@@ -3068,6 +3111,7 @@ packages__group_devel_full: |
     packages__group_tag_devel_rcs_full +
     packages__group_devel_debian +
     packages__group_devel_android +
+    packages__group_tag_devel_lang_ruby +
     packages__group_devel_virtualization +
     packages__group_devel_virtualization_detection +
     packages__group_tag_devel_lang_haxe +
@@ -3122,8 +3166,10 @@ packages__group_apt_package_management_full: |
 
 packages__group_apt_package_management_gui:
   - 'synaptic'
+  - 'apper'
+
+  ## Not really usable yet unfortunately:
   - 'gnome-packagekit'
-  - 'software-center'
 
 # .. ]]]
 
@@ -3132,6 +3178,12 @@ packages__group_apt_package_management_gui:
 
 ## Minimum set of programs which I need.
 packages__group_core_minimum:
+  - 'coreutils'
+  - 'grep'
+  - 'procps'
+  - 'util-linux'
+  - 'findutils'
+
   - 'vim'
   - 'vim-nox'
 
@@ -3189,6 +3241,7 @@ packages__group_core_additional:
   - 'attr'
   - 'rename'
   - 'socat'
+  - 'debianutils'
 
   - 'python-setuptools'
   - 'python3-setuptools'
@@ -3341,6 +3394,7 @@ packages__group_core_full: |
     packages__group_core_cron +
     (packages__group_core_bare_metal if ('host' == ansible_virtualization_role) else []) +
     (packages__group_core_hardware   if ('host' == ansible_virtualization_role) else []) +
+    (packages__group_core_hardware_wireless if ("Notebook" == ansible_form_factor|d("")) else []) +
     (packages__group_core_hypervisor_guest_tools if ('guest' == ansible_virtualization_role) else []) +
     []
   }}
@@ -3646,6 +3700,7 @@ packages__group_wm_mate:
 
   - 'mate-applets'
   - 'mate-media'
+  - 'mate-utils'
 
   - 'xscreensaver'
 
@@ -4335,6 +4390,17 @@ packages__classes:
     {{
       packages__classes_server_school +
       (packages__additional_for_class.server_school|d([])) +
+      []
+    }}
+
+  android: |
+    {{
+      packages__classes_client +
+      packages__group_devel_basic +
+      packages__group_typesetting_minimal +
+      packages__group_tag_works_with_archive_full +
+      packages__group_tag_game_toys +
+      (packages__additional_for_class.client|d([])) +
       []
     }}
 

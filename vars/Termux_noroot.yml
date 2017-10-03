@@ -1,0 +1,9 @@
+---
+
+# https://termux.com/
+
+packages__targets:
+  - 'Termux (not rooted Android)'
+
+packages__blacklist_by_vars:
+  - 'tcpdump'

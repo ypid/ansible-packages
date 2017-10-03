@@ -25,6 +25,10 @@ packages__blacklist_by_vars:
   - 'gnome-schedule'
   - 'gnupg-curl'
   - 'libgee-dev'
+  - 'libcommons-openpgp-java'
+  - 'libcommons-openpgp-java-doc'
+  - 'songwrite'
+  - 'freqtweak'
 
   - 'virtualbox'
   - 'virtualbox-dkms'
@@ -71,6 +75,7 @@ packages__blacklist_revoke_by_vars:
   - 'yamllint'
   - 'magic-wormhole'
   - 'gnome-software'
+  - 'sikulix'
 
   # tmp
   - 'perl-modules'
