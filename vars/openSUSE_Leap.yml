@@ -36,6 +36,7 @@ packages__name_remapping_by_vars:
   'silversearcher-ag': 'the_silver_searcher'
   'myrepos': 'mr'
   'imagemagick': 'ImageMagick'
+  'imagemagick-doc': 'ImageMagick-doc'
   'wxmaxima': 'wxMaxima'
   'ipython': 'IPython'
   'shellcheck': 'ShellCheck'
@@ -79,6 +80,7 @@ packages__name_remapping_by_vars:
   'nautilus-owncloud': 'owncloud-client-nautilus'
   'openssh-server': 'openssh'
   'openssh-client': 'openssh'
+  'iperf3': 'iperf'
   'p7zip-full': 'p7zip'
   'p7zip-rar': 'p7zip'
   'xfce4-timer-plugin': 'xfce4-panel-plugin-timer'
@@ -216,6 +218,7 @@ packages__blacklist_by_vars:
   ## Debian specific:
   - 'isenkram-cli'
   - 'debconf-utils'
+  - 'debconf-doc'
   - 'equivs'
 
   ## Package with same name exists but with different purpose/application:
@@ -345,6 +348,9 @@ packages__blacklist_by_vars:
   - 'ruby-gsl'
   - 'libnet-openssh-parallel-perl'
   - 'libnet-openssh-compat-perl'
+  - 'libcommons-openpgp-java'
+  - 'libcommons-openpgp-java-doc'
+  - 'linux-doc'
 
   ## No known openSUSE repository containing node packages.
   - 'node-uglify'
@@ -358,6 +364,9 @@ packages__blacklist_by_vars:
 
   - 'python3-all'
   - 'python-all-dev'
+
+  ## Package not for current Leap version:
+  - 'debianutils'
 
   ## Untrusted (home):
   ## Check: https://software.opensuse.org/package/${package_name}
