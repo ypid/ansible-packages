@@ -216,6 +216,8 @@ packages__name_remapping_by_vars:
 
 packages__blacklist_by_vars:
   ## Debian specific:
+  - 'debian-keyring'
+  - 'debian-archive-keyring'
   - 'isenkram-cli'
   - 'debconf-utils'
   - 'debconf-doc'

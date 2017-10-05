@@ -3131,6 +3131,7 @@ packages__group_devel_full: |
 # ~~~~~~~~~~~~~~~~~~
 
 packages__group_apt_package_management_minimal:
+  - '{{ "debian-archive-keyring" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "apt-transport-https" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "wajig" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
@@ -3423,6 +3424,7 @@ packages__group_user_terminal_programs_minimum:
   # - 'mosh'
   - 'sshfs'
   - 'encfs'
+  - 'debian-keyring'
   - 'inotify-tools'
 
   - 'rpl'
