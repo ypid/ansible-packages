@@ -245,7 +245,7 @@ packages__non_free_enabled: False
 # under :file:`vars/` be loaded?
 #
 # This mechanism is used to change packages names in case they differ from the
-# names in Debian Jessie or to remove packages from the list in case they are
+# names in Debian Stable or to remove packages from the list in case they are
 # not available in the default repositories.
 packages__load_distribution_vars: True
 
@@ -279,7 +279,7 @@ packages__load_distribution_backports_vars: False
 # this role under :file:`vars/` be loaded?
 #
 # This option might be useful in case you intend to use most packages from your
-# default release (e.g. Debian Jessie) but want to install some packages from
+# default release (e.g. Debian Stable) but want to install some packages from
 # either testing or unstable).
 #
 # In which case, you will need to set this option to `False` so that packages
@@ -1243,6 +1243,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_nvidia_state | d(packages__apt_preferences__client_backports_state) }}'
 
+  - package: 'youtube-dl'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_youtube_dl_state | d(packages__apt_preferences__client_backports_state) }}'
+
   - package: 'firejail'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state) }}'
@@ -1586,11 +1590,16 @@ packages__group_internet_additional:
   #
   - 'liferea'
 
-  - 'pidgin'
-  - 'pidgin-otr'
-  - 'pidgin-libnotify'
-  - 'pidgin-awayonlock'
-  - 'pidgin-plugin-pack'
+
+  - 'gajim'
+  - 'gajim-omemo'
+
+  # - 'pidgin'
+  # - 'pidgin-otr'
+  # - 'pidgin-libnotify'
+  # - 'pidgin-awayonlock'
+  # - 'pidgin-plugin-pack'
+
   - 'irssi'
   - 'hexchat'
   - 'mumble'
@@ -1617,7 +1626,7 @@ packages__group_internet_full: |
 # ~~~~
 
 packages__group_tag_protocol_voip_minimum:
-  - 'sflphone-gnome'
+  - 'ring'
   - 'linphone'
 
 # .. ]]]
@@ -2379,6 +2388,7 @@ packages__group_office_basic: |
 packages__group_office_full: |
   {{
     packages__group_office_basic +
+    packages__group_office_sweethome +
     packages__group_pdf_viewing_additional +
     packages__group_office_additional +
     packages__group_typesetting_full +

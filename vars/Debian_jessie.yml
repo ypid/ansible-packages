@@ -7,6 +7,7 @@ packages__targets:
 packages__name_remapping_by_vars:
   'adb': 'android-tools-adb'
   'iptraf-ng': 'iptraf'
+  'ring': 'sflphone-gnome'
 
 packages__blacklist_by_vars:
 
