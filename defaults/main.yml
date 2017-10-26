@@ -2602,6 +2602,10 @@ packages__group_tag_devel_lang_perl:
   - 'libdatetime-set-perl'
   - 'libdatetime-format-ical-perl'
   - 'libtime-duration-perl'
+  - 'libtime-format-perl'
+
+  ## In perl core modules.
+  # - 'libtime-hires-perl'
 
   - 'liblocal-lib-perl'
   - 'libio-captureoutput-perl'
@@ -2634,6 +2638,8 @@ packages__group_tag_devel_lang_perl:
   - 'libdata-ical-perl'
   - 'libpod-markdown-perl'
   # - 'libtext-dhcpleases-perl'
+
+  - 'libdevice-serialport-perl'
 
   # Legacy:
   # - 'libnagios-plugin-perl'

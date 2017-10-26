@@ -133,6 +133,8 @@ packages__name_remapping_by_vars:
   'libdatetime-format-ical-perl': 'perl(DateTime::Format::ICal)'
 
   'libtime-duration-perl': 'perl(Time::Duration)'
+  'libtime-format-perl': 'perl(Time::Format)'
+  # 'libtime-hires-perl': 'perl(Time::Duration)'
 
   'liblocal-lib-perl': 'perl(local::lib)'
   'libio-captureoutput-perl': 'perl(IO::CaptureOutput)'

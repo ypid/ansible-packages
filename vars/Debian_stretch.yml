@@ -76,6 +76,7 @@ packages__blacklist_revoke_by_vars:
   - 'magic-wormhole'
   - 'gnome-software'
   - 'sikulix'
+  - 'yapf3'
 
   # tmp
   - 'perl-modules'

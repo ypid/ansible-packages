@@ -53,3 +53,4 @@ packages__blacklist_by_vars:
   - 'gcc-arm-linux-gnueabi'
   - 'gnome-software'
   - 'sikulix'
+  - 'yapf3'
