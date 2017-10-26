@@ -10,13 +10,14 @@ packages__targets:
 ## https://download.opensuse.org/repositories/utilities/openSUSE_Leap_42.3/utilities.repo
 ## https://download.opensuse.org/repositories/Publishing/openSUSE_Leap_42.3/Publishing.repo
 ## https://download.opensuse.org/repositories/network/openSUSE_Leap_42.3/network.repo
+## https://download.opensuse.org/repositories/network:/utilities/openSUSE_Leap_42.3/network:utilities.repo
 ## https://download.opensuse.org/repositories/server:/monitoring/openSUSE_Leap_42.3/server:monitoring.repo
 ## https://download.opensuse.org/repositories/security/openSUSE_Leap_42.3/security.repo
 ## https://download.opensuse.org/repositories/devel:/tools/openSUSE_Leap_42.3/devel:tools.repo
+## https://download.opensuse.org/repositories/devel:/tools:/building/openSUSE_Leap_42.3/devel:tools:building.repo
 ## https://download.opensuse.org/repositories/devel:/languages:/perl/openSUSE_Leap_42.3/devel:languages:perl.repo
 ## https://download.opensuse.org/repositories/devel:/languages:/python/openSUSE_Leap_42.3/devel:languages:python.repo
 ## https://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/openSUSE_Leap_42.3/devel:languages:ruby:extensions.repo
-## https://download.opensuse.org/repositories/devel:/tools:/building/openSUSE_Leap_42.3/devel:tools:building.repo
 ## https://download.opensuse.org/repositories/X11:/Utilities/openSUSE_Leap_42.3/X11:Utilities.repo
 ## https://download.opensuse.org/repositories/Office/openSUSE_Leap_42.3/Office.repo
 ## https://download.opensuse.org/repositories/X11:/xfce/openSUSE_Leap_42.3/X11:xfce.repo
@@ -27,6 +28,12 @@ packages__targets:
 ##
 ## Optional:
 ## https://download.opensuse.org/repositories/security:/logging/openSUSE_Leap_42.3/security:logging.repo
+#
+## zypper modifyrepo -p 150 X11_Utilities
+## zypper modifyrepo -p 150 X11_xfce
+## zypper modifyrepo -p 150 X11_Pantheon
+## zypper modifyrepo -p 150 network
+## zypper modifyrepo -p 150 utilities
 
 packages__name_remapping_by_vars:
   'ack-grep': 'ack'
@@ -40,6 +47,7 @@ packages__name_remapping_by_vars:
   'wxmaxima': 'wxMaxima'
   'ipython': 'IPython'
   'shellcheck': 'ShellCheck'
+  'yamllint': 'python3-yamllint'
   'biber': 'perl-biber'
   'wordnet-gui': 'wordnet'
   'vim-gnome': 'gvim'
@@ -71,6 +79,8 @@ packages__name_remapping_by_vars:
   'gedit-latex-plugin': 'gedit-plugin-latex'
   'kile-l10n': 'kile-lang'
   'csvtool': 'ocaml-csv'
+  'golang': 'go'
+  'golang-doc': 'go-doc'
   'unison-gtk': 'unison'
   'qalculate-gtk': 'qalculate'
   'greybird-gtk-theme': 'gtk3-metatheme-greybird'
@@ -106,6 +116,8 @@ packages__name_remapping_by_vars:
   'python3-whoosh': 'python3-Whoosh'
   'python-yaml': 'python-PyYAML'
   'python3-yaml': 'python3-PyYAML'
+  'pylint': 'python-pylint'
+  'pylint3': 'python3-pylint'
 
   ## Using the `Provides` field of packages:
   'perltidy': 'perl(Perl::Tidy)'
@@ -224,6 +236,8 @@ packages__blacklist_by_vars:
   - 'debconf-utils'
   - 'debconf-doc'
   - 'equivs'
+  - 'python-apt'
+  - 'python3-apt'
 
   ## Package with same name exists but with different purpose/application:
   - 'grip'
@@ -249,6 +263,12 @@ packages__blacklist_by_vars:
   ## `gtkhash` has conflicting files (/usr/bin/gtkhash) with `nemo-extension-gtkhash`.
   ## Disable it for now.
   - 'gtkhash'
+
+  ## `python-netaddr` and `python3-netaddr` both try to install a conflicting file: /usr/bin/netaddr.
+  ## Disable `python-netaddr` for now.
+  - 'python-netaddr'
+
+  - 'python-twisted'
 
   ## Metapackages (patterns) seems to behave differently on openSUSE.
   - 'task-desktop'
@@ -355,6 +375,9 @@ packages__blacklist_by_vars:
   - 'libcommons-openpgp-java'
   - 'libcommons-openpgp-java-doc'
   - 'linux-doc'
+  - 'json2yaml'
+  - 'yaml2json'
+  - 'yq'
 
   ## No known openSUSE repository containing node packages.
   - 'node-uglify'
@@ -386,6 +409,12 @@ packages__blacklist_by_vars:
   - 'gtkterm'
   - 'gtk-vector-screenshot'
   - 'dvdbackup'
+  - 'gajim-omemo'
+  - 'sweethome3d'
+  - 'sweethome3d-furniture'
+  - 'sweethome3d-furniture-editor'
+  - 'sweethome3d-textures-editor'
+  - 'sweethome3d-furniture-nonfree'
 
   ## https://forums.opensuse.org/showthread.php/442407-looking-for-stupid-things
   - 'vrms'

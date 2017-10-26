@@ -1,0 +1,9 @@
+---
+
+packages__targets:
+  - 'pip3'
+
+packages__whitelist_by_vars:
+  - 'json2yaml'
+  - 'yaml2json'
+  - 'yq'
