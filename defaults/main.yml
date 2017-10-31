@@ -2336,6 +2336,7 @@ packages__group_office_sweethome:
   - '{{ "sweethome3d-furniture-nonfree" if (packages__non_free_enabled|d() | bool) else "" }}'
 
 packages__group_office_minimal:
+  - 'aspell-en'
   - 'libreoffice-writer'
   - 'libreoffice-pdfimport'
   - 'libreoffice-calc'
@@ -3178,6 +3179,8 @@ packages__group_devel_full: |
 # ~~~~~~~~~~~~~~~~~~
 
 packages__group_apt_package_management_minimal:
+  ## Still used by things Ansible v2.3 for example.
+  - 'aptitude'
   - '{{ "debian-archive-keyring" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "apt-transport-https" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "wajig" if (ansible_pkg_mgr in ["apt"]) else "" }}'
