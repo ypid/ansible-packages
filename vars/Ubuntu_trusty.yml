@@ -20,6 +20,8 @@ packages__blacklist_by_vars:
   - 'hwinfo'
   - 'shellcheck'
   - 'bats'
+  - 'repo'
+  - 'rename'
   - 'borgbackup'
   - 'borgbackup-doc'
   - 'uncrustify'
