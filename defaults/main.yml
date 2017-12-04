@@ -2240,6 +2240,8 @@ packages__group_multimedia_additional:
   - 'winff'
   - 'python-eyed3'
 
+  - 'soundconverter'
+
   - 'id3v2'
 
   - 'gespeaker'
@@ -2586,6 +2588,7 @@ packages__group_tag_field_electronics:
 packages__group_tag_devel_lang_perl:
   - 'perl'
   - 'perl-modules'
+  - 'libmodule-pluggable-perl'
 
   - 'perltidy'
   - 'libperl-critic-perl'
@@ -2769,6 +2772,8 @@ packages__group_tag_devel_lang_python:
   - 'python-future'
   - 'python3-future'
 
+  - 'python-zbar'
+
   - 'python-apt'
   - 'python3-apt'
 
@@ -2843,6 +2848,8 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-pickleshare'
   - 'python-urllib3'
   - 'python3-urllib3'
+  - 'python-click'
+  - 'python3-click'
 
 # .. ]]]
 
@@ -3274,6 +3281,7 @@ packages__group_core_additional:
   - 'rsync'
 
   - 'openssh-client'
+  - 'iproute2'
   - 'nmap'
   - 'fping'
   - 'iperf'
@@ -3595,7 +3603,6 @@ packages__group_school_additional:
   - 'opus-tools'
   - 'lame'
   - 'gnome-mplayer'
-  - 'soundconverter'
   - 'openshot'
   - 'pitivi'
   - 'mkvtoolnix-gui'

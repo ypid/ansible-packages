@@ -28,6 +28,7 @@ packages__targets:
 ##
 ## Optional:
 ## https://download.opensuse.org/repositories/security:/logging/openSUSE_Leap_42.3/security:logging.repo
+## https://download.opensuse.org/repositories/network:/telephony/openSUSE_Leap_42.3/network:telephony.repo
 #
 ## zypper modifyrepo -p 150 X11_Utilities
 ## zypper modifyrepo -p 150 X11_xfce
@@ -45,7 +46,9 @@ packages__name_remapping_by_vars:
   'imagemagick': 'ImageMagick'
   'imagemagick-doc': 'ImageMagick-doc'
   'wxmaxima': 'wxMaxima'
+  'runsnakerun': 'RunSnakeRun'
   'ipython': 'IPython'
+  'ipython-doc': 'IPython-doc'
   'shellcheck': 'ShellCheck'
   'yamllint': 'python3-yamllint'
   'biber': 'perl-biber'
@@ -87,6 +90,7 @@ packages__name_remapping_by_vars:
   'lshw-gtk': 'lshw-gui'
   'man-db': 'man'
   'mtr-tiny': 'mtr'
+  'net-tools': 'net-tools-deprecated'
   'nautilus-owncloud': 'owncloud-client-nautilus'
   'openssh-server': 'openssh'
   'openssh-client': 'openssh'
@@ -120,6 +124,7 @@ packages__name_remapping_by_vars:
   'pylint3': 'python3-pylint'
 
   ## Using the `Provides` field of packages:
+  'libmodule-pluggable-perl': 'perl(Module::Pluggable)'
   'perltidy': 'perl(Perl::Tidy)'
   'libperl-critic-perl': 'perl(Perl::Critic)'
 
@@ -268,6 +273,10 @@ packages__blacklist_by_vars:
   ## Disable `python-netaddr` for now.
   - 'python-netaddr'
 
+  ## `python-keyring` and `python3-keyring` both try to install a conflicting file: /usr/bin/keyring.
+  ## Disable `python-keyring` for now.
+  - 'python-keyring'
+
   - 'python-twisted'
 
   ## Metapackages (patterns) seems to behave differently on openSUSE.
@@ -378,6 +387,38 @@ packages__blacklist_by_vars:
   - 'json2yaml'
   - 'yaml2json'
   - 'yq'
+
+  ## Missing/not packaged for openSUSE, not checked if named differently:
+  - 'ant-doc'
+  - 'ant-optional'
+  - 'borgbackup-doc'
+  - 'grub-common'
+  - 'python-bs4'
+  - 'python-bs4-doc'
+  - 'python-git'
+  - 'python-q'
+  - 'python-scrapy'
+  - 'python-sklearn'
+  - 'python-sphinxcontrib.programoutput'
+  - 'python-sphinxcontrib.spelling'
+  - 'python-zmq'
+  - 'python3-bs4'
+  - 'python3-geoip'
+  - 'python3-jinja2'
+  - 'python3-markdown'
+  - 'python3-openssl'
+  - 'python3-postgresql'
+  - 'python3-pyqt5'
+  - 'python3-q'
+  - 'python3-sphinx'
+  - 'python3-sphinx-argparse'
+  - 'python3-sphinxcontrib.programoutput'
+  - 'python3-sphinxcontrib.spelling'
+  - 'python3-yamllint'
+  - 'python3-zmq'
+  - 'wireshark-doc'
+  - 'python-sphinx-rtd-theme'
+  - 'python3-sphinx-rtd-theme'
 
   ## No known openSUSE repository containing node packages.
   - 'node-uglify'
