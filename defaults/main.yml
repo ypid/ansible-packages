@@ -1689,15 +1689,6 @@ packages__group_tag_admin_backup:
 
 # .. ]]]
 
-# Debtags: admin::backup [[[
-# """"""""""""""""""""""
-
-# Handled by the debops.cryptsetup role.
-packages__group_tag_admin_filesystem_cryptography:
-  - 'cryptsetup'
-
-# .. ]]]
-
 # Ansible [[[
 # """""""
 
@@ -3242,6 +3233,7 @@ packages__group_core_minimum:
   - 'procps'
   - 'util-linux'
   - 'findutils'
+  - 'cryptsetup'
 
   - 'vim'
   - 'vim-nox'
@@ -4104,7 +4096,6 @@ packages__classes_live_system: |
   {{
     packages__classes_base +
     packages__group_core_full +
-    packages__group_tag_admin_filesystem_cryptography +
     packages__group_sysadmin_full +
     packages__group_wm_gnome_minimal +
     packages__group_hardware_testing_and_benchmarking_full +
