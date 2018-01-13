@@ -7,3 +7,6 @@ packages__whitelist_by_vars:
   - 'json2yaml'
   - 'yaml2json'
   - 'yq'
+
+  ## Not yet included in openSUSE.
+  - 'yamllint'

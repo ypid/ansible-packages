@@ -2841,6 +2841,10 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-urllib3'
   - 'python-click'
   - 'python3-click'
+  - 'python-gmpy2'
+  - 'python3-gmpy2'
+  - 'python-cryptography'
+  - 'python3-cryptography'
 
 # .. ]]]
 
@@ -3123,6 +3127,7 @@ packages__group_devel_env_for_aosp:
 
   ## ypid additions:
   - 'fuse'
+  - 'fuseext2'
   - 'liblz4-tool'
   - 'repo'
 
