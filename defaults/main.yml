@@ -1200,7 +1200,7 @@ packages__apt_preferences__debian_backports_list:
     state: '{{ packages__apt_preferences__backports_owncloud_client_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'josm josm-* jmapviewer openstreetmap-map-icons-classic'
-    backports: [ 'jessie' ]
+    backports: [ 'jessie', 'stretch' ]
     state: '{{ packages__apt_preferences__backports_josm | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'electrum python-electrum'
