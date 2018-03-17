@@ -1596,9 +1596,6 @@ packages__group_internet_additional:
   - 'liferea'
 
 
-  - 'gajim'
-  - 'gajim-omemo'
-
   # - 'pidgin'
   # - 'pidgin-otr'
   # - 'pidgin-libnotify'
@@ -1622,6 +1619,11 @@ packages__group_internet_full: |
     packages__group_email_minimum +
     packages__group_internet_flash +
     packages__group_internet_additional +
+    ([ 'gajim', 'gajim-omemo' ]
+    if (
+      ansible_distribution|d("") == 'Debian' and
+      ansible_distribution_release|d("")|lower != 'jessie'
+    ) else []) +
     []
   }}
 
