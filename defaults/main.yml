@@ -1166,6 +1166,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'wheezy' ]
     state: '{{ packages__apt_preferences__backports_vim_state | d(packages__apt_preferences__core_backports_state) }}'
 
+  - package: 'jq'
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_jq_state | d(packages__apt_preferences__core_backports_state) }}'
+
   - package: 'torbrowser-launcher'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_torbrowser_state | d(packages__apt_preferences__client_backports_state) }}'
@@ -1173,6 +1177,14 @@ packages__apt_preferences__debian_backports_list:
   - package: 'borgbackup borgbackup-* python3-msgpack'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
+  - package: 'intel-microcode'
+    backports: [ 'stretch' ]
+    state: '{{ "present"
+               if (ansible_virtualization_role in [ "host" ] and
+                   (packages__apt_preferences__backports_cpu_microcode_state | d(packages__apt_preferences__security_backports_state)) == "present"
+                  )
+               else "absent" }}'
 
   - package: 'zfs-dkms spl-dkms dkms'
     backports: [ 'jessie' ]
@@ -1284,6 +1296,13 @@ packages__apt_preferences__debian_backports_list:
   - package: 'openjdk-8-jdk openjdk-8-jdk-headless openjdk-8-jre openjdk-8-jre-headless ca-certificates-java'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_openjdk_8_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
+
+
+# .. envvar:: packages__apt_preferences__security_backports_state
+#
+# Default state of backports presets which fix security vulnerabilities.
+packages__apt_preferences__security_backports_state: 'present'
 
 
 
@@ -1548,8 +1567,7 @@ packages__group_imaging:
   # - 'ddrescue'
   # - 'myrescue'
 
-  ## TODO: Not yet in stable:
-  # - 'ddrescueview'
+  - 'ddrescueview'
 
   ## TODO: Not yet packaged: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=730429
   # - 'ddrutility'
@@ -1566,10 +1584,6 @@ packages__group_imaging:
 
 packages__group_internet_minimum:
   - 'firefox-esr'
-
-  ## TODO: Install via Debian? Reevaluate when Stretch is released.
-  # - 'xul-ext-ublock-origin'
-
   - 'chromium'
 
 
@@ -1591,16 +1605,7 @@ packages__group_internet_flash:
   # - '{{ "browser-plugin-freshplayer-pepperflash" if (packages__contrib_enabled|d() | bool) else "" }}'
 
 packages__group_internet_additional:
-  # - 'epiphany-browser'
-  #
   - 'liferea'
-
-
-  # - 'pidgin'
-  # - 'pidgin-otr'
-  # - 'pidgin-libnotify'
-  # - 'pidgin-awayonlock'
-  # - 'pidgin-plugin-pack'
 
   - 'irssi'
   - 'hexchat'
@@ -1609,9 +1614,6 @@ packages__group_internet_additional:
   # - 'uget'
   - 'webhttrack'
   - 'youtube-dl'
-
-  ## Might be buggy:
-  # - 'pidgin-openpgp'
 
 packages__group_internet_full: |
   {{
@@ -2444,6 +2446,7 @@ packages__group_tag_devel_rcs_additional:
   - 'colordiff'
   - 'rdiff'
   - 'vbindiff'
+  - 'diffoscope'
 
   - 'meld'
 
@@ -2473,9 +2476,11 @@ packages__group_devel_ai:
 packages__group_devel_android:
   - 'androidsdk-ddms'
   - 'adb'
+  - 'fastboot'
   - 'pidcat'
   - 'heimdall-flash'
   - 'heimdall-flash-frontend'
+  - 'fdroidcl'
 
 packages__group_devel_debian:
   - 'dh-make'
@@ -2580,7 +2585,6 @@ packages__group_tag_field_electronics:
 
 packages__group_tag_devel_lang_perl:
   - 'perl'
-  - 'perl-modules'
   - 'libmodule-pluggable-perl'
 
   - 'perltidy'
@@ -3590,7 +3594,7 @@ packages__group_school_additional_dev:
 packages__group_school_additional:
   - '{{ "google-earth" if (packages__non_free_enabled|d() | bool) else "" }}'
 
-  ## FIXME(ypid): Use DebOps roles to set this up.
+  ## Use DebOps roles to set this up.
   # Also installs Apache2 on Debian Jessie:
   # - 'php5'
   # - 'php5-mysql'
@@ -3994,18 +3998,14 @@ packages__group_user_additional:
   - 'cifs-utils'
   - 'smbclient'
 
-  ## TODO: Not yet in stable:
-  # - 'magic-wormhole'
+  - 'magic-wormhole'
 
   - 'scrot'
   - 'gtk-redshift'
 
   - 'cdcat'
 
-  ## TODO: Screenkey fork not yet in Debian stable.
-  ## Use the source: https://github.com/wavexx/screenkey
-  # - 'screenkey'
-
+  - 'screenkey'
   - 'key-mon'
 
   - 'gtk-vector-screenshot'

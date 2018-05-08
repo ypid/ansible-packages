@@ -29,6 +29,7 @@ packages__blacklist_by_vars:
   - 'libcommons-openpgp-java-doc'
   - 'songwrite'
   - 'freqtweak'
+  - 'fdroidcl'
 
   - 'virtualbox'
   - 'virtualbox-dkms'

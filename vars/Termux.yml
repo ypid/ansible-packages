@@ -8,6 +8,7 @@ packages__targets:
 packages__name_remapping_by_vars:
   'openssh-server': 'openssh'
   'openssh-client': 'openssh'
+  'man-db': 'man'
 
 packages__whitelist_by_vars:
   - 'aapt'

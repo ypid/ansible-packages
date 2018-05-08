@@ -6,6 +6,7 @@ packages__targets:
 
 packages__name_remapping_by_vars:
   'adb': 'android-tools-adb'
+  'fastboot': 'android-tools-fastboot'
   'iptraf-ng': 'iptraf'
   'ring': 'sflphone-gnome'
 
@@ -54,3 +55,4 @@ packages__blacklist_by_vars:
   - 'gnome-software'
   - 'sikulix'
   - 'yapf3'
+  - 'fdroidcl'
