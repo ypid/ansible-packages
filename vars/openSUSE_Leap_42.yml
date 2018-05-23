@@ -16,3 +16,10 @@ packages__whitelist_by_vars:
 
 packages__name_remapping_by_vars:
   'bundler': 'ruby2.4-rubygem-bundler'
+  'aptitude': 'zypper-aptitude'
+
+# No provider of 'libdevice-serialport-perl' found.
+# 'ttyrec' not found in package names. Trying capabilities.
+# No provider of 'ttyrec' found.
+# 'unp' not found in package names. Trying capabilities.
+# No provider of 'unp' found.

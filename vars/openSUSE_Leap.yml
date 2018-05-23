@@ -40,6 +40,7 @@ packages__name_remapping_by_vars:
   'ack-grep': 'ack'
   'rename': 'prename'
   'nmap': ['nmap', 'nping', 'ncat']
+  'etckeeper': ['etckeeper', 'etckeeper-cron', 'etckeeper-zypp-plugin']
   'smbclient': 'samba-test'
   'silversearcher-ag': 'the_silver_searcher'
   'myrepos': 'mr'
@@ -90,7 +91,10 @@ packages__name_remapping_by_vars:
   'lshw-gtk': 'lshw-gui'
   'man-db': 'man'
   'mtr-tiny': 'mtr'
-  'net-tools': 'net-tools-deprecated'
+
+  ## Don’t require the net-tools-deprecated to be installed.
+  # 'net-tools': 'net-tools-deprecated'
+
   'nautilus-owncloud': 'owncloud-client-nautilus'
   'openssh-server': 'openssh'
   'openssh-client': 'openssh'
@@ -180,6 +184,7 @@ packages__name_remapping_by_vars:
   'libtext-csv-xs-perl': 'perl(Text::CSV_XS)'
   'libconfig-simple-perl': 'perl(Config::Simple)'
   'libpod-markdown-perl': 'perl(Pod::Markdown)'
+  'libdevice-serialport-perl': 'perl(Device::SerialPort)'
   'libmonitoring-plugin-perl': 'perl(Monitoring::Plugin)'
 
   ## Implemented using raw package names:
@@ -243,6 +248,7 @@ packages__blacklist_by_vars:
   - 'equivs'
   - 'python-apt'
   - 'python3-apt'
+  - 'aptitude'
 
   ## Package with same name exists but with different purpose/application:
   - 'grip'
@@ -264,6 +270,7 @@ packages__blacklist_by_vars:
   - 'gscan2pdf'
   - 'python-requests'
   - 'python-autopep8'
+  - 'python-seaborn'
 
   ## `gtkhash` has conflicting files (/usr/bin/gtkhash) with `nemo-extension-gtkhash`.
   ## Disable it for now.
@@ -279,9 +286,25 @@ packages__blacklist_by_vars:
 
   - 'python-twisted'
 
+  ## sysstat-11.0.6-4.2.x86_64 requires gettext, but this requirement cannot be provided
+  - 'sysstat'
+
+  ## Conflict
+  - 'net-tools-deprecated'
+
   ## Metapackages (patterns) seems to behave differently on openSUSE.
   - 'task-desktop'
   - 'task-xfce-desktop'
+
+  ## Installation issues on openSUSE 42.3.
+  - 'python3-sqlalchemy'
+
+  ## Error: unpacking of archive failed on file /usr/lib64/python3.4/site-packages/PyYAML-3.12-py3.4.egg-info: cpio: rename failed - Is a directory
+  - 'python3-PyYAML'
+  - 'python3-pyaml'
+
+  ## Depends on python3-ndg-httpsclient which conflicts with python-ndg-httpsclient.
+  - 'python3-urllib3'
 
   ## Missing/not packaged for openSUSE:
   - 'safe-rm'
@@ -387,6 +410,8 @@ packages__blacklist_by_vars:
   - 'json2yaml'
   - 'yaml2json'
   - 'yq'
+  - 'unp'
+  - 'RunSnakeRun'
 
   ## Missing/not packaged for openSUSE, not checked if named differently:
   - 'ant-doc'
@@ -436,7 +461,7 @@ packages__blacklist_by_vars:
   ## Package not for current Leap version:
   - 'debianutils'
 
-  ## Untrusted (home):
+  ## Untrusted (experimental or home):
   ## Check: https://software.opensuse.org/package/${package_name}
   - 'prename'
   - 'qtcreator'
@@ -456,6 +481,17 @@ packages__blacklist_by_vars:
   - 'sweethome3d-furniture-editor'
   - 'sweethome3d-textures-editor'
   - 'sweethome3d-furniture-nonfree'
+  - 'ttyrec'
+  - 'python-cjson'
+  - 'python-gmpy2'
+  - 'python-lpjsmin'
+  - 'python-pytimeparse'
+  - 'python-scrypt'
+  - 'python-sphinx-argparse'
+  - 'python3-csvkit'
+  - 'python3-geojson'
+  - 'python3-gmpy2'
+  - 'python3-pytimeparse'
 
   ## https://forums.opensuse.org/showthread.php/442407-looking-for-stupid-things
   - 'vrms'

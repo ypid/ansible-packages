@@ -2713,6 +2713,8 @@ packages__group_tag_devel_lang_python:
   ## For reportbug:
   - 'python-vte'
 
+  ## TODO: Only install modules interacting with GUI when xserver-xorg is
+  ## installed.
   - 'python-tk'
   - 'python-xlib'
   - 'python3-tk'
@@ -3282,6 +3284,9 @@ packages__group_core_additional:
   - 'wget'
 
   - 'rsync'
+
+  ## TODO: Test when available in Debian Stable.
+  # - 'casync'
 
   - 'openssh-client'
   - 'iproute2'
