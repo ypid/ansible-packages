@@ -795,12 +795,6 @@ packages__conditional_role:
 
   - present_packages:
       - 'git-doc'
-      - 'libcommons-openpgp-java'
-    additional_packages:
-      - 'libcommons-openpgp-java-doc'
-
-  - present_packages:
-      - 'git-doc'
       - 'antlr4'
     additional_packages:
       - 'antlr4-doc'
@@ -1200,7 +1194,7 @@ packages__apt_preferences__debian_backports_list:
     state: '{{ packages__apt_preferences__backports_nethogs_state | d(packages__apt_preferences__only_usable_backports_state) }}'
 
   - package: 'git-annex'
-    backports: [ 'jessie' ]
+    backports: [ 'jessie', 'stretch' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'openvpn'
@@ -1834,6 +1828,24 @@ packages__group_networking_analysis_minimum:
   - '{{ "snmp-mibs-downloader" if (packages__non_free_enabled|d() | bool) else "" }}'
   - 'tkmib'
 
+packages__group_network_address_calculation:
+  - 'netmask'
+  - 'ipcalc'
+  - 'sipcalc'
+  - 'subnetcalc'
+  - 'ipv6calc'
+  - 'gip'
+
+packages__group_tag_network_firewall:
+  - 'iptables'
+  - 'ipset'
+  - 'fwbuilder'
+
+# .. ]]]
+
+# Hardware [[[
+# """""""
+
 ## Works with hardware, unlikely that this is needed on non bare metal systems.
 packages__group_core_hardware:
   - 'hdparm'
@@ -1865,6 +1877,11 @@ packages__group_hardware_info_gui:
 packages__group_sysadmin_hardware_minimum:
   - 'isenkram-cli'
 
+# .. ]]]
+
+# Benchmark [[[
+# """""""""""""
+
 packages__group_hardware_testing_and_benchmarking_minimum:
   - 'f3'
   - 'fio'
@@ -1885,18 +1902,7 @@ packages__group_hardware_testing_and_benchmarking_full: |
     []
   }}
 
-packages__group_network_address_calculation:
-  - 'netmask'
-  - 'ipcalc'
-  - 'sipcalc'
-  - 'subnetcalc'
-  - 'ipv6calc'
-  - 'gip'
-
-packages__group_tag_network_firewall:
-  - 'iptables'
-  - 'ipset'
-  - 'fwbuilder'
+# .. ]]]
 
 # .. ]]]
 
@@ -2176,12 +2182,15 @@ packages__group_education_full: |
 packages__group_multimedia_minimum:
   - 'clementine'
 
+  - 'mplayer'
   - 'smplayer'
+  - 'vorbis-tools'
   - 'mediainfo'
   - 'mediainfo-gui'
 
   ## vlc-plugin-vlsub seems to be included in vlc-nox
   - 'vlc'
+  - 'kodi'
 
   - 'gpodder'
 
@@ -2496,8 +2505,6 @@ packages__group_devel_java:
   - 'maven'
   - 'ant'
   - 'ant-optional'
-
-  - 'libcommons-openpgp-java'
 
 packages__group_devel_qt:
 
@@ -3197,7 +3204,8 @@ packages__group_apt_package_management_minimal:
   - '{{ "wajig" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
   # "Error: No information about packages! (Maybe no deb entries?)" on BeagleBone Black.
-  - '{{ "apt-show-versions" if (ansible_pkg_mgr in ["apt"] and "armv7l" not in ansible_architecture|d("")) else "" }}'
+  # Seems to also have other issues: "initializing cache. This may take a while ** Killed"
+  # - '{{ "apt-show-versions" if (ansible_pkg_mgr in ["apt"] and "armv7l" not in ansible_architecture|d("")) else "" }}'
 
   ## In case unattended-upgrades is not installed.
   # - 'reboot-notifier'
@@ -3344,6 +3352,9 @@ packages__group_cpu_microcode_non_free:
   - '{{ "intel-microcode" if (packages__non_free_enabled|d() | bool) else "" }}'
   - '{{ "amd64-microcode" if (packages__non_free_enabled|d() | bool) else "" }}'
 
+packages__group_cpu_vulnerability_checker:
+  - 'spectre-meltdown-checker'
+
 packages__group_core_bare_metal_services_not_working_on_all_machines:
   - 'mcelog'
 
@@ -3382,6 +3393,7 @@ packages__group_core_bare_metal: |
   {{
     packages__group_boot_image_hardware_testing_and_benchmarking +
     packages__group_cpu_microcode_non_free +
+    packages__group_cpu_vulnerability_checker +
     packages__group_core_bare_metal_services +
     []
   }}
@@ -3489,6 +3501,7 @@ packages__group_user_terminal_programs_minimum:
   - 'setserial'
   - 'minicom'
   - 'picocom'
+  - 'cu'
 
   - 'pwgen'
   # - 'mosh'
@@ -3815,6 +3828,7 @@ packages__group_wm_xfce:
   - 'xfce4-power-manager'
   - 'gnome-power-manager'
   - 'xfce4-pulseaudio-plugin'
+  - 'xfce4-sensors-plugin'
   # - 'hddtemp'
 
 # .. ]]]
@@ -4406,6 +4420,8 @@ packages__absent_preset:
   # - 'libqt5webkit5'
   # - 'qtwebkit5-doc-html'
   ## Removing this also removes: calibre qtcreator stellarium
+
+  - 'apt-show-versions'
 
 # .. envvar:: packages__global_absent
 #

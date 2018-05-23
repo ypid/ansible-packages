@@ -78,6 +78,7 @@ packages__blacklist_revoke_by_vars:
   - 'gnome-software'
   - 'sikulix'
   - 'yapf3'
+  - 'spectre-meltdown-checker'
 
   # tmp
   - 'perl-modules'

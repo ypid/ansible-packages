@@ -15,6 +15,7 @@ packages__blacklist_by_vars:
   ## Should be available but "Unable to locate package eagle"?
   - 'eagle'
 
+  - 'spectre-meltdown-checker'
   - 'emacs23'
   - 'vagrant-libvirt'
   - 'gtklp'
