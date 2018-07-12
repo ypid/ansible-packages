@@ -846,9 +846,17 @@ packages__conditional_role:
     additional_packages: '{{ packages__group_core_hypervisor_guest_tools_kvm }}'
 
   - present_packages: '{{ packages__group_kde_applications }}'
+    require: 1
     additional_packages:
       ## For https://superuser.com/questions/280880/disable-kde-sounds-in-gnome-ubuntu
       - 'systemsettings'
+
+      ## Based on: task-german-kde-desktop
+      ## FIXME: LANG_CODE is not replaced by `de`?
+      # - 'kde-l10n-LANG_CODE'
+
+      ## Sorry for this workaround:
+      - 'kde-l10n-de'
 
   - present_packages: 'borgbackup'
     additional_packages:
@@ -1063,11 +1071,6 @@ packages__localizations_available_global:
       - 'aspell-de-alt'
     ## Packages seem to be specific to German.
     when: 'de'
-
-  - present_packages: '{{ packages__group_kde_applications }}'
-    ## Based on: task-german-kde-desktop
-    additional_packages:
-      - 'kde-l10n-LANG_CODE'
 
   - present_packages: 'kicad'
     ## Based on: task-german-kde-desktop
@@ -1424,6 +1427,7 @@ packages__group_kde_applications:
   - 'marble'
   - 'kig'
   - 'kmymoney'
+  - 'digikam'
 
 # .. ]]]
 
@@ -1998,6 +2002,7 @@ packages__group_tag_use_printing:
   - 'printer-driver-cups-pdf'
 
   - 'hplip'
+  - 'hpijs-ppds'
   - 'printer-driver-hpcups'
   # - 'printer-driver-ptouch'
 
@@ -2751,6 +2756,8 @@ packages__group_tag_devel_lang_python:
   - 'python3-yaml'
   - 'python-pretty-yaml'
   - 'python3-pretty-yaml'
+  - 'python-ruamel.yaml'
+  - 'python3-ruamel.yaml'
   - 'python-traceback2'
   - 'python3-traceback2'
   - 'python-unittest2'
@@ -2816,6 +2823,7 @@ packages__group_tag_devel_lang_python_additional:
   - 'python-seaborn'
   - 'python3-seaborn'
   - 'python3-pyqt5'
+  - 'pyqt5-dev'
   - 'python-scrapy'
   - 'python-sphinx'
   - 'python3-sphinx'
@@ -2831,6 +2839,7 @@ packages__group_tag_devel_lang_python_additional:
   - 'python-bibtex'
   - 'python-git'
   - 'python-gitdb'
+  - 'python3-pygit2'
   - 'python-sqlite'
   - 'python-sqlalchemy'
   - 'python3-sqlalchemy'
@@ -2860,6 +2869,7 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-gmpy2'
   - 'python-cryptography'
   - 'python3-cryptography'
+  - 'python3-btrfs'
 
 # .. ]]]
 
@@ -2992,6 +3002,7 @@ packages__group_devel_additional:
   - 'alleyoop'
   - 'isomaster'
   - 'xdelta3'
+  - 'libgit2-dev'
 
   - 'binutils'
   - 'indent'
@@ -3140,11 +3151,14 @@ packages__group_devel_env_for_aosp:
   - 'xsltproc'
   - 'unzip'
 
+  - 'bc'
+
   ## ypid additions:
   - 'fuse'
   - 'fuseext2'
   - 'liblz4-tool'
   - 'repo'
+  - 'jq'
 
 # .. ]]]
 
@@ -3255,6 +3269,9 @@ packages__group_core_minimum:
   - 'util-linux'
   - 'findutils'
   - 'cryptsetup'
+
+  ## Might be useful for some. Also comes in handy on really slow computers.
+  - 'nano'
 
   - 'vim'
   - 'vim-nox'
