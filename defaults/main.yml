@@ -875,6 +875,8 @@ packages__conditional_role:
       - 'xserver-xorg'
     additional_packages:
       - 'python-matplotlib'
+      - 'libtext-csv-perl'
+      - 'gnuplot'
   ## ]]]
 
   ## Application launcher [[[
@@ -1050,7 +1052,10 @@ packages__localizations_available_global:
   - present_packages: 'josm'
     additional_packages: 'josm-l10n'
 
-  - present_packages: 'libreoffice'
+  - present_packages:
+      - 'libreoffice'
+      - 'libreoffice-writer'
+    require: 1
     additional_packages:
       - 'libreoffice-help-LANG_CODE'
       - 'libreoffice-l10n-LANG_CODE'
@@ -1583,6 +1588,7 @@ packages__group_imaging:
 packages__group_internet_minimum:
   - 'firefox-esr'
   - 'chromium'
+  - 'torbrowser-launcher'
 
 
 packages__group_email_minimum:
@@ -2229,6 +2235,11 @@ packages__group_multimedia_editing_additional:
   - 'librsvg2-bin'
   - 'pitivi'
 
+  - 'mp4v2-utils'
+  - 'ibav-tools'
+  - 'x264'
+  - 'x265'
+
   ## Needs testing
   # - 'ardour3'
 
@@ -2351,11 +2362,11 @@ packages__group_office_minimal:
   - 'libreoffice-writer'
   - 'libreoffice-pdfimport'
   - 'libreoffice-calc'
+  - 'libreoffice'
   - 'keepnote'
   - 'qtqr'
 
 packages__group_office_additional:
-  - 'libreoffice'
   - 'libreoffice-writer2xhtml'
   - 'libreoffice-wiki-publisher'
 
@@ -2930,6 +2941,8 @@ packages__group_devel_live_system:
   - 'live-build'
   - 'squashfs-tools'
   - 'debootstrap'
+  - 'grml2usb'
+  - 'fatresize'
 
 packages__group_devel_shellscript:
   - 'shellcheck'
@@ -3083,7 +3096,7 @@ packages__group_devel_env_for_subgraph_os:
 packages__group_devel_env_for_NeoLayoutViewer:
   ## https://github.com/YggdrasiI/NeoLayoutViewer.git
   - 'valac'
-  - 'libgee-dev'
+  - 'libgee-0.8-dev'
   - 'libgtk-3-dev'
   - 'libx11-dev'
   - 'libunique-3.0-dev'
@@ -3268,6 +3281,7 @@ packages__group_core_minimum:
   - 'procps'
   - 'util-linux'
   - 'findutils'
+  - 'pv'
   - 'cryptsetup'
 
   ## Might be useful for some. Also comes in handy on really slow computers.
@@ -3389,20 +3403,27 @@ packages__group_tag_hardware_laptop_gyroscope_and_hdd:
   ## Not yet in Debian.
   # - 'hpfall'
 
+
+## The following code has the issue that DVD drives are also rotational so don’t automatically install hdapsd anymore
+# (packages__group_tag_hardware_laptop_gyroscope_and_hdd if (
+#     (ansible_form_factor|d("") in ["Notebook", "Laptop"]) and
+#     (
+#       (
+#         ansible_devices is defined and
+#         ansible_devices.values() | selectattr("rotational", "equalto", "1") | map(attribute="model") | reject("regex_search", ".*DVD.*") | list | length >= 1
+#       ) or
+#       ansible_devices is undefined
+#     )
+#   ) else []) +
+#
+## This could be used to fix it, but support for the `in` test was only introduced to Jinja 2.10.
+# ansible_devices.values() | selectattr("rotational", "equalto", "1") | map(attribute="model") | reject("in", "DVD") | list
+
+
 packages__group_core_bare_metal_services: |
   {{
     packages__group_core_bare_metal_services_not_working_on_all_machines +
-    (packages__group_tag_hardware_laptop_accu if ("Notebook" == ansible_form_factor|d("")) else []) +
-    (packages__group_tag_hardware_laptop_gyroscope_and_hdd if (
-        "Notebook" == ansible_form_factor|d("") and
-        (
-          (
-            ansible_devices is defined and
-            ansible_devices.values() | selectattr("rotational", "equalto", "1") | map(attribute="model") | list | length >= 1
-          ) or
-          ansible_devices is undefined
-        )
-      ) else []) +
+    (packages__group_tag_hardware_laptop_accu if (ansible_form_factor|d("") in ["Notebook", "Laptop"]) else []) +
     []
   }}
 
@@ -3494,7 +3515,7 @@ packages__group_core_full: |
     packages__group_core_cron +
     (packages__group_core_bare_metal if ('host' == ansible_virtualization_role) else []) +
     (packages__group_core_hardware   if ('host' == ansible_virtualization_role) else []) +
-    (packages__group_core_hardware_wireless if ("Notebook" == ansible_form_factor|d("")) else []) +
+    (packages__group_core_hardware_wireless if (ansible_form_factor|d("") in ["Notebook", "Laptop"]) else []) +
     (packages__group_core_hypervisor_guest_tools if ('guest' == ansible_virtualization_role) else []) +
     []
   }}
@@ -3992,7 +4013,8 @@ packages__group_user_password_manager:
   # - 'kpcli'
 
   ## Sometimes still useful for import or the like.
-  - 'keepass2'
+  ## Don’t install by default to avoid confusion.
+  # - 'keepass2'
 
 packages__group_user_optical_media:
   - 'brasero'
@@ -4014,6 +4036,13 @@ packages__group_user_compartmentalization:
   - 'firejail'
   - 'xpra'
 
+packages__group_e2e_testing_basic:
+  - 'sikulix'
+  - 'python-selenium'
+  - 'python3-selenium'
+  - 'chromedriver'
+  - 'firefoxdriver'
+
 packages__group_user_additional:
   - 'gucharmap'
   - 'mat'
@@ -4027,7 +4056,6 @@ packages__group_user_additional:
   - 'grsync'
   - 'gnome-schedule'
   - 'autokey-gtk'
-  - 'sikulix'
   - 'xclip'
   - 'gnome-software'
 
@@ -4083,6 +4111,7 @@ packages__group_user_full: |
     packages__group_user_basic +
     packages__group_user_file_cleanup +
     packages__group_user_additional +
+    packages__group_e2e_testing_basic +
     []
   }}
 
@@ -4521,6 +4550,7 @@ packages__classes:
       packages__classes_client +
       packages__group_wm_cinnamon +
       packages__group_wm_mate +
+      packages__group_network_manager_basic +
       packages__group_tag_game +
       (packages__additional_for_class.client|d([])) +
       []
