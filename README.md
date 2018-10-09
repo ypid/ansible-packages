@@ -135,6 +135,10 @@ Jinja 2.8 is [available in Debian Jessie Backports](https://packages.debian.org/
   Ansible.  Ansible facts allow `ypid.packages` to automatically select
   packages based on attributes/facts of the hosts.
 
+* [external-test-dependencies of phoronix-test-suite](https://github.com/phoronix-test-suite/phoronix-test-suite/tree/master/pts-core/external-test-dependencies/xml)
+
+  Other projects also deal with the different package names across distributions. phoronix-test-suite has a nice collection.
+
 [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
 [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
 [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml

@@ -1777,6 +1777,7 @@ packages__group_tag_admin_monitoring_network_minimum:
   - 'conntrack'
   - 'mtr-tiny'
 
+  - 'net-tools'
   - 'tcpdump'
   - 'iptraf-ng'
   - 'speedtest-cli'
@@ -1862,6 +1863,7 @@ packages__group_core_hardware:
   - 'smartmontools'
   - 'powertop'
   - 'ethtool'
+  - 'lshw'
   - 'lm-sensors'
 
   ## Install manually in the rare case this is required.
@@ -1876,7 +1878,6 @@ packages__group_hardware_info:
   - 'hwinfo'
   - 'hardinfo'
   - 'lsscsi'
-  - 'lshw'
   - 'sg3-utils'
   - 'cpuid'
 
