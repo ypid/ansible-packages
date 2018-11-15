@@ -1,0 +1,41 @@
+---
+
+## "ansible_distribution": "SLES",
+## "ansible_distribution_file_parsed": true,
+## "ansible_distribution_file_path": "/etc/os-release",
+## "ansible_distribution_file_variety": "SUSE",
+## "ansible_distribution_major_version": "NA",
+## "ansible_distribution_release": "0",
+## "ansible_distribution_version": "15",
+
+## zypper se -r SLE-Module-Basesystem15-Pool '*' | sed --regexp-extended 's/^[^|]*\|\s*([^ ]+)\s*\|.*$/\1/;'
+## zypper se -si '*' | egrep -v ' (sle-module-|SUSE-SLE-Module-)' | cut -c 121- | sort -u
+
+## The following repos are expected to be enabled, at least for classes like `server` or above:
+## SLE-Product-SLES15
+## SLE-Module-Basesystem15
+## SLE-Module-DevTools15: strace, git-svn
+## SLE-Module-Public-Cloud15: python3-netaddr
+## SLE-Module-Server-Applications15: tree
+## SLE-Module-Packagehub-Subpackages15: nping
+## SUSE-PackageHub-15: tmux, ...
+
+## Probably optional:
+## SLE-Module-Desktop-Applications15
+
+packages__targets:
+  - 'SUSE Linux Enterprise 15'
+
+packages__blacklist_by_vars:
+  ## Missing/not packaged:
+  - 'python3-redis'
+  - 'cu'
+  - 'iptstate'
+  - 'lifstat'
+  - 'ncat'
+  - 'nicstat'
+  - 'nwipe'
+  - 'secure-delete'
+  - 'sysdig'
+  - 'ocaml-csv'
+  - 'rhash'

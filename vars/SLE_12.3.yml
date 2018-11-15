@@ -1,0 +1,94 @@
+---
+
+## "ansible_distribution": "SLES",
+## "ansible_distribution_file_parsed": true,
+## "ansible_distribution_file_path": "/etc/os-release",
+## "ansible_distribution_file_variety": "SUSE",
+## "ansible_distribution_major_version": "12",
+## "ansible_distribution_release": "3",
+## "ansible_distribution_version": "12.3",
+
+## zypper se -si '*' | egrep -v ' (sle-module-|SUSE-SLE-Module-|lifecycle-data-sle-module-toolchain)' | cut -c 121- | sort -u
+
+## The following repos are expected to be enabled, at least for classes like `server` or above:
+## SLES12-SP3
+## SLE-Module-Adv-Systems-Management12: python3-requests
+## SLE-Module-Web-Scripting12: python3
+## SLE-SDK12-SP3: tree, python3-devel (only those two packages)
+## SUSE-PackageHub-12-SP3: tmux, jq, git-annex
+
+packages__targets:
+  - 'SUSE Linux Enterprise 12.3'
+
+packages__blacklist_by_vars:
+  ## Missing/not packaged:
+  - 'mr'
+  - 'uuid'
+  - 'IPython'
+  - 'bats'
+  - 'conntrack-tools'
+  - 'crudini'
+  - 'cu'
+  - 'dateutils'
+  - 'encfs'
+  - 'etckeeper'
+  - 'etckeeper-cron'
+  - 'etckeeper-zypp-plugin'
+  - 'inotify-tools'
+  - 'iptstate'
+  - 'libuser'
+  - 'lifstat'
+  - 'ncat'
+
+  ## Backported but does not work:
+  ## https://software.opensuse.org/download.html?project=utilities&package=ncdu
+  - 'ncdu'
+
+  - 'ngrep'
+  - 'nicstat'
+  - 'nload'
+  - 'nping'
+  - 'nwipe'
+  - 'ocaml-csv'
+  - 'picocom'
+  - 'pssh'
+  - 'pv'
+  - 'ranger'
+  - 'rhash'
+  - 'secure-delete'
+  - 'speedtest-cli'
+  - 'tig'
+  - 'wipe'
+
+  - 'python3-IPython'
+  - 'python3-PrettyTable'
+  - 'python3-Unidecode'
+  - 'python3-appdirs'
+  - 'python3-colorama'
+  - 'python3-coverage'
+  - 'python3-dateutil'
+  - 'python3-defusedxml'
+  - 'python3-flake8'
+  - 'python3-flexmock'
+  - 'python3-future'
+  - 'python3-iso8601'
+  - 'python3-monotonic'
+  - 'python3-netaddr'
+  - 'python3-nose'
+  - 'python3-nose-cover3'
+  - 'python3-openpyxl'
+  - 'python3-paramiko'
+  - 'python3-pexpect'
+  - 'python3-pycodestyle'
+  - 'python3-pygraphviz'
+  - 'python3-pylint'
+  - 'python3-python-memcached'
+  - 'python3-redis'
+  - 'python3-ruamel.yaml'
+  - 'python3-setuptools-git'
+  - 'python3-tk'
+  - 'python3-traceback2'
+  - 'python3-twine'
+  - 'python3-virtualenv'
+  - 'python3-wheel'
+  - 'python3-xmltodict'

@@ -9,17 +9,22 @@
         - '{{ (ansible_distribution + ".yml") | replace(" ", "_") }}'
       paths: 'vars'
 
-- name: Include distribution release specific variables
+- name: Include distribution release/version specific variables
   include: include_item_vars.yml
   with_first_found:
     - skip: True
       files:
-        - '{{ (ansible_distribution + "_" + ansible_distribution_release + ".yml") | replace(" ", "_") }}'
+        - '{{ (ansible_distribution + "_" +
+              (ansible_distribution_version
+               if (ansible_os_family in ["Suse"])
+               else ansible_distribution_release) +
+              ".yml") | replace(" ", "_") }}'
+
       paths: 'vars'
 
 - name: Include distribution release backports specific variables
   include: include_item_vars.yml
-  when: (item|d() and packages__load_distribution_backports_vars)
+  when: (item|d() and packages__load_distribution_backports_vars and ansible_os_family == "Debian")
   with_first_found:
     - skip: True
       files:

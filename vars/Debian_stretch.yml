@@ -1,5 +1,8 @@
 ---
 
+## "ansible_distribution_release": "stretch",
+## "ansible_distribution_version": "9.5",
+
 packages__targets:
   - 'Debian GNU/Linux 9 (stretch)'
 

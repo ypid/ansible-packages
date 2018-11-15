@@ -1,0 +1,532 @@
+---
+
+packages__targets:
+  - 'SLE (SUSE Linux Enterprise) and openSUSE Leap'
+
+## The following repos are expected to be enabled, at least for classes like `client` or above:
+## https://download.opensuse.org/repositories/Education/openSUSE_Leap_42.3/Education.repo
+## https://download.opensuse.org/repositories/Application:/Geo/openSUSE_Leap_42.3/Application:Geo.repo
+## https://download.opensuse.org/repositories/Archiving/openSUSE_Leap_42.3/Archiving.repo
+## https://download.opensuse.org/repositories/utilities/openSUSE_Leap_42.3/utilities.repo
+## https://download.opensuse.org/repositories/Publishing/openSUSE_Leap_42.3/Publishing.repo
+## https://download.opensuse.org/repositories/network/openSUSE_Leap_42.3/network.repo
+## https://download.opensuse.org/repositories/network:/utilities/openSUSE_Leap_42.3/network:utilities.repo
+## https://download.opensuse.org/repositories/server:/monitoring/openSUSE_Leap_42.3/server:monitoring.repo
+## https://download.opensuse.org/repositories/security/openSUSE_Leap_42.3/security.repo
+## https://download.opensuse.org/repositories/devel:/tools/openSUSE_Leap_42.3/devel:tools.repo
+## https://download.opensuse.org/repositories/devel:/tools:/building/openSUSE_Leap_42.3/devel:tools:building.repo
+## https://download.opensuse.org/repositories/devel:/languages:/perl/openSUSE_Leap_42.3/devel:languages:perl.repo
+## https://download.opensuse.org/repositories/devel:/languages:/python/openSUSE_Leap_42.3/devel:languages:python.repo
+## https://download.opensuse.org/repositories/devel:/languages:/ruby:/extensions/openSUSE_Leap_42.3/devel:languages:ruby:extensions.repo
+## https://download.opensuse.org/repositories/X11:/Utilities/openSUSE_Leap_42.3/X11:Utilities.repo
+## https://download.opensuse.org/repositories/Office/openSUSE_Leap_42.3/Office.repo
+## https://download.opensuse.org/repositories/X11:/xfce/openSUSE_Leap_42.3/X11:xfce.repo
+## https://download.opensuse.org/repositories/KDE:/Extra/openSUSE_Leap_42.2/KDE:Extra.repo
+## https://download.opensuse.org/repositories/X11:/Pantheon/openSUSE_Leap_42.3/X11:Pantheon.repo
+## https://download.opensuse.org/repositories/home:/Alexx2000/openSUSE_Leap_42.3/home:Alexx2000.repo
+## https://download.opensuse.org/repositories/home:/mbologna/openSUSE_Leap_42.2/home:mbologna.repo
+##
+## Optional:
+## https://download.opensuse.org/repositories/security:/logging/openSUSE_Leap_42.3/security:logging.repo
+## https://download.opensuse.org/repositories/network:/telephony/openSUSE_Leap_42.3/network:telephony.repo
+#
+## zypper modifyrepo -p 150 X11_Utilities
+## zypper modifyrepo -p 150 X11_xfce
+## zypper modifyrepo -p 150 X11_Pantheon
+## zypper modifyrepo -p 150 network
+## zypper modifyrepo -p 150 utilities
+
+packages__name_remapping_by_vars:
+  'ack-grep': 'ack'
+  'rename': 'prename'
+  'nmap': ['nmap', 'nping', 'ncat']
+  'etckeeper': ['etckeeper', 'etckeeper-cron', 'etckeeper-zypp-plugin']
+  'smbclient': 'samba-test'
+  'silversearcher-ag': 'the_silver_searcher'
+  'myrepos': 'mr'
+  'imagemagick': 'ImageMagick'
+  'imagemagick-doc': 'ImageMagick-doc'
+  'wxmaxima': 'wxMaxima'
+  'runsnakerun': 'RunSnakeRun'
+  'ipython': 'IPython'
+  'ipython-doc': 'IPython-doc'
+  'shellcheck': 'ShellCheck'
+  'yamllint': 'python3-yamllint'
+  'biber': 'perl-biber'
+  'wordnet-gui': 'wordnet'
+  'vim-gnome': 'gvim'
+  'conntrack': 'conntrack-tools'
+  'xzdec': 'xz'
+  'xz-utils': 'xz'
+  'xserver-xorg': 'xorg-x11'
+  'xserver-xorg-video-qxl': 'xf86-video-qxl'
+  'virtualenvwrapper': 'python-virtualenvwrapper'
+  'twine': 'python3-twine'
+  'tshark': 'wireshark'
+  'sg3-utils': 'sg3_utils'
+  'rst2pdf': 'python-rst2pdf'
+  'openjdk-7-jdk': ['java-1_7_0-openjdk', 'java-1_7_0-openjdk-devel']
+  'openjdk-8-jdk': ['java-1_8_0-openjdk', 'java-1_8_0-openjdk-devel']
+  'network-manager-iodine': 'NetworkManager-iodine'
+  'network-manager-openvpn': 'NetworkManager-openvpn'
+  'network-manager-vpnc': 'NetworkManager-vpnc'
+  'libnet-ssleay-perl': 'perl-Net-SSLeay'
+  'ldap-utils': 'openldap2-client'
+  'ipython3': 'python3-IPython'
+  'printer-driver-cups-pdf': 'cups-pdf'
+  'gtk-redshift': 'redshift'
+  'geoip-bin': 'GeoIP'
+  'gddrescue': 'gnu_ddrescue'
+  'dnsutils': 'bind-utils'
+  'aqbanking-tools': 'aqbanking'
+  'gedit-latex-plugin': 'gedit-plugin-latex'
+  'kile-l10n': 'kile-lang'
+  'csvtool': 'ocaml-csv'
+  'golang': 'go'
+  'golang-doc': 'go-doc'
+  'unison-gtk': 'unison'
+  'qalculate-gtk': 'qalculate'
+  'greybird-gtk-theme': 'gtk3-metatheme-greybird'
+  'lshw-gtk': 'lshw-gui'
+  'man-db': 'man'
+  'mtr-tiny': 'mtr'
+  'gnupg': 'gpg2'
+
+  ## Required for SLES 15.
+  'git': 'git-core'
+
+  ## Don’t require the net-tools-deprecated to be installed.
+  # 'net-tools': 'net-tools-deprecated'
+
+  'nautilus-owncloud': 'owncloud-client-nautilus'
+  'openssh-server': 'openssh'
+  'openssh-client': 'openssh'
+  'iperf3': 'iperf'
+  'p7zip-full': 'p7zip'
+  'p7zip-rar': 'p7zip'
+  'xfce4-timer-plugin': 'xfce4-panel-plugin-timer'
+  'xfce4-pulseaudio-plugin': 'xfce4-panel-plugin-pulseaudio'
+  'xfce4-netload-plugin': 'xfce4-panel-plugin-netload'
+  'xfce4-battery-plugin': 'xfce4-panel-plugin-battery'
+
+  'python-dev': 'python-devel'
+  'python3-dev': 'python3-devel'
+  'python-jsmin': 'python-lpjsmin'
+  'python3-memcache': 'python3-python-memcached'
+  'python-mysqldb': 'python-MySQL-python'
+  'python-pretty-yaml': 'python-pyaml'
+  'python3-pretty-yaml': 'python3-pyaml'
+  'python-pycalendar': 'python-icalendar'
+  'python3-pycalendar': 'python3-icalendar'
+  'python-unidecode': 'python-Unidecode'
+  'python3-unidecode': 'python3-Unidecode'
+  'python3-nose2-cov': 'python3-nose-cover3'
+  'python-prettytable': 'python-PrettyTable'
+  'python3-prettytable': 'python3-PrettyTable'
+  'python-whoosh': 'python-Whoosh'
+  'python3-whoosh': 'python3-Whoosh'
+  'python-yaml': 'python-PyYAML'
+  'python3-yaml': 'python3-PyYAML'
+  'pylint': 'python-pylint'
+  'pylint3': 'python3-pylint'
+
+  ## Using the `Provides` field of packages:
+  'libmodule-pluggable-perl': 'perl(Module::Pluggable)'
+  'perltidy': 'perl(Perl::Tidy)'
+  'libperl-critic-perl': 'perl(Perl::Critic)'
+
+  'libconst-fast-perl': 'perl(Const::Fast)'
+  'libboolean-perl': 'perl(boolean)'
+  'libset-scalar-perl': 'perl(Set::Scalar)'
+  'libdata-dumper-concise-perl': 'perl(Data::Dumper::Concise)'
+  ## Does not contain Data::Dumper::Simple:
+  'libdata-dumper-simple-perl': 'perl(Data::Dumper)'
+
+  ## Does not contain Term::ReadLine::Perl:
+  'libterm-readline-perl-perl': 'perl(Term::ReadLine)'
+  'libipc-system-simple-perl': 'perl(IPC::System::Simple)'
+  'libnumber-bytes-human-perl': 'perl(Number::Bytes::Human)'
+
+  'libdbi-perl': 'perl(DBI)'
+  'libdbd-sqlite3-perl': 'perl(DBD::SQLite)'
+
+  'libjson-perl': 'perl(JSON)'
+  'libyaml-syck-perl': 'perl(YAML::Syck)'
+
+  'libdatetime-set-perl': 'perl(DateTime::Set)'
+  'libdatetime-format-ical-perl': 'perl(DateTime::Format::ICal)'
+
+  'libtime-duration-perl': 'perl(Time::Duration)'
+  'libtime-format-perl': 'perl(Time::Format)'
+  # 'libtime-hires-perl': 'perl(Time::Duration)'
+
+  'liblocal-lib-perl': 'perl(local::lib)'
+  'libio-captureoutput-perl': 'perl(IO::CaptureOutput)'
+
+  'liblog-log4perl-perl': 'perl(Log::Log4perl)'
+  'liblog-any-perl': 'perl(Log::Any)'
+  'liblog-any-adapter-log4perl-perl': 'perl(Log::Any::Adapter::Log4perl)'
+  'liblog-message-perl': 'perl(Log::Message)'
+  'liblog-message-simple-perl': 'perl(Log::Message::Simple)'
+
+  'libfile-next-perl': 'perl(File::Next)'
+
+  'libnet-ip-perl': 'perl(Net::IP)'
+  'libnet-dns-perl': 'perl(Net::DNS)'
+  'libnet-ldap-perl': 'perl(Net::LDAP)'
+  'libnet-jabber-perl': 'perl(Net::Jabber)'
+  'libnet-openssh-perl': 'perl(Net::OpenSSH)'
+
+  'libwww-perl': 'perl-libwww-perl'
+  'libdata-ical-perl': 'perl-Data-ICal'
+  'libwww-mechanize-shell-perl': 'perl(WWW::Mechanize)'
+  'liburi-find-perl': 'perl(URI::Find)'
+  'libhtml-parser-perl': 'perl(HTML::Parser)'
+  'libimage-exiftool-perl': 'perl(Image::ExifTool)'
+  'libtext-csv-perl': 'perl(Text::CSV)'
+  'libtext-csv-xs-perl': 'perl(Text::CSV_XS)'
+  'libconfig-simple-perl': 'perl(Config::Simple)'
+  'libpod-markdown-perl': 'perl(Pod::Markdown)'
+  'libdevice-serialport-perl': 'perl(Device::SerialPort)'
+  'libmonitoring-plugin-perl': 'perl(Monitoring::Plugin)'
+
+  ## Implemented using raw package names:
+  # 'perltidy': 'perl-Perl-Tidy'
+  # 'libperl-critic-perl': 'perl-Perl-Critic'
+  #
+  # 'libconst-fast-perl': 'perl-Const-Fast'
+  # 'libboolean-perl': 'perl-boolean'
+  # 'libdata-dumper-simple-perl': 'perl-Data-Dumper'
+  # 'libdata-dumper-concise-perl': 'perl-Data-Dumper-Concise'
+  #
+  # 'libterm-readline-perl-perl': 'perl-TermReadLine-Gnu'
+  # 'libipc-system-simple-perl': 'perl-IPC-System-Simple'
+  # 'libnumber-bytes-human-perl': 'perl-Number-Bytes-Human'
+  #
+  # 'libdbi-perl': 'perl-DBI'
+  # 'libdbd-sqlite3-perl': 'perl-DBD-SQLite'
+  #
+  # 'libjson-perl': 'perl-JSON'
+  # 'libyaml-syck-perl': 'perl-YAML-Syck'
+  #
+  # 'libdatetime-set-perl': 'perl-DateTime-Set'
+  # 'libdatetime-format-ical-perl': 'perl-DateTime-Format-ICal'
+  #
+  # 'libtime-duration-perl': 'perl-Time-Duration'
+
+  'texlive-latex-base': 'texlive-scheme-basic'
+
+  ## Broken dependencies on Leap 42.3. Going with `texlive-scheme-basic` for now:
+  # 'texlive-full': 'texlive-scheme-full'
+  'texlive-full': 'texlive-scheme-basic'
+
+  'linux-image-amd64': 'kernel-default'
+  'linux-image-686-pae': 'kernel-default'
+
+  ## Development files necessary for building kernel modules
+  'linux-headers-amd64': 'kernel-debug-devel'
+  'linux-headers-686-pae': 'kernel-debug-devel'
+
+  ## Fake, firefox-esr does also exist but needs external repository.
+  'firefox-esr': 'MozillaFirefox'
+
+  ## Belongs to ./openSUSE_Leap_42.yml
+  'ruby-dev': 'ruby2.4-devel'
+  'bundler': 'ruby2.4-rubygem-bundler'
+  'rake': 'ruby2.4-rubygem-rake'
+  'jekyll': 'ruby2.4-rubygem-jekyll'
+  'ruby-kramdown': 'ruby2.4-rubygem-kramdown'
+  'ruby-bluecloth': 'ruby2.4-rubygem-bluecloth'
+
+  ## FIXME: Check on Debian if it is the same tool.
+  'ifstat': 'lifstat'
+
+packages__blacklist_by_vars:
+  ## Debian specific:
+  - 'debian-keyring'
+  - 'debian-archive-keyring'
+  - 'isenkram-cli'
+  - 'debconf-utils'
+  - 'debconf-doc'
+  - 'equivs'
+  - 'python-apt'
+  - 'python3-apt'
+  - 'aptitude'
+
+  ## Package with same name exists but with different purpose/application:
+  - 'grip'
+
+  ## Similar packages exists. Currently not needed.
+  - 'librsvg2-bin'
+  - 'libemail-mime-perl'
+
+  ## Currently not needed, not checked if package is just called differently.
+  - 'libgv-python'
+  - 'libevent-dev'
+  - 'libenchant-dev'
+  - 'libaqbanking-doc'
+  - 'printer-driver-hpcups'
+
+  ## Broken dependencies on Leap 42.3:
+  - 'jekyll'
+  - 'ruby2.4-rubygem-jekyll'
+  - 'gscan2pdf'
+  - 'python-requests'
+  - 'python-autopep8'
+  - 'python-seaborn'
+
+  ## `gtkhash` has conflicting files (/usr/bin/gtkhash) with `nemo-extension-gtkhash`.
+  ## Disable it for now.
+  - 'gtkhash'
+
+  ## `python-netaddr` and `python3-netaddr` both try to install a conflicting file: /usr/bin/netaddr.
+  ## Disable `python-netaddr` for now.
+  - 'python-netaddr'
+
+  ## `python-keyring` and `python3-keyring` both try to install a conflicting file: /usr/bin/keyring.
+  ## Disable `python-keyring` for now.
+  - 'python-keyring'
+
+  - 'python-twisted'
+
+  ## sysstat-11.0.6-4.2.x86_64 requires gettext, but this requirement cannot be provided
+  - 'sysstat'
+
+  ## Conflict
+  - 'net-tools-deprecated'
+
+  ## Metapackages (patterns) seems to behave differently on than on Debian.
+  - 'task-desktop'
+  - 'task-xfce-desktop'
+
+  ## Installation issues on openSUSE 42.3.
+  - 'python3-sqlalchemy'
+
+  ## Error: unpacking of archive failed on file /usr/lib64/python3.4/site-packages/PyYAML-3.12-py3.4.egg-info: cpio: rename failed - Is a directory
+  - 'python3-PyYAML'
+  - 'python3-pyaml'
+
+  ## Depends on python3-ndg-httpsclient which conflicts with python-ndg-httpsclient.
+  - 'python3-urllib3'
+
+  ## Missing/not packaged:
+  - 'safe-rm'
+  - 'byobu'
+  - 'celestia'
+  - 'celestia-gnome'
+  - 'geogebra'
+  - 'geogebra-gnome'
+  - 'grass'
+  - 'planets'
+  - 'viewmol'
+  - 'lightspeed'
+  - 'invesalius'
+  - 'invesalius-examples'
+  - 'gcrystal'
+  - 'gchempaint'
+  - 'easychem'
+  - 'gcu-bin'
+  - 'gdis'
+  - 'apbs'
+  - 'sunclock'
+  - 'sm'
+  - 'qtqr'
+  - 'geekcode'
+  - 'mat'
+  - 'idle'
+  - 'systemsettings'
+  - 'asunder'
+  - 'webhttrack'
+  - 'uniutils'
+  - 'typespeed'
+  - 'tilem'
+  - 'sysvbanner'
+  - 'synaptic'
+  - 'software-center'
+  - 'rpl'
+  - 'pdf2htmlex'
+  - 'partimage'
+  - 'nocache'
+  - 'qt5-qmake'
+  - 'qt5-default'
+  - 'netmask'
+  - 'logtop'
+  - 'libxml2-utils'
+  - 'libtrove3-java'
+  - 'writer2latex'
+  - 'gnuhtml2latex'
+  - 'libreoffice-writer2latex'
+  - 'libreoffice-writer2xhtml'
+  - 'laby'
+  - 'keepnote'
+  - 'keepass2'
+  - 'jfractionlab'
+  - 'icnsutils'
+  - 'handbrake'
+  - 'gwakeonlan'
+  - 'gpodder'
+  - 'cdcat'
+  - 'dict-de-en'
+  - 'dict-gcide'
+  - 'dict-jargon'
+  - 'dict-vera'
+  - 'dict-elements'
+  - 'dcfldd'
+  - 'clonezilla'
+  - 'gresolver'
+  - 'gip'
+  - 'exactimage'
+  - 'docx2txt'
+  - 'coffeescript'
+  - 'asr-manpages'
+  - 'browser-plugin-gnash'
+  - 'pdfmod'
+  - 'vim-latexsuite'
+  - 'vim-nox'
+  - 'dict'
+  - 'sikulix'
+  - 'cantor-backend-kalgebra'
+  - 'kile-doc'
+  - 'libreoffice-pdfimport'
+  - 'libreoffice-wiki-publisher'
+  - 'lua-cjson-dev'
+  - 'pidgin-awayonlock'
+  - 'pidgin-latex'
+  - 'python-naturalsort'
+  - 'python-twill'
+  - 'python-unidiff'
+  - 'python3-unidiff'
+  - 'python3-elasticsearch'
+  - 'python3-git'
+  - 'python3-jsmin'
+  - 'python3-pil'
+  - 'git-remote-gcrypt'
+  - 'yapf'
+  - 'yapf3'
+  - 'ruby-builder-doc'
+  - 'ruby-gsl'
+  - 'libnet-openssh-parallel-perl'
+  - 'libnet-openssh-compat-perl'
+  - 'libcommons-openpgp-java'
+  - 'libcommons-openpgp-java-doc'
+  - 'linux-doc'
+  - 'json2yaml'
+  - 'yaml2json'
+  - 'yq'
+  - 'unp'
+  - 'RunSnakeRun'
+
+  ## Missing/not packaged, not checked if named differently:
+  - 'ant-doc'
+  - 'ant-optional'
+  - 'borgbackup-doc'
+  - 'grub-common'
+  - 'python-bs4'
+  - 'python-bs4-doc'
+  - 'python-git'
+  - 'python-q'
+  - 'python-scrapy'
+  - 'python-sklearn'
+  - 'python-sphinxcontrib.programoutput'
+  - 'python-sphinxcontrib.spelling'
+  - 'python-zmq'
+  - 'python3-bs4'
+  - 'python3-geoip'
+  - 'python3-jinja2'
+  - 'python3-markdown'
+  - 'python3-openssl'
+  - 'python3-postgresql'
+  - 'python3-pyqt5'
+  - 'python3-q'
+  - 'python3-sphinx'
+  - 'python3-sphinx-argparse'
+  - 'python3-sphinxcontrib.programoutput'
+  - 'python3-sphinxcontrib.spelling'
+  - 'python3-yamllint'
+  - 'python3-zmq'
+  - 'wireshark-doc'
+  - 'python-sphinx-rtd-theme'
+  - 'python3-sphinx-rtd-theme'
+  - 'gnucash'
+  - 'gnucash-docs'
+  - 'python-gnucash'
+  - 'python3-gnucash'
+  - 'myrescue'
+  - 'flashplugin-nonfree'
+  - 'browser-plugin-freshplayer-pepperflash'
+  - 'pidgin-openpgp'
+  - 'lat'
+  - 'msmtp'
+  - 'ding'
+  - 'minitube'
+  - 'smtube'
+  - 'ack'
+  - 'ack-grep'
+  - 'memtest86'
+  - 'kupfer'
+  - 'launchy'
+  - 'gnome-do'
+  - 'gmrun'
+  - 'gitso'
+  - 'frogr'
+  - 'frogr-data'
+  - 'iceweasel'
+  - 'shotwell'
+  - 'apt-show-versions'
+
+  ## No known openSUSE repository containing node packages.
+  - 'node-uglify'
+  - 'node-mysql'
+  - 'node-debug'
+
+  ## Debian helper package:
+  - 'nodejs-legacy'
+
+  - 'perl-modules'
+
+  - 'python3-all'
+  - 'python-all-dev'
+
+  ## Package not for current Leap version:
+  - 'debianutils'
+
+  ## Untrusted (experimental or home):
+  ## Check: https://software.opensuse.org/package/${package_name}
+  - 'prename'
+  - 'qtcreator'
+  - 'eclipse'
+  - 'markdown'
+  - 'winff'
+  - 'qpxtool'
+  - 'jxplorer'
+  - 'jabref'
+  - 'ipv6calc'
+  - 'gtkterm'
+  - 'gtk-vector-screenshot'
+  - 'dvdbackup'
+  - 'gajim-omemo'
+  - 'sweethome3d'
+  - 'sweethome3d-furniture'
+  - 'sweethome3d-furniture-editor'
+  - 'sweethome3d-textures-editor'
+  - 'sweethome3d-furniture-nonfree'
+  - 'ttyrec'
+  - 'python-cjson'
+  - 'python-gmpy2'
+  - 'python-lpjsmin'
+  - 'python-pytimeparse'
+  - 'python-scrypt'
+  - 'python-sphinx-argparse'
+  - 'python3-csvkit'
+  - 'python3-geojson'
+  - 'python3-gmpy2'
+  - 'python3-pytimeparse'
+
+  ## https://forums.opensuse.org/showthread.php/442407-looking-for-stupid-things
+  - 'vrms'
+
+  ## Signing issue:
+  - 'nmon'
+
+  ## Not needed as it seems:
+  - 'gnupg-curl'
