@@ -1246,6 +1246,14 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_exfat_state | d(packages__apt_preferences__client_backports_state) }}'
 
+  - package: 'firejail '
+    backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
+  - package: 'firejail firejail-*'
+    backports: [ 'stretch' ]
+    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
   - package: 'libreoffice libreoffice-* python3-uno uno-libs3 ure'
     backports: [ 'jessie', 'stretch' ]
     state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__client_backports_state) }}'
@@ -1282,10 +1290,6 @@ packages__apt_preferences__debian_backports_list:
   - package: 'youtube-dl'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_youtube_dl_state | d(packages__apt_preferences__client_backports_state) }}'
-
-  - package: 'firejail'
-    backports: [ 'jessie' ]
-    state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
   - package: 'apparmor-profiles apparmor-profiles-extra'
     backports: [ 'jessie' ]
@@ -4009,7 +4013,7 @@ packages__group_user_desktop_sharing_server:
 
 packages__group_user_desktop_sharing_auto: |
   {{
-    (packages__group_user_desktop_sharing_server if ("debops_service_x2go_server" in hostvars[inventory_hostname]["group_names"]) else []) +
+    (packages__group_user_desktop_sharing_server if ("debops_service_x2go_server" in group_names) else []) +
     []
   }}
 
@@ -4068,6 +4072,11 @@ packages__group_user_file_cleanup:
 # `firejail` configuration is handled by a dedicated role.
 packages__group_user_compartmentalization:
   - 'firejail'
+  - '{{ "firejail-profiles" if (
+      ansible_distribution|d("") == "Debian" and
+      ansible_distribution_release|d("")|lower != "jessie" and
+      packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state)
+    ) else "" }}'
   - 'xpra'
 
 packages__group_e2e_testing_basic:
@@ -4141,6 +4150,7 @@ packages__group_user_basic: |
     packages__group_user_text_editor +
     packages__group_user_password_manager +
     packages__group_user_optical_media +
+    (packages__group_user_compartmentalization if ("debops_service_firejail" in group_names) else []) +
     []
   }}
 
