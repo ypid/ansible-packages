@@ -1246,8 +1246,8 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_exfat_state | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'libreoffice libreoffice-* uno-libs3 ure python3-uno'
-    backports: [ 'jessie' ]
+  - package: 'libreoffice libreoffice-* python3-uno uno-libs3 ure'
+    backports: [ 'jessie', 'stretch' ]
     state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'virtualbox virtualbox-*'
@@ -1850,6 +1850,7 @@ packages__group_networking_analysis_minimum:
   - 'dnstracer'
   - 'netdiscover'
   - 'tcpreplay'
+  - 'tcpflow'
 
   - '{{ "python-scapy" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
@@ -2384,6 +2385,7 @@ packages__group_office_minimal:
   - 'libreoffice'
   - 'keepnote'
   - 'qtqr'
+  - 'mdp'
 
 packages__group_office_additional:
   - 'libreoffice-writer2xhtml'
@@ -4074,6 +4076,10 @@ packages__group_e2e_testing_basic:
   - 'python3-selenium'
   - 'chromedriver'
   - 'firefoxdriver'
+
+  ## I find SikuliX more suitable. Actiona is not code focused but on GUI
+  ## "code" building blocks.
+  # - 'actiona'
 
 packages__group_user_additional:
   - 'gucharmap'
