@@ -341,7 +341,7 @@ packages__python2_required_packages: True
 # 2 packages which are optional meaning that a Python 3 equivalent already
 # exists.
 # %s/'\(python-[^ ']\+\)'/'{{ "\1" if (packages__python2_optional_packages|d() | bool) else "" }}'/
-packages__python2_optional_packages: False
+packages__python2_optional_packages: True
 
 # .. ]]]
 
@@ -860,7 +860,7 @@ packages__conditional_role:
 
   - present_packages:
       - 'xserver-xorg'
-    additional_packages: '{{ packages__group_core_hypervisor_guest_tools_kvm }}'
+    additional_packages: '{{ packages__group_core_hypervisor_guest_tools_gui_kvm }}'
 
   - present_packages: '{{ packages__group_kde_applications }}'
     require: 1
@@ -1181,9 +1181,9 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_linux_image|d(packages__apt_preferences__core_backports_state) }}'
 
-  - package: 'vim vim-*'
-    backports: [ 'wheezy' ]
-    state: '{{ packages__apt_preferences__backports_vim_state | d(packages__apt_preferences__core_backports_state) }}'
+  - package: 'debootstrap'
+    backports: [ 'stretch' ]
+    state: '{{ packages__apt_preferences__backports_stretch_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'jq'
     backports: [ 'jessie' ]
@@ -1195,6 +1195,10 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'borgbackup borgbackup-* python3-msgpack'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__only_available_backports_state) }}'
+
+  - package: 'borgbackup'
+    backports: [ 'stretch' ]
     state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
   - package: 'intel-microcode'
@@ -1297,6 +1301,10 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'ansible'
     backports: [ 'jessie' ]
+    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
+
+  - package: 'ansible python-jinja2 python3-jinja2'
+    backports: [ 'stretch' ]
     state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'python-elasticsearch python-elasticsearch* python3-elasticsearch* python-jinja2 python-netaddr python3-netaddr python-nose* python3-nose* pylint python-astroid python3-astroid python-logilab-common python3-logilab-common python-pexpect* python3-pexpect* python-requests python3-requests python3-urllib3 python-urllib3'
@@ -1416,7 +1424,7 @@ packages__debian_stretch_from_jessie_list:
 
 # .. envvar:: packages__apt_preferences__core_unstable_state
 #
-# Default state of unstable presets indented for servers and clients.
+# Default state of unstable presets indented for all systems.
 packages__apt_preferences__core_unstable_state: '{{ packages__apt_preferences__unstable_state }}'
 
 
@@ -1712,10 +1720,6 @@ packages__group_tag_admin_backup:
   ## Scripts by ypid use this to interact with borgmatic:
   - 'crudini'
 
-  ## Needed to install borgmatic:
-  - '{{ "python-setuptools" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-setuptools'
-
 # .. ]]]
 
 # Ansible [[[
@@ -1847,6 +1851,9 @@ packages__group_networking_analysis_minimum:
   - '{{ "python-nmap" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-nmap'
   - 'xsltproc'
+
+  - 'ftp'
+  - 'tftp'
 
   - 'dhcping'
   - 'dhcpdump'
@@ -1985,6 +1992,7 @@ packages__group_sysadmin_gui: |
 
 packages__group_tag_admin_filesystem_minimal:
   - 'ranger'
+  - 'btrfs-tools'
 
 packages__group_sysadmin_minimal: |
   {{
@@ -2526,6 +2534,7 @@ packages__group_devel_ai:
 packages__group_devel_android:
   - 'androidsdk-ddms'
   - 'adb'
+  - 'android-sdk-platform-tools-common'
   - 'fastboot'
   - 'pidcat'
   - 'heimdall-flash'
@@ -3195,6 +3204,7 @@ packages__group_devel_env_for_aosp:
   - 'libxml2-utils'
   - 'xsltproc'
   - 'unzip'
+  - 'pxz'
 
   - 'bc'
 
@@ -3475,12 +3485,16 @@ packages__group_core_bare_metal: |
 packages__group_core_hypervisor_guest_tools_vmware:
   - 'open-vm-tools'
 
-packages__group_core_hypervisor_guest_tools_kvm:
+packages__group_core_hypervisor_guest_tools_kvm: []
+  # - 'qemu-guest-agent'
+
+packages__group_core_hypervisor_guest_tools_gui_kvm:
   - 'xserver-xorg-video-qxl'
   - 'spice-vdagent'
 
 packages__group_core_hypervisor_guest_tools: |
   {{
+    (packages__group_core_hypervisor_guest_tools_kvm if ('kvm' == (ansible_virtualization_type|d(omit)|lower)) else []) +
     (packages__group_core_hypervisor_guest_tools_vmware if ('vmware' == (ansible_virtualization_type|d(omit)|lower)) else []) +
     []
   }}

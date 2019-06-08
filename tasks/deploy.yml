@@ -2,7 +2,7 @@
 
 - name: Install packages via APT
   apt:
-    name: '{{ item }}'
+    name: '{{ q("flattened", packages__class_install|d([])) }}'
     state: '{{ packages__deploy_state }}'
     install_recommends: '{{ packages__deploy_install_recommends|bool }}'
     force: '{{ packages__deploy_force|bool }}'
@@ -11,11 +11,10 @@
     default_release: '{{ packages__deploy_default_release|d(omit) }}'
     dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
   when: (ansible_pkg_mgr == 'apt')
-  with_flattened: '{{ packages__class_install|d([]) }}'
 
 - name: Remove packages via APT
   apt:
-    name: '{{ item }}'
+    name: '{{ q("flattened", packages__class_absent|d([])) }}'
     state: 'absent'
     install_recommends: '{{ packages__deploy_install_recommends|bool }}'
     purge: '{{ packages__deploy_purge|bool }}'
@@ -25,4 +24,3 @@
     default_release: '{{ packages__deploy_default_release|d(omit) }}'
     dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
   when: (ansible_pkg_mgr == 'apt')
-  with_flattened: '{{ packages__class_absent|d([]) }}'
