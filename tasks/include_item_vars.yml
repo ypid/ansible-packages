@@ -14,3 +14,6 @@
     packages__whitelist_by_vars_combined: '{{
       ((packages__whitelist_by_vars_combined | d([]) | list) +
       (packages__whitelist_by_vars | d([]) | list)) | unique }}'
+    packages__name_remapping_by_vars_combined: '{{
+      (packages__name_remapping_by_vars_combined | d({}))
+      | combine(packages__name_remapping_by_vars | d({})) }}'

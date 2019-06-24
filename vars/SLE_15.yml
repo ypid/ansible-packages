@@ -14,14 +14,23 @@
 ## The following repos are expected to be enabled, at least for classes like `server` or above:
 ## SLE-Product-SLES15
 ## SLE-Module-Basesystem15
-## SLE-Module-DevTools15: strace, git-svn
-## SLE-Module-Public-Cloud15: python3-netaddr
-## SLE-Module-Server-Applications15: tree
-## SLE-Module-Packagehub-Subpackages15: nping
-## SUSE-PackageHub-15: tmux, ...
+## SLE-Module-DevTools15
+## SLE-Module-Public-Cloud15
+## SLE-Module-Server-Applications15
+## SLE-Module-Packagehub-Subpackages15
+## SUSE-PackageHub-15
 
-## Probably optional:
+## Dependency of SLE-Module-DevTools15:
 ## SLE-Module-Desktop-Applications15
+
+# Install with:
+# ## Dependency for sle-module-development-tools:
+# SUSEConnect -p sle-module-desktop-applications/15/x86_64
+#
+# SUSEConnect -p sle-module-development-tools/15/x86_64   ## Packages: strace, git-svn
+# SUSEConnect -p sle-module-public-cloud/15/x86_64        ## Packages: python3-netaddr
+# SUSEConnect -p sle-module-server-applications/15/x86_64 ## Packages: tree
+# SUSEConnect -p PackageHub/15/x86_64                     ## Packages: tmux, nping
 
 packages__targets:
   - 'SUSE Linux Enterprise 15'
@@ -39,3 +48,4 @@ packages__blacklist_by_vars:
   - 'sysdig'
   - 'ocaml-csv'
   - 'rhash'
+  - 'fio'

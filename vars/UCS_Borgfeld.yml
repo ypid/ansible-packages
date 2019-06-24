@@ -11,7 +11,7 @@ packages__name_remapping_by_vars:
 
 packages__blacklist_by_vars:
 
-  ## No (common) way to automatically automate this??
+  ## No (common) way to automate updates?
   - 'unattended-upgrades'
 
   - 'apt-cacher-ng'

@@ -7,6 +7,7 @@ packages__targets:
   - 'Debian GNU/Linux 9 (stretch)'
 
 packages__blacklist_by_vars:
+  - 'casync'
   - 'ddrescue'
   - 'linux-wlan-ng-firmware'
   - 'eagle'
