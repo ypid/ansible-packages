@@ -14,3 +14,4 @@ packages__blacklist_by_vars:
   - 'json2yaml'
   - 'yaml2json'
   - 'yq'
+  - 'asr-manpages'

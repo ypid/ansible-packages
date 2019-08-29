@@ -329,20 +329,22 @@ packages__load_distribution_additional: []
 
 # .. envvar:: packages__python2_required_packages
 #
-# Python 2 will be EOF 2020-01-01. If set to ``True`` then don’t install Python
+# Python 2 will be EOF 2020-01-01. If set to ``False`` then don’t install Python
 # 2 packages which are required by other programs/where no Python 3 equivalent
 # exists yet.
 packages__python2_required_packages: True
 
 
-# .. envvar:: packages__python2_required_packages
+# .. envvar:: packages__python2_optional_packages
 #
-# Python 2 will be EOF 2020-01-01. If set to ``True`` then don’t install Python
+# Python 2 will be EOF 2020-01-01. If set to ``False`` then don’t install Python
 # 2 packages which are optional meaning that a Python 3 equivalent already
 # exists.
 # %s/'\(python-[^ ']\+\)'/'{{ "\1" if (packages__python2_optional_packages|d() | bool) else "" }}'/
-packages__python2_optional_packages: True
-
+packages__python2_optional_packages: '{{ ansible_local.python.installed2
+                                         if (ansible_local|d() and ansible_local.python|d() and
+                                             ansible_local.python.installed2 is defined)
+                                         else False }}'
 # .. ]]]
 
 # debconf settings [[[
@@ -1090,7 +1092,7 @@ packages__localizations_available_global:
       - 'task-german'
       - 'wngerman'
       - 'ingerman'
-      - 'aspell-de-alt'
+      - 'aspell-de-1901'
     ## Packages seem to be specific to German.
     when: 'de'
 
@@ -1176,7 +1178,7 @@ packages__localizations_available_additional_dist: []
 # Note that debops.apt_preferences_ will need to run in the same context as this role.
 packages__apt_preferences__debian_backports_list:
 
-  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-tools linux-base'
+  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-progs linux-base'
     ## linux-base is required by linux-image-686-pae
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_linux_image|d(packages__apt_preferences__core_backports_state) }}'
@@ -1324,7 +1326,7 @@ packages__apt_preferences__debian_backports_list:
     reason: 'https://stackoverflow.com/questions/28265225/go-get-sys-textflag-h-missing'
     state: '{{ packages__apt_preferences__backports_golang_state | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'openjdk-8-jdk openjdk-8-jdk-headless openjdk-8-jre openjdk-8-jre-headless ca-certificates-java'
+  - package: 'openjdk-8-jdk openjdk-8-* ca-certificates-java'
     backports: [ 'jessie' ]
     state: '{{ packages__apt_preferences__backports_openjdk_8_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
@@ -1495,9 +1497,7 @@ packages__group_tag_field_finance_full: |
 # ~~~
 
 packages__group_tag_accessibility_ocr:
-  - 'libtesseract3'
   - 'tesseract-ocr'
-  - 'tesseract-ocr-deu-frak'
   - 'tesseract-ocr-deu'
   - 'tesseract-ocr-eng'
   - 'gocr'
@@ -1577,7 +1577,6 @@ packages__group_tag_role_documentation:
   - '{{ "apt-doc" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - 'linux-doc'
   - 'rsyslog-doc'
-  - 'apparmor-docs'
 
 packages__group_tag_role_documentation_additional:
   - 'doc-rfc'
@@ -1628,8 +1627,8 @@ packages__group_email_minimum:
 
 # https://wiki.debian.org/Flash
 
-packages__group_internet_flash:
-  - 'browser-plugin-gnash'
+packages__group_internet_flash: []
+  # - 'browser-plugin-gnash'
 
   ## `flashplugin-nonfree` is constantly lagging behind.
   ## https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814316
@@ -1781,7 +1780,12 @@ packages__group_tag_admin_monitoring_minimum:
 
 packages__group_tag_admin_monitoring_additional:
   - 'nmon'
-  - 'dstat'
+
+  ## pcp has replaced the original dstat:
+  # - 'dstat'
+
+  - 'pcp'
+
   - 'strace'
   - 'sysdig'
 
@@ -1807,7 +1811,8 @@ packages__group_tag_admin_monitoring_network_minimum:
   - 'tcpdump'
   - 'ngrep'
   - 'iptraf-ng'
-  - 'speedtest-cli'
+  ## WAIT: As of buster, speedtest-cli depends on Python2.
+  - '{{ "speedtest-cli" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
 packages__group_tag_admin_monitoring_network_additional:
   - 'wireshark'
@@ -1905,7 +1910,9 @@ packages__group_core_hardware_wireless:
   - 'rfkill'
 
 packages__group_hardware_info:
-  - 'sysinfo'
+  ## Legacy:
+  # - 'sysinfo'
+
   - 'hwinfo'
   - 'hardinfo'
   - 'lsscsi'
@@ -1926,7 +1933,8 @@ packages__group_sysadmin_hardware_minimum:
 
 packages__group_hardware_testing_and_benchmarking_minimum:
   - 'f3'
-  - 'fio'
+  ## WAIT: As of buster, fio depends on Python2.
+  - '{{ "fio" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'sysbench'
 
 packages__group_hardware_testing_and_benchmarking_additional:
@@ -1973,7 +1981,8 @@ packages__group_sysadmin_gui_additional:
   - 'gtkterm'
   - 'cutecom'
 
-  - 'gresolver'
+  ## Legacy stuff:
+  # - 'gresolver'
 
   - 'gparted'
   - 'gnome-disk-utility'
@@ -1993,7 +2002,7 @@ packages__group_sysadmin_gui: |
 
 packages__group_tag_admin_filesystem_minimal:
   - 'ranger'
-  - 'btrfs-tools'
+  - 'btrfs-progs'
 
 packages__group_sysadmin_minimal: |
   {{
@@ -2057,8 +2066,6 @@ packages__group_tag_use_printing_additional:
 packages__group_tag_field_astronomy:
   ## Based on education-astronomy (only makes recommendations).
   - 'stellarium'
-  - 'celestia'
-  - 'celestia-gnome'
   - 'gpredict'
   - 'kstars'
   - 'lightspeed'
@@ -2268,8 +2275,6 @@ packages__group_multimedia_editing_additional:
   - 'librsvg2-bin'
   - 'pitivi'
 
-  - 'mp4v2-utils'
-  - 'ibav-tools'
   - 'x264'
   - 'x265'
 
@@ -2357,7 +2362,6 @@ packages__group_typesetting_converters:
   - 'docx2txt'
   - 'wkhtmltopdf'
   - 'rst2pdf'
-  - 'pdf2htmlex'
   - 'grip'
 
 packages__group_typesetting_additional:
@@ -2409,7 +2413,8 @@ packages__group_office_additional:
 
   # - 'libreoffice-java-common'
 
-  - 'rednotebook'
+  ## Not in Debian since jessie.
+  # - 'rednotebook'
 
   - 'calibre'
   - 'fbreader'
@@ -2417,12 +2422,10 @@ packages__group_office_additional:
   - 'impressive'
   - 'sm'
   - 'kchmviewer'
-  - 'freemind'
-  - 'blogilo'
   - 'gscan2pdf'
-  - 'gtg'
-  - 'taskwarrior'
-  ## WAIT: Test when in stable.
+
+  # - 'gtg'
+  # - 'taskwarrior'
   # - 'bugwarrior'
 
   - 'simple-scan'
@@ -2473,8 +2476,7 @@ packages__group_tag_devel_rcs_minimal:
 packages__group_tag_devel_rcs_additional:
   - 'git-svn'
   - 'git-el'
-  - 'git-arch'
-  - 'git-bzr'
+  - 'git-remote-bzr'
   - 'git-cvs'
   - 'git-email'
   - 'git-gui'
@@ -2492,7 +2494,8 @@ packages__group_tag_devel_rcs_additional:
   ## Best to run this on a server as cron job:
   # - 'github-backup'
 
-  - 'gitstats'
+  ## Upstream is not longer maintained.
+  # - 'gitstats'
 
   ## Not yet in stable.
   # - 'gitinspector'
@@ -2533,7 +2536,6 @@ packages__group_devel_ai:
   - '{{ "python-aiml" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
 packages__group_devel_android:
-  - 'androidsdk-ddms'
   - 'adb'
   - 'android-sdk-platform-tools-common'
   - 'fastboot'
@@ -2550,7 +2552,7 @@ packages__group_devel_debian:
   - 'apt-venv'
 
 packages__group_devel_java:
-  - 'openjdk-8-jdk'
+  - 'openjdk-11-jdk'
   - 'libtrove3-java'
   - 'gradle'
   - 'maven'
@@ -2583,7 +2585,6 @@ packages__group_devel_javascript:
   - 'node-uglify'
   - 'node-mysql'
   - 'node-debug'
-  - 'nodejs-legacy'
   - 'coffeescript'
 
 packages__group_devel_web:
@@ -2612,7 +2613,6 @@ packages__group_tag_field_electronics:
 
   - 'kicad'
   - 'kicad-doc-en'
-  - '{{ "eagle" if (packages__non_free_enabled|d() | bool) else "" }}'
 
   - 'oregano'
   - 'gnucap'
@@ -2727,6 +2727,7 @@ packages__group_tag_devel_lang_python:
   - '{{ "python-coverage" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-coverage'
   - '{{ "python-flake8" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'flake8'
   - 'python3-flake8'
   - '{{ "pylint" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'pylint3'
@@ -2760,7 +2761,8 @@ packages__group_tag_devel_lang_python:
   - 'python3-appdirs'
   - '{{ "python-pygraphviz" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pygraphviz'
-  - 'libgv-python'
+  - '{{ "python-gv" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-gv'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
@@ -2852,7 +2854,6 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-django'
   - '{{ "python-django" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'runsnakerun'
-  - 'ipython-doc'
   - '{{ "python-bs4" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - '{{ "python-bs4-doc" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-bs4'
@@ -2861,6 +2862,7 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-traceback2'
   - 'python3-nose'
   - 'python3-nose2-cov'
+  - 'python3-testfixtures'
 
   - '{{ "python-q" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-q'
@@ -2875,7 +2877,6 @@ packages__group_tag_devel_lang_python_additional:
   - '{{ "python-gnupg" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-gnupg'
   - 'python3-openssl'
-  - 'python3-postgresql'
   - 'python3-jinja2'
   - 'python3-markdown'
   - 'python3-numpy'
@@ -3021,15 +3022,14 @@ packages__group_tag_devel_lang_ruby:
   - 'rbenv'
   - 'rake'
   - 'ruby-kramdown'
-  - 'ruby-bluecloth'
   - 'ruby-gsl'
   - 'bundler'
   - 'ruby-builder-doc'
   - 'ruby-dev'
 
 
-packages__group_tag_devel_ide:
-  - 'eclipse'
+packages__group_tag_devel_ide: []
+  # - 'eclipse'
 
   # - 'netbeans'
 
@@ -3149,7 +3149,7 @@ packages__group_devel_env_for_NeoLayoutViewer:
   - 'libgee-0.8-dev'
   - 'libgtk-3-dev'
   - 'libx11-dev'
-  - 'libunique-3.0-dev'
+  - 'libunique-dev'
   - 'libappindicator3-dev'
 
 packages__group_devel_env_for_slop:
@@ -3178,20 +3178,19 @@ packages__group_devel_env_for_freetz:
   - 'pkg-config'
   - 'ecj'
   - 'fastjar'
-  - 'realpath'
   - 'libstring-crc32-perl'
   - 'libusb-dev'
   - 'libacl1-dev'
   - 'libcap-dev'
   - 'libc6-dev-i386'
-  - 'lib32ncurses5-dev'
+  - 'lib32ncurses-dev'
   - 'gcc-multilib'
   - 'lib32stdc++6'
   - 'libglib2.0-dev'
 
 ## https://source.android.com/source/initializing
 packages__group_devel_env_for_aosp:
-  - 'openjdk-8-jdk'
+  - 'openjdk-11-jdk'
   - 'git-core'
   - 'gnupg'
   - 'flex'
@@ -3204,7 +3203,7 @@ packages__group_devel_env_for_aosp:
   - 'gcc-multilib'
   - 'g++-multilib'
   - 'libc6-dev-i386'
-  - 'lib32ncurses5-dev'
+  - 'lib32ncurses-dev'
   - 'x11proto-core-dev'
   - 'libx11-dev'
   - 'lib32z-dev'
@@ -3350,8 +3349,7 @@ packages__group_core_minimum:
   - 'util-linux'
   - 'findutils'
 
-  ## WAIT: Test when available in Debian Stable.
-  # - 'fd-find'
+  - 'fd-find'
   ## WAIT: Not yet in Debian: https://github.com/chmln/sd
   # - 'sd'
 
@@ -3363,12 +3361,16 @@ packages__group_core_minimum:
 
   - 'vim'
   - 'vim-nox'
+  - 'neovim'
 
-  - 'byobu'
   - 'tmux'
 
+  - '{{ ("byobu" if (packages__python2_required_packages|d() | bool) else "")
+        if (ansible_distribution_release|d("")|lower in ["buster"])
+        else "byobu" }}'
+
+
   - 'gnupg'
-  - 'gnupg-curl'
 
   ## Superseded by tmux:
   # - 'screen'
@@ -3512,9 +3514,6 @@ packages__group_core_bare_metal: |
     []
   }}
 
-packages__group_core_hypervisor_guest_tools_vmware:
-  - 'open-vm-tools'
-
 packages__group_core_hypervisor_guest_tools_kvm: []
   # - 'qemu-guest-agent'
 
@@ -3525,7 +3524,6 @@ packages__group_core_hypervisor_guest_tools_gui_kvm:
 packages__group_core_hypervisor_guest_tools: |
   {{
     (packages__group_core_hypervisor_guest_tools_kvm if ('kvm' == (ansible_virtualization_type|d(omit)|lower)) else []) +
-    (packages__group_core_hypervisor_guest_tools_vmware if ('vmware' == (ansible_virtualization_type|d(omit)|lower)) else []) +
     []
   }}
 
@@ -4032,9 +4030,9 @@ packages__group_application_time_tracking:
 
 packages__group_network_remmina:
   - 'vinagre'
-  - 'freerdp-x11'
+  - 'freerdp2-x11'
   - 'remmina'
-  - 'remmina-plugin-gnome'
+  - 'remmina-plugin-secret'
   - 'remmina-plugin-nx'
   - 'remmina-plugin-rdp'
   - 'remmina-plugin-telepathy'
@@ -4096,7 +4094,7 @@ packages__group_user_file_manager:
 
 packages__group_user_text_editor:
   - 'gedit'
-  - 'vim-gnome'
+  - 'vim-gtk3'
 
 packages__group_user_password_manager:
   - 'keepassx'
@@ -4135,7 +4133,7 @@ packages__group_e2e_testing_basic:
   - 'sikulix'
   - '{{ "python-selenium" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-selenium'
-  - 'chromedriver'
+  - 'chromium-driver'
   - 'firefoxdriver'
 
   ## I find SikuliX more suitable. Actiona is not code focused but on GUI
@@ -4153,7 +4151,6 @@ packages__group_user_additional:
   - 'catfish'
   - 'gtkhash'
   - 'grsync'
-  - 'gnome-schedule'
   - 'autokey-gtk'
   - 'xclip'
   - 'gnome-software'

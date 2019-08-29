@@ -3,6 +3,16 @@
 packages__targets:
   - 'Debian GNU/Linux 10 (buster)'
 
+packages__blacklist_by_vars:
+  - 'sikulix'
+  - 'partimage'
+  - 'network-manager-iodine'
+  - 'alleyoop'
+  - 'gcstar'
+  - 'sysbench'
+  - 'mysql-workbench'
+  - 'sysdig'
+
 # .. Only defined here to overrule Debian_stretch.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:
   - 'fdroidcl'

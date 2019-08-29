@@ -11,7 +11,6 @@ packages__blacklist_by_vars:
   - 'ddrescue'
   - 'linux-wlan-ng-firmware'
   - 'eagle'
-  - 'asr-manpages'
   - 'ansible-doc'
   - 'apparmor-docs'
   - 'ipython-doc'
@@ -34,6 +33,7 @@ packages__blacklist_by_vars:
   - 'songwrite'
   - 'freqtweak'
   - 'fdroidcl'
+  - 'fd-find'
 
   - 'virtualbox'
   - 'virtualbox-dkms'
