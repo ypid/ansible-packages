@@ -34,6 +34,7 @@ packages__blacklist_by_vars:
   - 'freqtweak'
   - 'fdroidcl'
   - 'fd-find'
+  - 'rmlint'
 
   - 'virtualbox'
   - 'virtualbox-dkms'

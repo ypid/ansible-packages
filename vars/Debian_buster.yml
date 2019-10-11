@@ -7,11 +7,17 @@ packages__blacklist_by_vars:
   - 'sikulix'
   - 'partimage'
   - 'network-manager-iodine'
+  - 'network-manager-iodine-gnome'
   - 'alleyoop'
   - 'gcstar'
   - 'sysbench'
   - 'mysql-workbench'
   - 'sysdig'
+  - 'virtualbox-guest-utils'
+  - 'python-imaging'
+  - 'linux-wlan-ng-firmware'
+  - 'python-tox'
+  - 'python-vte'
 
 # .. Only defined here to overrule Debian_stretch.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:

@@ -862,6 +862,12 @@ packages__conditional_role:
 
   - present_packages:
       - 'xserver-xorg'
+    additional_packages: '{{ packages__group_core_bare_metal_xorg
+                             if (ansible_virtualization_role in [ "host" ])
+                             else [] }}'
+
+  - present_packages:
+      - 'xserver-xorg'
     additional_packages: '{{ packages__group_core_hypervisor_guest_tools_gui_kvm }}'
 
   - present_packages: '{{ packages__group_kde_applications }}'
@@ -887,6 +893,20 @@ packages__conditional_role:
     require: 2
     additional_packages:
       - 'nautilus-owncloud'
+
+  - present_packages:
+      - 'nextcloud-desktop'
+      - 'nautilus'
+    require: 2
+    additional_packages:
+      - 'nautilus-nextcloud'
+
+  - present_packages:
+      - 'nextcloud-desktop'
+      - 'nemo'
+    require: 2
+    additional_packages:
+      - 'nemo-nextcloud'
 
   ## Recommended by `battery-stats` and needed for `/usr/share/battery-stats/battery-stats-graph`.
   - present_packages:
@@ -1237,7 +1257,7 @@ packages__apt_preferences__debian_backports_list:
     state: '{{ packages__apt_preferences__backports_owncloud_client_state | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'josm josm-* jmapviewer openstreetmap-map-icons-classic'
-    backports: [ 'jessie', 'stretch' ]
+    backports: [ 'jessie', 'stretch', 'buster' ]
     state: '{{ packages__apt_preferences__backports_josm | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'electrum python-electrum'
@@ -1473,16 +1493,16 @@ packages__group_kde_applications:
 packages__group_tag_field_finance_minimum:
   - 'kmymoney'
 
-packages__group_tag_field_finance_bitcoin:
-  - 'electrum'
+packages__group_tag_field_finance_bitcoin: []
+  # - 'electrum'
 
 packages__group_tag_field_finance_additional:
   - 'aqbanking-tools'
   - 'libaqbanking-doc'
 
-  # - 'gnucash'
-  # - 'gnucash-docs'
-  # - '{{ "python-gnucash" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'gnucash'
+  - 'gnucash-docs'
+  - '{{ "python-gnucash" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
 packages__group_tag_field_finance_full: |
   {{
@@ -1558,11 +1578,13 @@ packages__group_tag_field_arts_audio_guitar:
   - 'songwrite'
 
 packages__group_tag_field_arts_audio:
-  - 'freqtweak'
   - 'hydrogen'
-  - 'ardour3'
+  - 'ardour'
   - 'rosegarden'
   - 'muse'
+
+  ## Unmaintained:
+  # - 'freqtweak'
 
 # .. ]]]
 
@@ -1616,6 +1638,7 @@ packages__group_imaging:
 packages__group_internet_minimum:
   - 'firefox-esr'
   - 'chromium'
+  - 'chromium-sandbox'
   - 'torbrowser-launcher'
 
 
@@ -1784,7 +1807,8 @@ packages__group_tag_admin_monitoring_additional:
   ## pcp has replaced the original dstat:
   # - 'dstat'
 
-  - 'pcp'
+  ## Needs configuration because it starts daemons by default.
+  # - 'pcp'
 
   - 'strace'
   - 'sysdig'
@@ -2253,6 +2277,8 @@ packages__group_multimedia_minimum:
   - 'digikam'
   - 'viewnior'
 
+  - 'webp'
+
 packages__group_multimedia_editing_minimum:
   - 'gimp'
   - 'inkscape'
@@ -2353,6 +2379,8 @@ packages__group_typesetting_minimal:
   ## To install TeX Live manually if needed.
   ## https://www.tug.org/texlive/debian.html
   - 'equivs'
+
+  - 'hugo'
 
 packages__group_typesetting_converters:
   - 'latex2rtf'
@@ -2647,6 +2675,9 @@ packages__group_tag_devel_lang_perl:
 
   - 'perltidy'
   - 'libperl-critic-perl'
+
+  - '{{ "dh-make-perl" if (ansible_pkg_mgr in ["apt"]) else "" }}'
+  - '{{ "apt-file" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
   - 'libconst-fast-perl'
   - 'libboolean-perl'
@@ -2966,18 +2997,21 @@ packages__group_devel_virtualization:
   - 'spice-client-gtk'
   - 'virt-manager'
 
-packages__group_devel_virtualization_desktop_contrib:
-  - 'virtualbox'
-  - 'virtualbox-dkms'
-  - 'virtualbox-qt'
+  - 'vagrant'
+  - 'vagrant-libvirt'
 
-packages__group_devel_virtualization_desktop_non_free:
-  - 'virtualbox-guest-additions-iso'
+packages__group_devel_virtualization_desktop_contrib: []
+  # - 'virtualbox'
+  # - 'virtualbox-dkms'
+  # - 'virtualbox-qt'
+
+packages__group_devel_virtualization_desktop_non_free: []
+  # - 'virtualbox-guest-additions-iso'
 
 packages__group_devel_virtualization_desktop: |
   {{
-    (packages__group_devel_virtualization_desktop_contrib if ('host' == ansible_virtualization_role and packages__contrib_enabled) else []) +
-    (packages__group_devel_virtualization_desktop_non_free if ('host' == ansible_virtualization_role and packages__non_free_enabled) else []) +
+    (packages__group_devel_virtualization_desktop_contrib if (ansible_virtualization_role in ['host', 'NA'] and packages__contrib_enabled) else []) +
+    (packages__group_devel_virtualization_desktop_non_free if (ansible_virtualization_role in ['host', 'NA'] and packages__non_free_enabled) else []) +
     []
   }}
 
@@ -3354,7 +3388,8 @@ packages__group_core_minimum:
   # - 'sd'
 
   - 'pv'
-  - 'cryptsetup'
+  - 'cryptsetup-bin'
+  - 'cryptsetup-run'
 
   ## Might be useful for some. Also comes in handy on really slow computers.
   - 'nano'
@@ -3465,7 +3500,7 @@ packages__group_cpu_vulnerability_checker:
   - 'spectre-meltdown-checker'
 
 packages__group_core_bare_metal_services_not_working_on_all_machines:
-  - 'mcelog'
+  - 'rasdaemon'
 
 # https://wiki.archlinux.org/index.php/laptop
 packages__group_tag_hardware_laptop_accu:
@@ -3513,6 +3548,9 @@ packages__group_core_bare_metal: |
     packages__group_core_bare_metal_services +
     []
   }}
+
+packages__group_core_bare_metal_xorg:
+  - 'xserver-xorg-video-intel'
 
 packages__group_core_hypervisor_guest_tools_kvm: []
   # - 'qemu-guest-agent'
@@ -3592,8 +3630,8 @@ packages__group_core_full: |
     packages__group_package_management_minimal +
     packages__group_core_minimum +
     packages__group_core_cron +
-    (packages__group_core_bare_metal if ('host' == ansible_virtualization_role) else []) +
-    (packages__group_core_hardware   if ('host' == ansible_virtualization_role) else []) +
+    (packages__group_core_bare_metal if (ansible_virtualization_role in ['host', 'NA']) else []) +
+    (packages__group_core_hardware   if (ansible_virtualization_role in ['host', 'NA']) else []) +
     (packages__group_core_hardware_wireless if (ansible_form_factor|d("") in ["Notebook", "Laptop"]) else []) +
     (packages__group_core_hypervisor_guest_tools if ('guest' == ansible_virtualization_role) else []) +
     []
@@ -3650,6 +3688,7 @@ packages__group_user_terminal_programs_minimum:
 
   - 'rhash'
   - 'libarchive-zip-perl'
+  - 'rmlint'
 
   - 'dateutils'
 
@@ -3834,7 +3873,7 @@ packages__group_wm_gnome_core_debian_jessie:
   - 'policykit-1-gnome'
   - 'pulseaudio'
   - 'totem'
-  - 'tracker-gui'
+  # - 'tracker-gui'
   - 'yelp'
   - 'zenity'
 
@@ -3854,7 +3893,7 @@ packages__group_wm_gnome_basic: |
     (packages__group_wm_gnome_core_debian_jessie if (
       ansible_distribution|d("") == 'Debian' and
       ansible_distribution_release|d("") == 'jessie'
-    ) else [ 'gnome-core' ]) +
+    ) else [ 'task-gnome-desktop' ]) +
     packages__group_wm_gnome_minimal +
     packages__group_wm_gnome_additional +
     []
@@ -3941,7 +3980,7 @@ packages__group_wm_xfce:
   - 'task-xfce-desktop'
 
   ## TODO: Try when in Debian stable.
-  - 'alacritty'
+  # - 'alacritty'
 
   - 'xfce4-terminal'
   - 'xscreensaver'
@@ -4144,7 +4183,7 @@ packages__group_user_additional:
   - 'gucharmap'
   - 'mat'
   - 'unison-gtk'
-  - 'owncloud-client'
+  - 'nextcloud-desktop'
   - 'seahorse'
   - 'filezilla'
   - 'florence'
@@ -4543,6 +4582,11 @@ packages__absent_preset_minimal:
   - 'frogr'
   - 'frogr-data'
   - 'iceweasel'
+  - 'owncloud-client'
+  - 'virtualbox'
+  - 'virtualbox-dkms'
+  - 'virtualbox-qt'
+  - 'virtualbox-guest-additions-iso'
 
   ## Nothing against it but the new default is digikam:
   - 'shotwell'
