@@ -1,0 +1,29 @@
+---
+
+## "ansible_distribution": "SLES",
+## "ansible_distribution_file_parsed": true,
+## "ansible_distribution_file_path": "/etc/os-release",
+## "ansible_distribution_file_variety": "SUSE",
+## "ansible_distribution_major_version": "15",
+## "ansible_distribution_release": "1",
+## "ansible_distribution_version": "15.1",
+
+packages__targets:
+  - 'SUSE Linux Enterprise 15.1'
+
+packages__blacklist_by_vars:
+  ## Missing/not packaged:
+  - 'python3-redis'
+  - 'cu'
+  - 'iptstate'
+  - 'lifstat'
+  - 'ncat'
+  - 'nicstat'
+  - 'nwipe'
+  - 'secure-delete'
+  - 'sysdig'
+  - 'ocaml-csv'
+  - 'rhash'
+  - 'fio'
+  - 'nping'
+  - 'git-annex'

@@ -2824,6 +2824,8 @@ packages__group_tag_devel_lang_python:
   - 'python3-sh'
   - '{{ "python-dateutil" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-dateutil'
+  - '{{ "python-pytimeparse" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-pytimeparse'
   - '{{ "python-twill" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - '{{ "python-jsmin" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-jsmin'
@@ -2909,6 +2911,8 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-gnupg'
   - 'python3-openssl'
   - 'python3-jinja2'
+  - '{{ "python-pystache" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-pystache'
   - 'python3-markdown'
   - 'python3-numpy'
   - '{{ "python-graypy" if (packages__python2_optional_packages|d() | bool) else "" }}'
@@ -3390,6 +3394,7 @@ packages__group_core_minimum:
   - 'pv'
   - 'cryptsetup-bin'
   - 'cryptsetup-run'
+  - 'cryptsetup-initramfs'
 
   ## Might be useful for some. Also comes in handy on really slow computers.
   - 'nano'

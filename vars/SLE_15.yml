@@ -49,3 +49,5 @@ packages__blacklist_by_vars:
   - 'ocaml-csv'
   - 'rhash'
   - 'fio'
+  - 'nping'
+  - 'python3-flake8'
