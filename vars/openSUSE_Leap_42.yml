@@ -13,6 +13,7 @@ packages__targets:
 ## I am not really using openSUSE.
 packages__whitelist_by_vars:
   - 'samba-test'
+  - 'autojump'
 
 packages__name_remapping_by_vars:
   'bundler': 'ruby2.4-rubygem-bundler'

@@ -51,3 +51,4 @@ packages__blacklist_by_vars:
   - 'fio'
   - 'nping'
   - 'python3-flake8'
+  - 'autojump'

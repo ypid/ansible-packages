@@ -41,6 +41,7 @@ packages__blacklist_by_vars:
   - 'libuser'
   - 'lifstat'
   - 'ncat'
+  - 'autojump'
 
   ## Backported but does not work:
   ## https://software.opensuse.org/download.html?project=utilities&package=ncdu
