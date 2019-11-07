@@ -3411,6 +3411,7 @@ packages__group_core_minimum:
 
 
   - 'gnupg'
+  - 'signify-openbsd'
 
   ## Superseded by tmux:
   # - 'screen'
@@ -4086,8 +4087,9 @@ packages__group_network_remmina:
   ## Seems to be catching up as of 2015-08.
   ## Problem: https://gettoweb.de/linux/rdesktop-und-credssp-required-by-server/
   ## https://github.com/rdesktop/rdesktop/issues/8
-  # - 'rdesktop'
-  # - 'grdesktop'
+  ## 2019-10: Still very useful to connect to M$ things.
+  - 'rdesktop'
+  - 'grdesktop'
 
 packages__group_user_desktop_sharing_client:
   - 'x2goclient'
