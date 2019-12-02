@@ -30,7 +30,8 @@
 # SUSEConnect -p sle-module-development-tools/15/x86_64   ## Packages: strace, git-svn
 # SUSEConnect -p sle-module-public-cloud/15/x86_64        ## Packages: python3-netaddr
 # SUSEConnect -p sle-module-server-applications/15/x86_64 ## Packages: tree
-# SUSEConnect -p PackageHub/15/x86_64                     ## Packages: tmux, nping
+# SUSEConnect -p PackageHub/15/x86_64                     ## Packages: tmux, nping, crudini
+# SUSEConnect -p sle-module-python2/15.1/x86_64           ## Required for SLE 15 SP1+ only. Packages: crudini, etckeeper-zypp-plugin
 
 packages__targets:
   - 'SUSE Linux Enterprise 15'

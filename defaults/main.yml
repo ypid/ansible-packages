@@ -1835,8 +1835,8 @@ packages__group_tag_admin_monitoring_network_minimum:
   - 'tcpdump'
   - 'ngrep'
   - 'iptraf-ng'
-  ## WAIT: As of buster, speedtest-cli depends on Python2.
-  - '{{ "speedtest-cli" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  ## WAIT: As of buster, speedtest-cli depends on Python2. Other distros like SLES 15 SP1 already updated their packages for Python3 only support.
+  - '{{ "speedtest-cli" if (packages__python2_optional_packages|d()|bool or ansible_distribution|d("") != "Debian") else "" }}'
 
 packages__group_tag_admin_monitoring_network_additional:
   - 'wireshark'

@@ -25,7 +25,7 @@ packages__blacklist_by_vars:
   ## Missing/not packaged:
   - 'casync'
   - 'mr'
-  - 'uuid'
+  - 'ossp-uuid'
   - 'IPython'
   - 'bats'
   - 'conntrack-tools'
@@ -65,14 +65,13 @@ packages__blacklist_by_vars:
   - 'fatrace'
   - 'f3'
 
-  - 'python-isort'
+  - 'python3-isort'
   - 'python3-IPython'
   - 'python3-PrettyTable'
   - 'python3-Unidecode'
   - 'python3-appdirs'
   - 'python3-colorama'
   - 'python3-coverage'
-  - 'python3-dateutil'
   - 'python3-defusedxml'
   - 'python3-flake8'
   - 'python3-flexmock'
@@ -108,3 +107,7 @@ packages__name_remapping_by_vars:
   ## packages__python2_required_packages set to False it could result in no
   ## version of pip being installed.
   'python3-pip': 'python-pip'
+
+  'ipython': 'IPython'
+  'ipython3': 'python3-IPython'
+  'ipython-doc': 'IPython-doc'
