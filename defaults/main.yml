@@ -151,7 +151,7 @@ packages__export_classes: 'all'
 #
 packages__export_distributions:
   - ansible_distribution: 'Debian'
-    ansible_distribution_release: 'jessie'
+    ansible_distribution_release: 'buster'
 
 
 # .. envvar:: packages__export_format
@@ -1645,7 +1645,7 @@ packages__group_internet_minimum:
 packages__group_email_minimum:
   - 'thunderbird'
   - 'enigmail'
-  - 'xul-ext-sogo-connector'
+  # - 'xul-ext-sogo-connector'
 
 
 # https://wiki.debian.org/Flash
@@ -4611,6 +4611,10 @@ packages__absent_preset_minimal:
   ## Removing this also removes: calibre qtcreator stellarium
 
   - 'apt-show-versions'
+
+  ## Currently broken and prevents security upgrade of Thunderbird.
+  ## Ref: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=945061
+  - 'xul-ext-sogo-connector'
 
 
 # Shipping the documentation using the package manager is a nice idea, but for
