@@ -1998,6 +1998,8 @@ packages__group_tag_protocol_smtp:
   # - 'lat'
   # - 'msmtp'
 
+packages__group_sysadmin_gui_minimal:
+  - 'system-config-printer'
 
 packages__group_sysadmin_gui_additional:
   - 'gwakeonlan'
@@ -2032,6 +2034,7 @@ packages__group_sysadmin_minimal: |
   {{
     packages__group_tag_admin_monitoring_minimum +
     packages__group_tag_admin_filesystem_minimal +
+    packages__group_sysadmin_gui_minimal +
     []
   }}
 
