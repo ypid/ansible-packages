@@ -101,6 +101,7 @@ packages__blacklist_by_vars:
   - 'python3-pyaml'
   - 'python3-azurectl'
   - 'python3-azure-storage'
+  - 'python3-yq'
 
 packages__name_remapping_by_vars:
   ## There is no python3-pip package for SLE 12 and with
