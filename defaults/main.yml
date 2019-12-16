@@ -870,6 +870,13 @@ packages__conditional_role:
       - 'xserver-xorg'
     additional_packages: '{{ packages__group_core_hypervisor_guest_tools_gui_kvm }}'
 
+  - present_packages:
+      - 'xserver-xorg'
+      - 'cups'
+    require: 2
+    additional_packages:
+      - 'system-config-printer'
+
   - present_packages: '{{ packages__group_kde_applications }}'
     require: 1
     additional_packages:
@@ -1997,9 +2004,6 @@ packages__group_tag_protocol_smtp:
   # - 'lat'
   # - 'msmtp'
 
-packages__group_sysadmin_gui_minimal:
-  - 'system-config-printer'
-
 packages__group_sysadmin_gui_additional:
   - 'gwakeonlan'
 
@@ -2033,7 +2037,6 @@ packages__group_sysadmin_minimal: |
   {{
     packages__group_tag_admin_monitoring_minimum +
     packages__group_tag_admin_filesystem_minimal +
-    packages__group_sysadmin_gui_minimal +
     []
   }}
 
