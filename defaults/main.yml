@@ -1831,7 +1831,6 @@ packages__group_tag_admin_monitoring_network_minimum:
   - 'conntrack'
   - 'mtr-tiny'
 
-  - 'net-tools'
   - 'tcpdump'
   - 'ngrep'
   - 'iptraf-ng'
@@ -4597,6 +4596,7 @@ packages__absent_preset_minimal:
   - 'virtualbox-dkms'
   - 'virtualbox-qt'
   - 'virtualbox-guest-additions-iso'
+  - 'net-tools'
 
   ## Nothing against it but the new default is digikam:
   - 'shotwell'
