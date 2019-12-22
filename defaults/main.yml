@@ -2019,8 +2019,10 @@ packages__group_sysadmin_gui_additional:
   # - 'systemd-ui'
 
 
-packages__group_tag_admin_virtualization_minimal:
+packages__group_tag_admin_virtualization:
   - 'virt-manager'
+  - 'gir1.2-spiceclientglib-2.0'
+  - 'spice-client-gtk'
 
 packages__group_sysadmin_gui: |
   {{
@@ -2058,6 +2060,7 @@ packages__group_sysadmin_full: |
     packages__group_sysadmin_basic +
     packages__group_network_address_calculation +
     packages__group_tag_network_firewall +
+    packages__group_tag_admin_virtualization +
     packages__group_imaging +
     packages__group_sysadmin_gui +
     packages__group_hardware_info +
@@ -3003,9 +3006,6 @@ packages__group_devel_virtualization:
   # - 'qtemu'
   # - 'qemuctl'
 
-  - 'spice-client-gtk'
-  - 'virt-manager'
-
   - 'vagrant'
   - 'vagrant-libvirt'
 
@@ -3298,6 +3298,7 @@ packages__group_devel_full: |
     packages__group_devel_android +
     packages__group_devel_golang +
     packages__group_tag_devel_lang_ruby +
+    packages__group_tag_admin_virtualization +
     packages__group_devel_virtualization +
     packages__group_devel_virtualization_detection +
     packages__group_tag_devel_lang_haxe +
@@ -4344,6 +4345,8 @@ packages__classes_client: |
     packages__group_user_full +
     packages__group_user_terminal_programs_minimum +
     packages__group_firmware_full +
+    packages__group_tag_admin_virtualization +
+    packages__group_network_remmina +
     []
   }}
 
