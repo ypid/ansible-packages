@@ -3592,7 +3592,10 @@ packages__group_firmware_free:
 packages__group_firmware_contrib:
   - 'b43-fwcutter'
   - 'firmware-b43-installer'
-  - 'firmware-b43legacy-installer'
+
+  ## Disabled because it does not respect the apt_proxy__http_direct setting and will *fail*!!! Leaving the machine without WLAN.
+  ## Install manually on machines that require it.
+  # - 'firmware-b43legacy-installer'
 
   ## Not in Tails:
   - 'linux-wlan-ng-firmware'
@@ -4135,6 +4138,9 @@ packages__group_user_file_manager:
   - 'nemo'
   - 'nemo-gtkhash'
   - 'nemo-fileroller'
+
+  ## For Android USB file sharing.
+  - 'gvfs-backends'
 
   - 'nautilus'
 
