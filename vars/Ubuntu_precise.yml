@@ -7,7 +7,6 @@ packages__targets:
 
 packages__blacklist_by_vars:
   - 'myrepos'
-  - 'needrestart'
   - 'viewnior'
   - 'python3-virtualenv'
   - 'dateutils'

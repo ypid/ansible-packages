@@ -3357,9 +3357,6 @@ packages__group_package_management_additional:
   # - 'dlocate'
   - '{{ "debconf-utils" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
-packages__group_package_management_server:
-  - '{{ "needrestart" if (ansible_pkg_mgr in ["apt"]) else "" }}'
-
 packages__group_package_management_full: |
   {{
     packages__group_package_management_minimal +
@@ -4313,7 +4310,6 @@ packages__classes_base: |
 packages__classes_server: |
   {{
     packages__classes_base +
-    packages__group_package_management_server +
     []
   }}
 
@@ -4462,7 +4458,7 @@ packages__additional_for_class: {}
 #
 #    packages__reject_for_class:
 #      container:
-#        - 'needrestart'
+#        - 'smartmontools'
 #
 # .. Don’t overdo it. This feature is currently disabled until it a real need occurs.
 # ..
@@ -4470,9 +4466,9 @@ packages__additional_for_class: {}
 # ..
 # ..    packages__reject_for_class:
 # ..      'container.*':
-# ..        - 'needrestart'
+# ..        - 'smartmontools'
 # ..
-# .. This means that :jinja_code:`needrestart` will be rejected for ``container`` and ``container_app1`` (everything which the pattern matches).
+# .. This means that :jinja_code:`smartmontools` will be rejected for ``container`` and ``container_app1`` (everything which the pattern matches).
 #
 packages__reject_for_class: {}
 
