@@ -12,7 +12,7 @@
 
 - name: Write package list for all classes
   template:
-    src: '{{ "package_" + packages__export_format + "_dict.j2" }}'
+    src: '{{ "lookup/package_" + packages__export_format + "_dict.j2" }}'
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item.key + packages__export_filename_append +
               "." + packages__export_format }}'
@@ -23,7 +23,7 @@
 
 - name: Write package list
   template:
-    src: '{{ "package_" + packages__export_format + ".j2" }}'
+    src: '{{ "lookup/package_" + packages__export_format + ".j2" }}'
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item + packages__export_filename_append +
               "." + packages__export_format }}'
@@ -36,7 +36,7 @@
 
 - name: Write absent package list for all classes
   template:
-    src: '{{ "package_" + packages__export_format + "_absent_dict.j2" }}'
+    src: '{{ "lookup/package_" + packages__export_format + "_absent_dict.j2" }}'
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item.key + packages__export_filename_append +
               "_absent." + packages__export_format }}'
@@ -47,7 +47,7 @@
 
 - name: Write absent package list
   template:
-    src: '{{ "package_" + packages__export_format + "_absent.j2" }}'
+    src: '{{ "lookup/package_" + packages__export_format + "_absent.j2" }}'
     dest: '{{ packages__export_directory + "/" + ansible_distribution + "_" +
               packages__export_filename_prepend + item + packages__export_filename_append +
               "_absent." + packages__export_format }}'

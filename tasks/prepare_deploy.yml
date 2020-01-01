@@ -15,8 +15,8 @@
 
 - name: Set packages__export_key_name to package_list
   set_fact:
-    packages__class_install: '{{ lookup("template", "package_yaml.j2") | from_yaml }}'
-    packages__class_absent: '{{ lookup("template", "package_yaml_absent.j2") | from_yaml }}'
+    packages__class_install: '{{ lookup("template", "lookup/package_yaml.j2") | from_yaml }}'
+    packages__class_absent: '{{ lookup("template", "lookup/package_yaml_absent.j2") | from_yaml }}'
 
 - name: Fail when a package has a conflicting state
   fail:
