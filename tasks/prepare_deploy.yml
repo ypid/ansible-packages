@@ -20,5 +20,5 @@
 
 - name: Fail when a package has a conflicting state
   fail:
-    msg: 'The following packages are required to be installed and at the same time to should be absent: {{ packages__class_install | intersect(packages__absent_for_class[packages__host_class]|d([])) }}'
-  when: (packages__class_install | intersect(packages__absent_for_class[packages__host_class]|d([])))
+    msg: 'The following packages are required to be installed and at the same time should be absent: {{ packages__class_install | intersect(packages__class_absent) }}'
+  when: (packages__class_install | intersect(packages__class_absent))
