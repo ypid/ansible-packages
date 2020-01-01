@@ -3,8 +3,7 @@
 - name: Run prepare deploy tasks
   include: prepare_deploy.yml
   when: (packages__mode == 'deploy')
-  tags:
-    - 'role::packages:debconf'
+  tags: [ 'role::packages:debconf' ]
 
 - name: Run deploy tasks
   include: deploy.yml

@@ -1,5 +1,16 @@
 ---
 
+- name: Apply debconf settings
+  debconf:
+    name: '{{ item.name }}'
+    question: '{{ item.question|d(omit) }}'
+    value: '{{ item.value|d() }}'
+    vtype: '{{ item.vtype|d() }}'
+  when: (packages__mode == 'deploy' and packages__debconf_enabled and ansible_os_family == 'Debian' and
+         (item.name in packages__class_install or (item.when_package|d() and item.when_package in packages__class_install)))
+  with_items: '{{ packages__debconf_combined_settings }}'
+  tags: [ 'role::packages:debconf' ]
+
 - name: Install packages via APT
   apt:
     name: '{{ q("flattened", packages__class_install|d([])) }}'
