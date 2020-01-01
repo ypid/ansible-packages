@@ -6,6 +6,10 @@
 packages__targets:
   - 'Debian GNU/Linux 9 (stretch)'
 
+packages__name_remapping_by_vars:
+  'cryptsetup-run': 'cryptsetup'
+  'cryptsetup-initramfs': 'cryptsetup'
+
 packages__blacklist_by_vars:
   - 'casync'
   - 'ddrescue'

@@ -443,7 +443,8 @@ packages__debconf_role_settings:
 #
 # The variables and there values are pinned when they are first introduced to
 # provide backwards compatibility in case some names change in further releases
-# of Debian stable.
+# of Debian stable. Normally, packages names in this file correspond to Debian
+# Stable names.
 #
 # This feature should be used only when
 # :ref:`packages__ref_package_name_remapping` and
