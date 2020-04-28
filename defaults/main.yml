@@ -1904,6 +1904,9 @@ packages__group_networking_analysis_minimum:
   - '{{ "snmp-mibs-downloader" if (packages__non_free_enabled|d() | bool) else "" }}'
   - 'tkmib'
 
+  ## Not in Debian.
+  # - 'snmpb'
+
 packages__group_network_address_calculation:
   - 'netmask'
   - 'ipcalc'
@@ -2681,6 +2684,9 @@ packages__group_tag_devel_lang_perl:
   - 'perl'
   - 'libmodule-pluggable-perl'
 
+  ## Can install modules from tarball or GitHub which regular cpan cannot do as it seems.
+  - 'cpanminus'
+
   - 'perltidy'
   - 'libperl-critic-perl'
 
@@ -2797,6 +2803,7 @@ packages__group_tag_devel_lang_python:
   - '{{ "python-naturalsort" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - '{{ "python-colorama" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-colorama'
+  - 'python3-coloredlogs'
   - '{{ "python-unidiff" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-unidiff'
   - '{{ "python-appdirs" if (packages__python2_optional_packages|d() | bool) else "" }}'
@@ -2805,6 +2812,7 @@ packages__group_tag_devel_lang_python:
   - 'python3-pygraphviz'
   - '{{ "python-gv" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-gv'
+  - 'python3-atomicwrites'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
@@ -2943,7 +2951,6 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-sphinxcontrib.programoutput'
   - '{{ "python-sphinx-argparse" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-sphinx-argparse'
-  - 'python3-yaml'
   - '{{ "python-bibtex" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - '{{ "python-git" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - '{{ "python-gitdb" if (packages__python2_optional_packages|d() | bool) else "" }}'
@@ -2978,6 +2985,7 @@ packages__group_tag_devel_lang_python_additional:
   - '{{ "python-cryptography" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-cryptography'
   - 'python3-btrfs'
+  - 'python3-ldap3'
 
 # .. ]]]
 
@@ -3457,6 +3465,7 @@ packages__group_core_additional:
   - 'iperf'
   - 'iperf3'
   - 'dnsutils'
+  - 'whois'
 
   - 'tig'
   - 'markdown'

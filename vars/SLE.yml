@@ -143,6 +143,7 @@ packages__name_remapping_by_vars:
 
   ## Using the `Provides` field of packages:
   'libmodule-pluggable-perl': 'perl-Module-Pluggable'
+  'cpanminus': 'perl-App-cpanminus'
   'perltidy': 'perl-Perl-Tidy'
   'libperl-critic-perl': 'perl-Perl-Critic'
   'libarchive-zip-perl': 'perl-Archive-Zip'
