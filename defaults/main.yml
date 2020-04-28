@@ -1746,9 +1746,7 @@ packages__group_tag_works_with_archive_full: |
 # Handled by a separate Ansible role.
 packages__group_tag_admin_backup:
   - 'borgbackup'
-
-  ## Scripts by ypid use this to interact with borgmatic:
-  - 'crudini'
+  - 'borgmatic'
 
 # .. ]]]
 
@@ -2046,6 +2044,7 @@ packages__group_sysadmin_minimal: |
 packages__group_sysadmin_basic: |
   {{
     packages__group_sysadmin_minimal +
+    packages__group_tag_admin_backup +
     packages__group_tag_works_with_archive_minimal +
     packages__group_tag_admin_monitoring_basic +
     packages__group_tag_admin_monitoring_additional +
@@ -4364,7 +4363,6 @@ packages__classes_client_explorer: |
     packages__group_tag_field_finance_full +
     packages__group_multimedia_full +
     packages__group_sysadmin_full +
-    packages__group_tag_admin_backup +
     packages__group_package_management_gui +
     packages__group_network_manager_vpn_plugin +
     packages__group_education_full +
