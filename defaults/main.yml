@@ -2821,6 +2821,8 @@ packages__group_tag_devel_lang_python:
   - '{{ "python-lxml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-lxml'
 
+  - 'python3-nagiosplugin'
+
   ## Used for logging to systemd-journald:
   - 'python3-systemd'
 
