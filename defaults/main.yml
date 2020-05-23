@@ -3669,6 +3669,7 @@ packages__group_user_terminal_programs_minimum:
   - 'crudini'
   - 'json2yaml'
   - 'yaml2json'
+  - 'xmlstarlet'
 
   - 'csvtool'
 
