@@ -3244,41 +3244,6 @@ packages__group_devel_env_for_freetz:
   - 'lib32stdc++6'
   - 'libglib2.0-dev'
 
-## https://source.android.com/source/initializing
-packages__group_devel_env_for_aosp:
-  - 'openjdk-11-jdk'
-  - 'git-core'
-  - 'gnupg'
-  - 'flex'
-  - 'bison'
-  - 'gperf'
-  - 'build-essential'
-  - 'zip'
-  - 'curl'
-  - 'zlib1g-dev'
-  - 'gcc-multilib'
-  - 'g++-multilib'
-  - 'libc6-dev-i386'
-  - 'lib32ncurses-dev'
-  - 'x11proto-core-dev'
-  - 'libx11-dev'
-  - 'lib32z-dev'
-  - 'ccache'
-  - 'libgl1-mesa-dev'
-  - 'libxml2-utils'
-  - 'xsltproc'
-  - 'unzip'
-  - 'pxz'
-
-  - 'bc'
-
-  ## ypid additions:
-  - 'fuse'
-  - 'fuseext2'
-  - 'liblz4-tool'
-  - 'repo'
-  - 'jq'
-
 # .. ]]]
 
 
