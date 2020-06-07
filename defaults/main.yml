@@ -2813,6 +2813,7 @@ packages__group_tag_devel_lang_python:
   - '{{ "python-gv" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-gv'
   - 'python3-atomicwrites'
+  - 'python3-pykwalify'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
@@ -4555,9 +4556,6 @@ packages__absent: |
 
 
 packages__absent_preset_minimal:
-  - 'gnucash'
-  - 'gnucash-docs'
-  - '{{ "python-gnucash" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'ddrescue'
   - 'myrescue'
   - 'flashplugin-nonfree'
