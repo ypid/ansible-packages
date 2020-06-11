@@ -2,34 +2,36 @@
 
 - name: Include distribution specific variables
   include: include_item_vars.yml
-  when: (item|d() and packages__load_distribution_vars)
-  with_first_found:
-    - skip: True
+  when: (item|d() and packages__load_distribution_vars|bool)
+  vars:
+    params:
       files:
         - '{{ (ansible_distribution + ".yml") | replace(" ", "_") }}'
       paths: 'vars'
+  loop: "{{ q('first_found', params, errors='ignore') }}"
 
 - name: Include distribution release/version specific variables
   include: include_item_vars.yml
-  with_first_found:
-    - skip: True
+  vars:
+    params:
       files:
         - '{{ (ansible_distribution + "_" +
               (ansible_distribution_version
                if (ansible_os_family in ["Suse"])
                else ansible_distribution_release) +
               ".yml") | replace(" ", "_") }}'
-
       paths: 'vars'
+  loop: "{{ q('first_found', params, errors='ignore') }}"
 
 - name: Include distribution release backports specific variables
   include: include_item_vars.yml
   when: (item|d() and packages__load_distribution_backports_vars and ansible_os_family == "Debian")
-  with_first_found:
-    - skip: True
+  vars:
+    params:
       files:
         - '{{ (ansible_distribution + "_" + ansible_distribution_release + "_backports.yml") | replace(" ", "_") }}'
       paths: 'vars'
+  loop: "{{ q('first_found', params, errors='ignore') }}"
 
 - name: Preserve current packages__targets for later use
   set_fact:
