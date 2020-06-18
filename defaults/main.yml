@@ -2701,6 +2701,7 @@ packages__group_tag_devel_lang_python:
   - 'python3-gv'
   - 'python3-atomicwrites'
   - 'python3-pykwalify'
+  - 'python3-distro'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
