@@ -1206,6 +1206,15 @@ packages__localizations_available_additional_dist: []
 # Note that debops.apt_preferences_ will need to run in the same context as this role.
 packages__apt_preferences__debian_backports_list:
 
+  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-progs linux-base libcpupower1 linux-cpupower'
+    ## linux-base is required by linux-image-686-pae
+    backports: [ 'stretch', 'buster' ]
+    state: '{{ packages__apt_preferences__backports_linux_image | d("absent") }}'
+
+  - package: 'zfs-dkms spl-dkms dkms zfsutils-linux libnvpair1linux libuutil1linux libzfs2linux libzpool2linux'
+    backports: [ 'buster' ]
+    state: '{{ packages__apt_preferences__backports_zfs_state | d(packages__apt_preferences__backports_linux_image | d("absent")) }}'
+
   - package: 'debootstrap'
     backports: [ 'stretch' ]
     state: '{{ packages__apt_preferences__backports_stretch_state | d(packages__apt_preferences__core_backports_state) }}'
@@ -1820,6 +1829,7 @@ packages__group_core_hardware:
   - 'ethtool'
   - 'lshw'
   - 'lm-sensors'
+  - 'cpu-x'
 
   ## Install manually in the rare case this is required.
   # - 'idle3-tools'
@@ -2402,7 +2412,6 @@ packages__group_tag_devel_rcs_minimal:
 packages__group_tag_devel_rcs_additional:
   - 'git-svn'
   - 'git-el'
-  - 'git-remote-bzr'
   - 'git-cvs'
   - 'git-email'
   - 'git-gui'
@@ -2410,6 +2419,7 @@ packages__group_tag_devel_rcs_additional:
 
   # ypid does not use it:
   # - 'vcsh'
+  # - 'git-remote-bzr'
 
   ## Just use git-svn:
   # - 'subversion'
@@ -2661,8 +2671,7 @@ packages__group_tag_devel_lang_python:
   - '{{ "python-flake8" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'flake8'
   - 'python3-flake8'
-  - '{{ "pylint" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'pylint3'
+  - 'pylint'
   - '{{ "ipython" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'ipython3'
   - 'python3-all'
@@ -2702,6 +2711,9 @@ packages__group_tag_devel_lang_python:
   - 'python3-atomicwrites'
   - 'python3-pykwalify'
   - 'python3-distro'
+  - 'python3-paho-mqtt'
+  - 'python3-ptyprocess'
+  - 'python3-apscheduler'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
@@ -2754,7 +2766,7 @@ packages__group_tag_devel_lang_python:
   - '{{ "python-pretty-yaml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pretty-yaml'
   - '{{ "python-unittest2" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-tox" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'tox'
   - '{{ "python-flexmock" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - '{{ "python-ruamel.yaml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-ruamel.yaml'
@@ -2789,6 +2801,7 @@ packages__group_tag_devel_lang_python:
 
   - '{{ "python-iso8601" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-iso8601'
+  - 'python3-pytimeparse'
 
   ## Don’t use:
   # - '{{ "python-beautifulsoup" if (packages__python2_optional_packages|d() | bool) else "" }}'
@@ -3170,7 +3183,6 @@ packages__group_devel_full: |
     packages__group_devel_virtualization_detection +
     packages__group_tag_devel_lang_haxe +
     packages__group_tag_devel_lang_haskell +
-    packages__group_tag_devel_lang_perl +
     packages__group_devel_graphics +
     packages__group_devel_lua +
     packages__group_devel_ai +
@@ -3336,6 +3348,7 @@ packages__group_core_additional:
   - 'libuser'
 
   - 'parted'
+  - 'cloud-guest-utils'
   - 'uuid'
   - 'mutt'
   - 'wipe'

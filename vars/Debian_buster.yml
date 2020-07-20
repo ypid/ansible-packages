@@ -18,6 +18,7 @@ packages__blacklist_by_vars:
   - 'linux-wlan-ng-firmware'
   - 'python-tox'
   - 'python-vte'
+  - 'cpu-x'
 
 # .. Only defined here to overrule Debian_stretch.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:

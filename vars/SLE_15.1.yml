@@ -33,7 +33,6 @@ packages__blacklist_by_vars:
   - 'perl-DateTime-Set'
   - 'perl-Log-Any-Adapter-Log4perl'
   - 'perl-Monitoring-Plugin'
-  - 'perl-Net-LDAP'
   - 'perl-Net-OpenSSH'
   - 'perl-Number-Bytes-Human'
   - 'perl-Term-ReadLine'

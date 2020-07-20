@@ -72,6 +72,7 @@ packages__name_remapping_by_vars:
   'ldap-utils': 'openldap2-client'
   'ipython': 'python2-jupyter_ipython'
   'ipython3': 'python3-jupyter_ipython'
+  'tox': 'python3-tox'
   'printer-driver-cups-pdf': 'cups-pdf'
   'gtk-redshift': 'redshift'
   'geoip-bin': 'GeoIP'
@@ -95,6 +96,7 @@ packages__name_remapping_by_vars:
   'cryptsetup-initramfs': 'cryptsetup'
   'btrfs-progs': 'btrfsprogs'
   'uuid': 'ossp-uuid'
+  'cloud-guest-utils': 'growpart'
 
   ## Required for SLES 15.
   'git': 'git-core'
@@ -140,6 +142,8 @@ packages__name_remapping_by_vars:
   'python3-gv': 'python3-graphviz'
   'flake8': 'python3-flake8'
   'yq': 'python3-yq'
+  'python3-icu': 'python3-PyICU'
+  'python3-flaskext.wtf': 'python3-Flask-WTF'
 
   ## Using the `Provides` field of packages:
   'libmodule-pluggable-perl': 'perl-Module-Pluggable'
@@ -184,9 +188,9 @@ packages__name_remapping_by_vars:
 
   'libfile-next-perl': 'perl-File-Next'
 
+  'libnet-ldap-perl': 'perl-ldap'
   'libnet-ip-perl': 'perl-Net-IP'
   'libnet-dns-perl': 'perl-Net-DNS'
-  'libnet-ldap-perl': 'perl-Net-LDAP'
   'libnet-jabber-perl': 'perl-Net-Jabber'
   'libnet-openssh-perl': 'perl-Net-OpenSSH'
 
@@ -403,12 +407,13 @@ packages__blacklist_by_vars:
   - 'python-twill'
   - 'python-unidiff'
   - 'python3-unidiff'
-  - 'python3-elasticsearch'
   - 'python3-git'
   - 'python3-jsmin'
   - 'python3-pil'
   - 'python-pytimeparse'
   - 'python3-pytimeparse'
+  - 'python3-nagiosplugin'
+  - 'python3-radicale'
   - 'git-remote-gcrypt'
   - 'yapf'
   - 'yapf3'
@@ -427,6 +432,7 @@ packages__blacklist_by_vars:
   - 'fd-find'
   - 'rmlint'
   - 'signify-openbsd'
+  - 'ftp'
 
   ## Missing/not packaged, not checked if named differently:
   - 'ant-doc'
@@ -454,7 +460,6 @@ packages__blacklist_by_vars:
   - 'python3-sphinx-argparse'
   - 'python3-sphinxcontrib.programoutput'
   - 'python3-sphinxcontrib.spelling'
-  - 'python3-yamllint'
   - 'python3-zmq'
   - 'wireshark-doc'
   - 'python-sphinx-rtd-theme'

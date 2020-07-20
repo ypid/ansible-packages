@@ -1,0 +1,36 @@
+---
+# vim: foldmarker=[[[,]]]:foldmethod=marker
+
+packages__targets:
+  - 'Ubuntu 20.04 LTS (Focal Fossa)'
+
+packages__blacklist_by_vars:
+
+  - 'alleyoop'
+  - 'digikam-doc'
+  - 'fslint'
+  - 'geoip-database-extra'
+  - 'gespeaker'
+  - 'gwakeonlan'
+  - 'kde-l10n-de'
+  - 'asr-manpages'
+  - 'cdcat'
+  - 'gcstar'
+  - 'git-remote-bzr'
+  - 'impressive'
+  - 'isenkram-cli'
+  - 'json2yaml'
+  - 'keepnote'
+  - 'key-mon'
+  - 'pidcat'
+  - 'remmina-plugin-telepathy'
+  - 'ruby-builder-doc'
+  - 'sikulix'
+  - 'superiotool'
+  - 'ubuntu-edu-secondary'
+  - 'ubuntu-edu-tertiary'
+  - 'universalindentgui'
+  - 'yaml2json'
+  - 'yapf'
+  - 'yq'
+  - 'battery-stats'

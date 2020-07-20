@@ -38,6 +38,7 @@ packages__name_remapping_by_vars:
   'chromium': 'chromium-browser'
   'chromium-inspector': 'chromium-browser-inspector'
   'chromium-l10n': 'chromium-browser-l10n'
+  'chromium-sandbox': 'chromium-browser'
   'iceowl-extension': 'xul-ext-lightning'
 
   ## FIXME conditional include of `system-config-printer-gnome` if `x11-common`
