@@ -2714,6 +2714,7 @@ packages__group_tag_devel_lang_python:
   - 'python3-paho-mqtt'
   - 'python3-ptyprocess'
   - 'python3-apscheduler'
+  - 'python3-tabulate'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
