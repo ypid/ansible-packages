@@ -39,6 +39,7 @@ packages__blacklist_by_vars:
   - 'fdroidcl'
   - 'fd-find'
   - 'rmlint'
+  - 'borgmatic'
 
   - 'virtualbox'
   - 'virtualbox-dkms'
