@@ -15,3 +15,4 @@ packages__blacklist_by_vars:
   - 'yaml2json'
   - 'yq'
   - 'asr-manpages'
+  - 'firefoxdriver'

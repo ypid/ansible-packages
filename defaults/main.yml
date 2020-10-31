@@ -84,10 +84,7 @@ packages__deploy_update_cache: True
 # If ``packages__deploy_update_cache`` is ``True`` and the last package manager
 # refresh is less or equal than ``packages__deploy_cache_valid_time`` seconds ago,
 # the ``update_cache`` gets skipped.
-packages__deploy_cache_valid_time: '{{ ansible_local.core.cache_valid_time
-                                       if (ansible_local|d() and ansible_local.core|d() and
-                                           ansible_local.core.cache_valid_time)
-                                       else (60 * 60 * 24) }}'
+packages__deploy_cache_valid_time: '{{ ansible_local.core.cache_valid_time|d(60 * 60 * 24) }}'
 
 
 # .. envvar:: packages__deploy_default_release
@@ -341,10 +338,7 @@ packages__python2_required_packages: True
 # 2 packages which are optional meaning that a Python 3 equivalent already
 # exists.
 # %s/'\(python-[^ ']\+\)'/'{{ "\1" if (packages__python2_optional_packages|d() | bool) else "" }}'/
-packages__python2_optional_packages: '{{ ansible_local.python.installed2
-                                         if (ansible_local|d() and ansible_local.python|d() and
-                                             ansible_local.python.installed2 is defined)
-                                         else False }}'
+packages__python2_optional_packages: '{{ ansible_local.python.installed2|d() }}'
 # .. ]]]
 
 # debconf settings [[[
@@ -1682,6 +1676,7 @@ packages__group_ansible_depends_full: |
 
 packages__group_ansible:
   - 'ansible'
+  - 'ansible-lint'
 
 packages__group_ansible_full: |
   {{
@@ -1776,9 +1771,7 @@ packages__group_networking_analysis_minimum:
   - 'packeth'
   - 'hping3'
   # - 'bing'
-  - 'httpie'
 
-  - 'nmap'
   - 'zenmap'
   - '{{ "python-nmap" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-nmap'
@@ -2715,6 +2708,9 @@ packages__group_tag_devel_lang_python:
   - 'python3-ptyprocess'
   - 'python3-apscheduler'
   - 'python3-tabulate'
+  - '{{ "python-passlib" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-argon2'
+  - 'python3-binaryornot'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
@@ -3321,6 +3317,7 @@ packages__group_core_minimum:
 packages__group_core_additional:
   - 'curl'
   - 'wget'
+  - 'httpie'
 
   - 'rsync'
   - 'casync'
@@ -4150,6 +4147,26 @@ packages__group_user_full: |
     packages__group_user_file_cleanup +
     packages__group_user_additional +
     packages__group_e2e_testing_basic +
+    []
+  }}
+
+# .. ]]]
+
+# Unmanaged clients [[[
+# ~~~~~~~~~~~~~~~~~~~~~
+#
+# Set and forget clients that the owner is administrating.
+# Keep it minimal.
+
+packages__group_unmanaged_clients_minimum:
+
+  ## Unmanaged clients will often run dual boot so it is nice to give them a
+  ## GUI tool to configure the boot order.
+  - 'grub-customizer'
+
+packages__group_unmanaged_clients_full: |
+  {{
+    packages__group_unmanaged_clients_minimum +
     []
   }}
 
