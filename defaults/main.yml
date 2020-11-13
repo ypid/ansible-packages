@@ -1233,6 +1233,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie', 'stretch', 'buster' ]
     state: '{{ packages__apt_preferences__backports_josm | d(packages__apt_preferences__client_backports_state) }}'
 
+  - package: 'repo'
+    backports: [ 'buster' ]
+    state: '{{ packages__apt_preferences__backports_repo | d(packages__apt_preferences__client_backports_state) }}'
+
   - package: 'firejail firejail-*'
     backports: [ 'stretch', 'buster' ]
     state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state) }}'
