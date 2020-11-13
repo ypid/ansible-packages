@@ -22,7 +22,7 @@
 
 
 packages__group_internet_flash:
-  - '{{ "adobe-flashplugin" if (packages__non_free_enabled|d()) else "" }}'
+  - '{{ "adobe-flashplugin" if (packages__nonfree_enabled|d()) else "" }}'
 
 packages__name_remapping_by_vars:
 

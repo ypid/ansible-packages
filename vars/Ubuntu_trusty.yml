@@ -106,7 +106,7 @@ packages__blacklist_by_vars:
   - 'yapf3'
 
 packages__group_firmware_free: []
-packages__group_firmware_non_free:
+packages__group_firmware_nonfree:
   - 'linux-firmware-nonfree'
 packages__group_firmware_dist:
   - 'firmware-addon-dell'

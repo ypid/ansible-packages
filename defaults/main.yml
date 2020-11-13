@@ -229,11 +229,11 @@ packages__host_class: 'core'
 packages__contrib_enabled: False
 
 
-# .. envvar:: packages__non_free_enabled
+# .. envvar:: packages__nonfree_enabled
 #
 # Should packages from the non-free archive area be included?
 # https://www.debian.org/doc/debian-policy/ch-archive.html#s-non-free
-packages__non_free_enabled: False
+packages__nonfree_enabled: False
 
 
 # .. envvar:: packages__load_distribution_vars
@@ -1427,7 +1427,7 @@ packages__group_tag_accessibility_ocr:
   - 'ocrad'
   - 'ocrfeeder'
 
-  - '{{ "cuneiform" if (packages__non_free_enabled|d() | bool) else "" }}'
+  - '{{ "cuneiform" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
 # .. ]]]
 
@@ -1558,7 +1558,7 @@ packages__group_internet_flash: []
 
   ## `flashplugin-nonfree` is constantly lagging behind.
   ## https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814316
-  # - '{{ "flashplugin-nonfree" if (packages__non_free_enabled|d() | bool) else "" }}'
+  # - '{{ "flashplugin-nonfree" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
   # - '{{ "browser-plugin-freshplayer-pepperflash" if (packages__contrib_enabled|d() | bool) else "" }}'
 
@@ -1620,8 +1620,8 @@ packages__group_tag_works_with_archive_additional:
   - 'xz-utils'
   - 'lzip'
 
-  - '{{ "p7zip-rar" if (packages__non_free_enabled|d() | bool) else "" }}'
-  - '{{ "unrar"     if (packages__non_free_enabled|d() | bool) else "unrar-free" }}'
+  - '{{ "p7zip-rar" if (packages__nonfree_enabled|d() | bool) else "" }}'
+  - '{{ "unrar"     if (packages__nonfree_enabled|d() | bool) else "unrar-free" }}'
 
   ## Used for Firmware files.
   - 'cabextract'
@@ -1794,7 +1794,7 @@ packages__group_networking_analysis_minimum:
   - '{{ "python-scapy" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
   - 'snmp'
-  - '{{ "snmp-mibs-downloader" if (packages__non_free_enabled|d() | bool) else "" }}'
+  - '{{ "snmp-mibs-downloader" if (packages__nonfree_enabled|d() | bool) else "" }}'
   - 'tkmib'
 
   ## Not in Debian.
@@ -1869,7 +1869,7 @@ packages__group_hardware_testing_and_benchmarking_additional:
   - 'stress-ng'
   - 'memtester'
 
-  # - '{{ "phoronix-test-suite" if (packages__non_free_enabled|d() | bool) else "" }}'
+  # - '{{ "phoronix-test-suite" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
 packages__group_hardware_testing_and_benchmarking_full: |
   {{
@@ -2234,7 +2234,7 @@ packages__group_multimedia_additional:
   - 'id3v2'
 
   - 'gespeaker'
-  - '{{ "mbrola" if (packages__non_free_enabled|d() | bool) else "" }}'
+  - '{{ "mbrola" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
 packages__group_multimedia_cd_ripping:
   - 'asunder'
@@ -2325,7 +2325,7 @@ packages__group_office_sweethome:
   - 'sweethome3d-furniture'
   - 'sweethome3d-furniture-editor'
   - 'sweethome3d-textures-editor'
-  - '{{ "sweethome3d-furniture-nonfree" if (packages__non_free_enabled|d() | bool) else "" }}'
+  - '{{ "sweethome3d-furniture-nonfree" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
 packages__group_office_minimal:
   - 'aspell-en'
@@ -2930,13 +2930,13 @@ packages__group_devel_virtualization_desktop_contrib: []
   # - 'virtualbox-dkms'
   # - 'virtualbox-qt'
 
-packages__group_devel_virtualization_desktop_non_free: []
+packages__group_devel_virtualization_desktop_nonfree: []
   # - 'virtualbox-guest-additions-iso'
 
 packages__group_devel_virtualization_desktop: |
   {{
     (packages__group_devel_virtualization_desktop_contrib if (ansible_virtualization_role in ['host', 'NA'] and packages__contrib_enabled) else []) +
-    (packages__group_devel_virtualization_desktop_non_free if (ansible_virtualization_role in ['host', 'NA'] and packages__non_free_enabled) else []) +
+    (packages__group_devel_virtualization_desktop_nonfree if (ansible_virtualization_role in ['host', 'NA'] and packages__non_free_enabled) else []) +
     []
   }}
 
@@ -3386,10 +3386,10 @@ packages__group_boot_image_hardware_testing_and_benchmarking:
   # - 'memtest86'
 
 # Allows you to overwrite this when you want to install it even when
-# ``packages__non_free_enabled`` is ``False``.
-packages__group_cpu_microcode_non_free:
-  - '{{ "intel-microcode" if (packages__non_free_enabled|d() | bool) else "" }}'
-  - '{{ "amd64-microcode" if (packages__non_free_enabled|d() | bool) else "" }}'
+# ``packages__nonfree_enabled`` is ``False``.
+packages__group_cpu_microcode_nonfree:
+  - '{{ "intel-microcode" if (packages__nonfree_enabled|d() | bool) else "" }}'
+  - '{{ "amd64-microcode" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
 packages__group_cpu_vulnerability_checker:
   - 'spectre-meltdown-checker'
@@ -3438,7 +3438,7 @@ packages__group_core_bare_metal_services: |
 packages__group_core_bare_metal: |
   {{
     packages__group_boot_image_hardware_testing_and_benchmarking +
-    packages__group_cpu_microcode_non_free +
+    packages__group_cpu_microcode_nonfree +
     packages__group_cpu_vulnerability_checker +
     packages__group_core_bare_metal_services +
     []
@@ -3483,7 +3483,7 @@ packages__group_firmware_contrib:
   ## Not in Tails:
   - 'linux-wlan-ng-firmware'
 
-packages__group_firmware_non_free:
+packages__group_firmware_nonfree:
   - 'firmware-amd-graphics'
 
   ## Firmware for wireless adapters [[[
@@ -3510,7 +3510,7 @@ packages__group_firmware_full: |
   {{
     packages__group_firmware_free +
     (packages__group_firmware_contrib  if (packages__contrib_enabled|d() | bool)  else []) +
-    (packages__group_firmware_non_free if (packages__non_free_enabled|d() | bool) else []) +
+    (packages__group_firmware_nonfree if (packages__non_free_enabled|d() | bool) else []) +
     packages__group_firmware_dist +
     []
   }}
@@ -3669,7 +3669,7 @@ packages__group_school_additional_dev:
   - 'aria2'
 
 packages__group_school_additional:
-  - '{{ "google-earth" if (packages__non_free_enabled|d() | bool) else "" }}'
+  - '{{ "google-earth" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
   ## Use DebOps roles to set this up.
   # Also installs Apache2 on Debian Jessie:

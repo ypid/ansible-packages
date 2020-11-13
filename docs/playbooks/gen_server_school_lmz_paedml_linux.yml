@@ -11,7 +11,7 @@
     packages__export_key_name: 'lmz_paedml_linux__additional_packages'
     packages__export_directory: '{{ inventory_dir | realpath }}/../../apt_package_lists'
     packages__contrib_enabled: True
-    packages__non_free_enabled: True
+    packages__nonfree_enabled: True
     packages__export_classes:
       - 'server_school'
     packages__export_distributions:
