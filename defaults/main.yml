@@ -338,7 +338,7 @@ packages__python2_required_packages: True
 # 2 packages which are optional meaning that a Python 3 equivalent already
 # exists.
 # %s/'\(python-[^ ']\+\)'/'{{ "\1" if (packages__python2_optional_packages|d() | bool) else "" }}'/
-packages__python2_optional_packages: '{{ ansible_local.python.installed2|d() }}'
+packages__python2_optional_packages: False
 # .. ]]]
 
 # debconf settings [[[
