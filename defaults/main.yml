@@ -1540,7 +1540,6 @@ packages__group_imaging:
 
 packages__group_internet_minimum:
   - 'firefox-esr'
-  - 'chromium'
   - 'torbrowser-launcher'
 
 
@@ -4528,6 +4527,10 @@ packages__absent_preset_minimal:
   ## Currently broken and prevents security upgrade of Thunderbird.
   ## Ref: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=945061
   - 'xul-ext-sogo-connector'
+
+  ## Way too many vulnerabilities in Debian "stable" as of 2020-11-21.
+  ## https://security-tracker.debian.org/tracker/source-package/chromium
+  - 'chromium'
 
 
 # Shipping the documentation using the package manager is a nice idea, but for
