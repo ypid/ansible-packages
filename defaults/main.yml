@@ -1541,7 +1541,6 @@ packages__group_imaging:
 packages__group_internet_minimum:
   - 'firefox-esr'
   - 'chromium'
-  - 'chromium-sandbox'
   - 'torbrowser-launcher'
 
 
