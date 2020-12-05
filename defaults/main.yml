@@ -1233,7 +1233,8 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie', 'stretch', 'buster' ]
     state: '{{ packages__apt_preferences__backports_josm | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'repo'
+    ## Generic
+  - package: 'repo shellcheck'
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_repo | d(packages__apt_preferences__client_backports_state) }}'
 
@@ -2903,7 +2904,6 @@ packages__group_tag_devel_lang_python_additional:
 packages__group_devel_virtualization:
   # - 'uml-utilities'
 
-  - 'qemu'
   - 'qemu-utils'
   - 'qemu-user'
   # - 'qemu-user-binfmt'
@@ -3306,7 +3306,10 @@ packages__group_core_minimum:
   - 'file'
   - 'psmisc'
 
+  - 'fzf'
+
   - 'silversearcher-ag'
+  - 'ripgrep'
 
   ## Superseded by silversearcher:
   # - 'ack-grep'
@@ -4506,6 +4509,7 @@ packages__absent_preset_minimal:
   - 'virtualbox-qt'
   - 'virtualbox-guest-additions-iso'
   - 'net-tools'
+  - 'qemu'
 
   ## Nothing against it but the new default is digikam:
   - 'shotwell'
