@@ -2681,7 +2681,7 @@ packages__group_tag_devel_lang_python:
   - 'python3-radicale'
   - 'python3-flaskext.wtf'
   - 'python3-icu'
-  - '{{ "python-termcolor" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-termcolor'
   - '{{ "python-monotonic" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-monotonic'
   - '{{ "python-naturalsort" if (packages__python2_optional_packages|d() | bool) else "" }}'
@@ -2706,6 +2706,9 @@ packages__group_tag_devel_lang_python:
   - '{{ "python-passlib" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-argon2'
   - 'python3-binaryornot'
+  - 'python3-levenshtein'
+  - 'python3-tldextract'
+  - 'tldextract'
 
   - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
@@ -2926,7 +2929,7 @@ packages__group_devel_virtualization_desktop_nonfree: []
 packages__group_devel_virtualization_desktop: |
   {{
     (packages__group_devel_virtualization_desktop_contrib if (ansible_virtualization_role in ['host', 'NA'] and packages__contrib_enabled) else []) +
-    (packages__group_devel_virtualization_desktop_nonfree if (ansible_virtualization_role in ['host', 'NA'] and packages__non_free_enabled) else []) +
+    (packages__group_devel_virtualization_desktop_nonfree if (ansible_virtualization_role in ['host', 'NA'] and packages__nonfree_enabled) else []) +
     []
   }}
 
@@ -3254,12 +3257,21 @@ packages__group_package_management_gui:
 ## Minimum set of programs which I need.
 packages__group_core_minimum:
   - 'coreutils'
-  - 'lsb-release'
-  - 'grep'
+  - 'less'
+  - 'file'
   - 'procps'
+  - 'psmisc'
+  - 'grep'
+  - 'make'
+  - 'man-db'
   - 'util-linux'
-  - 'findutils'
 
+  - 'lsb-release'
+
+  - 'bash'
+  - 'zsh'
+
+  - 'findutils'
   - 'fd-find'
   ## WAIT: Not yet in Debian: https://github.com/chmln/sd
   # - 'sd'
@@ -3276,27 +3288,20 @@ packages__group_core_minimum:
   - 'vim-nox'
   - 'neovim'
 
-  - 'tmux'
+  - 'git'
+  - 'myrepos'
 
-  - '{{ ("byobu" if (packages__python2_required_packages|d() | bool) else "")
-        if (ansible_distribution_release|d("")|lower in ["buster"])
-        else "byobu" }}'
-
-
-  - 'gnupg'
-  - 'signify-openbsd'
+  - 'tree'
+  - 'nnn'
 
   ## Superseded by tmux:
   # - 'screen'
 
-  - 'git'
-  - 'myrepos'
-  - 'bash'
-  - 'zsh'
-  - 'make'
-  - 'less'
-  - 'file'
-  - 'psmisc'
+  - 'tmux'
+
+
+  - 'gnupg'
+  - 'signify-openbsd'
 
   - 'fzf'
 
@@ -3307,9 +3312,6 @@ packages__group_core_minimum:
   # - 'ack-grep'
 
   - 'safe-rm'
-  - 'tree'
-
-  - 'man-db'
 
 packages__group_core_additional:
   - 'curl'
@@ -3339,6 +3341,7 @@ packages__group_core_additional:
   - 'zsh-syntax-highlighting'
   - 'expect'
   - 'sshpass'
+  - 'editorconfig'
 
   - 'libuser'
 
@@ -3377,12 +3380,6 @@ packages__group_boot_image_hardware_testing_and_benchmarking:
   ## https://en.wikipedia.org/wiki/Memtest86#History
   ## memtest86+ seems to do the job just fine, so I am going with that.
   # - 'memtest86'
-
-# Allows you to overwrite this when you want to install it even when
-# ``packages__nonfree_enabled`` is ``False``.
-packages__group_cpu_microcode_nonfree:
-  - '{{ "intel-microcode" if (packages__nonfree_enabled|d() | bool) else "" }}'
-  - '{{ "amd64-microcode" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
 packages__group_cpu_vulnerability_checker:
   - 'spectre-meltdown-checker'
@@ -3431,7 +3428,6 @@ packages__group_core_bare_metal_services: |
 packages__group_core_bare_metal: |
   {{
     packages__group_boot_image_hardware_testing_and_benchmarking +
-    packages__group_cpu_microcode_nonfree +
     packages__group_cpu_vulnerability_checker +
     packages__group_core_bare_metal_services +
     []
@@ -3503,7 +3499,7 @@ packages__group_firmware_full: |
   {{
     packages__group_firmware_free +
     (packages__group_firmware_contrib  if (packages__contrib_enabled|d() | bool)  else []) +
-    (packages__group_firmware_nonfree if (packages__non_free_enabled|d() | bool) else []) +
+    (packages__group_firmware_nonfree if (packages__nonfree_enabled|d() | bool) else []) +
     packages__group_firmware_dist +
     []
   }}
@@ -4527,6 +4523,8 @@ packages__absent_preset_minimal:
   ## Way too many vulnerabilities in Debian "stable" as of 2020-11-21.
   ## https://security-tracker.debian.org/tracker/source-package/chromium
   - 'chromium'
+
+  - 'byobu'
 
 
 # Shipping the documentation using the package manager is a nice idea, but for
