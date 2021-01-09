@@ -1,6 +1,5 @@
 {# vim: foldmarker=[[[,]]]:foldmethod=marker
 #}
-# {% import 'templates/import/debops__tpl_macros.j2' as debops__tpl_macros with context %}
 
 {% macro get_regex_match(classes_regex_pattern, class_name) %}{# [[[ #}
 {{ class_name -}}
@@ -37,7 +36,7 @@ Don’t overdo it. This feature is currently disabled until a real need occurs.
 {% endfor %}
 {% set packages__list = [] %}
 {% for pkt in packages__list_raw %}
-{%   set _ = packages__list.extend(debops__tpl_macros.flattened(remapped_packages[pkt] | d(pkt)) | from_json) %}
+{%   set _ = packages__list.extend([remapped_packages[pkt]|d(pkt)] | flatten) %}
 {% endfor %}
 {% set packages__list_final = (packages__list | difference(reject_packages|difference(revoke_rejected_packages))) %}
 {% if whitelist_packages %}
@@ -87,8 +86,8 @@ mode:
 {% endif %}
 {% if (found_main_package|length and not ((require is string or require is number) and found_main_package|length < require)) %}
 {%   if mode == 'package' or (mode == 'language' and condition.when|d(lang.code) == lang.code) %}
-{%     for pkt in (debops__tpl_macros.flattened(condition.additional_packages) | from_json) %}
-{%       set _ = packages__list.extend(get_lang_pkts(debops__tpl_macros.flattened(remapped_packages[pkt] | d(pkt)) | from_json, lang) | from_json) %}
+{%     for pkt in ([condition.additional_packages] | flatten) %}
+{%       set _ = packages__list.extend(get_lang_pkts([remapped_packages[pkt]|d(pkt)] | flatten, lang) | from_json) %}
 {{ pkt }}
 {%     endfor %}
 {%   endif %}
