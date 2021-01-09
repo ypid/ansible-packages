@@ -324,20 +324,9 @@ packages__load_distribution_additional_releases: []
 packages__load_distribution_additional: []
 
 
-# .. envvar:: packages__python2_required_packages
-#
-# Python 2 will be EOF 2020-01-01. If set to ``False`` then don’t install Python
-# 2 packages which are required by other programs/where no Python 3 equivalent
-# exists yet.
-packages__python2_required_packages: True
-
-
 # .. envvar:: packages__python2_optional_packages
 #
-# Python 2 will be EOF 2020-01-01. If set to ``False`` then don’t install Python
-# 2 packages which are optional meaning that a Python 3 equivalent already
-# exists.
-# %s/'\(python-[^ ']\+\)'/'{{ "\1" if (packages__python2_optional_packages|d() | bool) else "" }}'/
+# TODO: Drop this with the Debian 11 (bullseye) release.
 packages__python2_optional_packages: False
 # .. ]]]
 
@@ -915,7 +904,6 @@ packages__conditional_role:
       - 'battery-stats'
       - 'xserver-xorg'
     additional_packages:
-      - '{{ "python-matplotlib" if (packages__python2_optional_packages|d() | bool) else "" }}'
       - 'libtext-csv-perl'
       - 'gnuplot'
   ## ]]]
@@ -1209,14 +1197,6 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_zfs_state | d(packages__apt_preferences__backports_linux_image | d("absent")) }}'
 
-  - package: 'debootstrap'
-    backports: [ 'stretch' ]
-    state: '{{ packages__apt_preferences__backports_stretch_state | d(packages__apt_preferences__core_backports_state) }}'
-
-  - package: 'borgbackup'
-    backports: [ 'stretch' ]
-    state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__only_available_backports_state) }}'
-
   - package: 'git-annex'
     backports: [ 'jessie', 'stretch' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
@@ -1238,10 +1218,6 @@ packages__apt_preferences__debian_backports_list:
     ## Pin definition for buster is more complex?
     backports: [ 'jessie', 'stretch' ]
     state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__client_backports_state) }}'
-
-  - package: 'ansible python-jinja2 python3-jinja2'
-    backports: [ 'stretch' ]
-    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'ansible'
     backports: [ 'buster' ]
@@ -1314,23 +1290,7 @@ packages__apt_preferences__backports_hplip_state: 'absent'
 # to your inventory and let debops.apt_preferences_ do the rest.
 packages__debian_stretch_from_jessie_list:
 
-  - package: 'tidy libtidy5'
-    pin: 'release o=Debian,n=stretch'
-    priority: 800
-    state: '{{ packages__apt_preferences__unstable_tidy_state | d(packages__apt_preferences__client_unstable_state) }}'
-
-  - package: 'doc-rfc doc-rfc*'
-    pin: 'release o=Debian,n=stretch'
-    priority: 800
-    state: '{{ packages__apt_preferences__unstable_doc_rfc_state | d(packages__apt_preferences__client_unstable_state) }}'
-
   - package: 'shellcheck'
-    pin: 'release o=Debian,n=stretch'
-    priority: 800
-    state: '{{ packages__apt_preferences__unstable_shellcheck_state | d(packages__apt_preferences__client_unstable_state) }}'
-
-  - package: 'iputils-ping'
-    reason: 'Finally handle IPv6 as a first class citizen (all done by the `ping` command).'
     pin: 'release o=Debian,n=stretch'
     priority: 800
     state: '{{ packages__apt_preferences__unstable_shellcheck_state | d(packages__apt_preferences__client_unstable_state) }}'
@@ -1398,7 +1358,6 @@ packages__group_tag_field_finance_additional:
 
   - 'gnucash'
   - 'gnucash-docs'
-  - '{{ "python-gnucash" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
 packages__group_tag_field_finance_full: |
   {{
@@ -1640,19 +1599,25 @@ packages__group_tag_admin_backup:
 # """""""
 
 packages__group_ansible_depends:
-  - '{{ "python-crypto" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-httplib2" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-jinja2" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-netaddr" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-paramiko" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-pkg-resources" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-yaml" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-crypto'
+  - 'python3-httplib2'
+  - 'python3-jinja2'
+  - 'python3-netaddr'
+  - 'python3-paramiko'
+  - 'python3-pkg-resources'
+  - 'python3-yaml'
 
   ## passlib must be installed to encrypt vars_prompt values.
-  - '{{ "python-passlib" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-passlib'
 
   ## Needed for the `dig` lookup.
-  - '{{ "python-dnspython" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-dnspython'
+
+  ## passlib must be installed to encrypt vars_prompt values.
+  - 'python3-passlib'
+
+  ## Needed for the `dig` lookup.
+  - 'python3-dnspython'
 
 packages__group_ansible_depends_additional:
 
@@ -1727,8 +1692,7 @@ packages__group_tag_admin_monitoring_network_minimum:
   - 'tcpdump'
   - 'ngrep'
   - 'iptraf-ng'
-  ## WAIT: As of buster, speedtest-cli depends on Python2. Other distros like SLES 15 SP1 already updated their packages for Python3 only support.
-  - '{{ "speedtest-cli" if (packages__python2_optional_packages|d()|bool or ansible_distribution|d("") != "Debian") else "" }}'
+  - 'speedtest-cli'
 
 packages__group_tag_admin_monitoring_network_additional:
   - 'wireshark'
@@ -1768,7 +1732,6 @@ packages__group_networking_analysis_minimum:
   # - 'bing'
 
   - 'zenmap'
-  - '{{ "python-nmap" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-nmap'
   - 'xsltproc'
 
@@ -1782,7 +1745,7 @@ packages__group_networking_analysis_minimum:
   - 'tcpreplay'
   - 'tcpflow'
 
-  - '{{ "python-scapy" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-scapy'
 
   - 'snmp'
   - '{{ "snmp-mibs-downloader" if (packages__nonfree_enabled|d() | bool) else "" }}'
@@ -1850,7 +1813,6 @@ packages__group_sysadmin_hardware_minimum:
 
 packages__group_hardware_testing_and_benchmarking_minimum:
   - 'f3'
-  ## WAIT: As of buster, fio depends on Python2.
   - '{{ "fio" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'sysbench'
 
@@ -2218,7 +2180,7 @@ packages__group_multimedia_additional:
   - 'libavcodec-extra'
 
   - 'winff'
-  - '{{ "python-eyed3" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-eyed3'
 
   - 'soundconverter'
 
@@ -2456,9 +2418,6 @@ packages__group_devel_hex_editor:
   - 'bless'
   - 'wxhexeditor'
 
-packages__group_devel_ai:
-  - '{{ "python-aiml" if (packages__python2_optional_packages|d() | bool) else "" }}'
-
 packages__group_devel_android:
   - 'adb'
   - 'android-sdk-platform-tools-common'
@@ -2646,55 +2605,43 @@ packages__group_tag_devel_lang_perl:
 # """"""
 
 packages__group_tag_devel_lang_python:
+  - 'python3-pip'
+
+  - 'python3-future'
+
+  - 'python3-dateutil'
+  - 'python3-pytimeparse'
+  - 'python3-iso8601'
+
   - 'yapf'
   - 'yapf3'
   - 'twine'
-  - '{{ "python-wheel" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-wheel'
-  - '{{ "python-pycodestyle" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pycodestyle'
-  - '{{ "python-autopep8" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-coverage" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-autopep8'
   - 'python3-coverage'
-  - '{{ "python-flake8" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'flake8'
   - 'python3-flake8'
   - 'pylint'
-  - '{{ "ipython" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'ipython3'
   - 'python3-all'
   - 'python3-dev'
   - 'isort'
-  - '{{ "python-virtualenv" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-virtualenv'
-  - '{{ "virtualenvwrapper" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-feedparser" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-pip" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-pip'
-  - '{{ "python-setuptools" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-feedparser'
   - 'python3-setuptools'
   - 'python3-setuptools-git'
-  - '{{ "python-cjson" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-imaging" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-dulwich" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-pycalendar" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-radicale'
   - 'python3-flaskext.wtf'
   - 'python3-icu'
   - 'python3-termcolor'
-  - '{{ "python-monotonic" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-monotonic'
-  - '{{ "python-naturalsort" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-colorama" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-colorama'
   - 'python3-coloredlogs'
-  - '{{ "python-unidiff" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-monotonic'
+  - 'python3-naturalsort'
   - 'python3-unidiff'
-  - '{{ "python-appdirs" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-appdirs'
-  - '{{ "python-pygraphviz" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pygraphviz'
-  - '{{ "python-gv" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-gv'
   - 'python3-atomicwrites'
   - 'python3-pykwalify'
@@ -2703,18 +2650,15 @@ packages__group_tag_devel_lang_python:
   - 'python3-ptyprocess'
   - 'python3-apscheduler'
   - 'python3-tabulate'
-  - '{{ "python-passlib" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  - 'python3-passlib'
   - 'python3-argon2'
   - 'python3-binaryornot'
   - 'python3-levenshtein'
   - 'python3-tldextract'
   - 'tldextract'
 
-  - '{{ "python-xmltodict" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-xmltodict'
-  - '{{ "python-defusedxml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-defusedxml'
-  - '{{ "python-lxml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-lxml'
 
   - 'python3-nagiosplugin'
@@ -2723,165 +2667,79 @@ packages__group_tag_devel_lang_python:
   - 'python3-systemd'
 
   ## For reportbug:
-  - '{{ "python-vte" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
   ## TODO: Only install modules interacting with GUI when xserver-xorg is
   ## installed.
-  - '{{ "python-tk" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-xlib" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-tk'
   - 'idle'
-  - '{{ "python-pmw" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
-  - '{{ "python-netaddr" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-netaddr'
 
   - 'python3-git'
-  - '{{ "python-sh" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-sh'
-  - '{{ "python-dateutil" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-dateutil'
-  - '{{ "python-pytimeparse" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-pytimeparse'
-  - '{{ "python-twill" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-jsmin" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-jsmin'
-  - '{{ "python-mysqldb" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-all-dev" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'libevent-dev'
-  - '{{ "python-prettytable" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-prettytable'
-  - '{{ "python-paramiko" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-paramiko'
-  - '{{ "python-pexpect" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pexpect'
-  - '{{ "python-configparser" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-yaml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-yaml'
-  - '{{ "python-pretty-yaml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pretty-yaml'
-  - '{{ "python-unittest2" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'tox'
-  - '{{ "python-flexmock" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-ruamel.yaml" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-ruamel.yaml'
-  - '{{ "python-traceback2" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-traceback2'
   - 'python3-nose'
   - 'python3-nose2-cov'
   - 'python3-flexmock'
-  - '{{ "python-redis" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-redis'
-  - '{{ "python-elasticsearch" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-elasticsearch'
-  - '{{ "python-memcache" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-memcache'
-  - '{{ "python-requests" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-requests'
-
-  - '{{ "python-unidecode" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-unidecode'
 
-  - '{{ "python-twisted-web" if (packages__python2_optional_packages|d() | bool) else "" }}'
-
-  - '{{ "python-scrypt" if (packages__python2_optional_packages|d() | bool) else "" }}'
-
-  - '{{ "python-future" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-future'
-
-  - '{{ "python-zbar" if (packages__python2_optional_packages|d() | bool) else "" }}'
-
-  - '{{ "python-apt" if (ansible_pkg_mgr in ["apt"] and packages__python2_optional_packages|d() | bool) else "" }}'
   - '{{ "python3-apt" if (ansible_pkg_mgr in ["apt"]) else "" }}'
-
-  - '{{ "python-iso8601" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-iso8601'
-  - 'python3-pytimeparse'
-
-  ## Don’t use:
-  # - '{{ "python-beautifulsoup" if (packages__python2_optional_packages|d() | bool) else "" }}'
 
 packages__group_tag_devel_lang_python_additional:
   - 'python3-django'
-  - '{{ "python-django" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'runsnakerun'
-  - '{{ "python-bs4" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-bs4-doc" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-bs4'
   - 'python3-doc'
-  - '{{ "python-traceback2" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-traceback2'
   - 'python3-nose'
   - 'python3-nose2-cov'
   - 'python3-testfixtures'
 
-  - '{{ "python-q" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-q'
   - 'python3-geoip'
   - 'python3-geojson'
-  - '{{ "python-pyftpdlib" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pyftpdlib'
-  - '{{ "python-humanize" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-humanize'
-  - '{{ "python-pytimeparse" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - 'python3-pytimeparse'
-  - '{{ "python-gnupg" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-gnupg'
   - 'python3-openssl'
   - 'python3-jinja2'
-  - '{{ "python-pystache" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pystache'
   - 'python3-markdown'
   - 'python3-numpy'
-  - '{{ "python-graypy" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-graypy'
-  - '{{ "python-seaborn" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-seaborn'
   - 'python3-pyqt5'
-  - '{{ "python-scrapy" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-sphinx" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'pyqt5-dev'
   - 'python3-sphinx'
-  - '{{ "python-sphinxcontrib.spelling" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-sphinxcontrib.spelling'
-  - '{{ "python-sphinx-rtd-theme" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-sphinx-rtd-theme'
-  - '{{ "python-sphinxcontrib.programoutput" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-sphinxcontrib.programoutput'
-  - '{{ "python-sphinx-argparse" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-sphinx-argparse'
-  - '{{ "python-bibtex" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-git" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-gitdb" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pygit2'
-  - '{{ "python-sqlite" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-sqlalchemy" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-sqlalchemy'
-  - '{{ "python-zc.lockfile" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-lockfile" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-lockfile'
-  - '{{ "python-keyring" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-keyring'
-  - '{{ "python-pycryptopp" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-sklearn" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-zmq" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-zmq'
-  - '{{ "python-pyquery" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pyquery'
-  - '{{ "python-freezegun" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-freezegun'
-  - '{{ "python-wrapt" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-wrapt'
-  - '{{ "python-enum34" if (packages__python2_optional_packages|d() | bool) else "" }}'
-  - '{{ "python-pickleshare" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-pickleshare'
-  - '{{ "python-urllib3" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-urllib3'
-  - '{{ "python-click" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-click'
-  - '{{ "python-gmpy2" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-gmpy2'
-  - '{{ "python-cryptography" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-cryptography'
   - 'python3-btrfs'
   - 'python3-ldap3'
@@ -3179,7 +3037,6 @@ packages__group_devel_full: |
     packages__group_tag_devel_lang_haskell +
     packages__group_devel_graphics +
     packages__group_devel_lua +
-    packages__group_devel_ai +
     packages__group_devel_additional +
     packages__group_devel_x11_library +
     []
@@ -3223,7 +3080,6 @@ packages__group_package_management_minimal:
 
 packages__group_package_management_additional:
   - '{{ "packagesearch" if (ansible_pkg_mgr in ["apt"]) else "" }}'
-  - '{{ "apt-rdepends" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "apt-rdepends" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "debian-goodies" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "debtags" if (ansible_pkg_mgr in ["apt"]) else "" }}'
@@ -3357,7 +3213,6 @@ packages__group_core_additional:
   - 'socat'
   - 'debianutils'
 
-  - '{{ "python-setuptools" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-setuptools'
 
 packages__group_core_basic: |
@@ -3660,11 +3515,7 @@ packages__group_school_additional_dev:
 packages__group_school_additional:
   - '{{ "google-earth" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
-  ## Use DebOps roles to set this up.
-  # Also installs Apache2 on Debian Jessie:
-  # - 'php5'
-  # - 'php5-mysql'
-  - '{{ "python-mysqldb" if (packages__python2_optional_packages|d() | bool) else "" }}'
+  ## Use DebOps roles to setup PHP and MariaDB.
 
   - 'monkeysign'
   - 'amarok'
@@ -4062,7 +3913,6 @@ packages__group_user_compartmentalization:
 
 packages__group_e2e_testing_basic:
   - 'sikulix'
-  - '{{ "python-selenium" if (packages__python2_optional_packages|d() | bool) else "" }}'
   - 'python3-selenium'
   - 'chromium-driver'
   - 'firefoxdriver'
