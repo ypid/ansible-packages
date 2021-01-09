@@ -1217,14 +1217,6 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'stretch' ]
     state: '{{ packages__apt_preferences__backports_borgbackup_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
-  - package: 'intel-microcode'
-    backports: [ 'stretch' ]
-    state: '{{ "present"
-               if (ansible_virtualization_role in [ "host" ] and
-                   (packages__apt_preferences__backports_cpu_microcode_state | d(packages__apt_preferences__security_backports_state)) == "present"
-                  )
-               else "absent" }}'
-
   - package: 'git-annex'
     backports: [ 'jessie', 'stretch' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
