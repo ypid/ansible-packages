@@ -4,6 +4,7 @@
   assert:
     that: ansible_pkg_mgr in [
             'apt',
+            'pkgng',
           ]
 
 - name: Run include vars tasks

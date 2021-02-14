@@ -26,6 +26,13 @@
 #
 packages__mode: 'deploy'
 
+
+# .. envvar:: packages__mode
+#
+# Can be overwritten in ../vars.
+packages__targets:
+  - '{{ ansible_distribution }}'
+
 # .. ]]]
 
 # Package deploy [[[
@@ -1223,6 +1230,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
+  - package: 'npm'
+    backports: [ 'buster' ]
+    state: '{{ packages__apt_preferences__backports_nodejs_state | d(packages__apt_preferences__client_backports_state) }}'
+
 
 # .. envvar:: packages__apt_preferences__security_backports_state
 #
@@ -2407,6 +2418,9 @@ packages__group_tag_devel_rcs_full: |
 
 # .. ]]]
 
+packages__group_devel_tools_minimal:
+  - 'pre-commit'
+
 packages__group_devel_language_independent_unit_testing:
   - 'bats'
 
@@ -2592,6 +2606,11 @@ packages__group_tag_devel_lang_perl:
   - 'libpod-markdown-perl'
   # - 'libtext-dhcpleases-perl'
 
+  # extrepo
+  - 'libhash-case-perl'
+  - 'libyaml-libyaml-perl'
+  - 'libdistro-info-perl'
+
   - 'libdevice-serialport-perl'
 
   # Legacy:
@@ -2654,6 +2673,10 @@ packages__group_tag_devel_lang_python:
   - 'python3-argon2'
   - 'python3-binaryornot'
   - 'python3-levenshtein'
+  - 'python3-regex'
+  - 'python3-pathspec'
+  - 'python3-plumbum'
+  - 'python3-pydantic'
   - 'python3-tldextract'
   - 'tldextract'
 
@@ -2695,6 +2718,7 @@ packages__group_tag_devel_lang_python:
   - 'python3-memcache'
   - 'python3-requests'
   - 'python3-unidecode'
+  - 'python3-invoke'
 
   - '{{ "python3-apt" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
@@ -3004,6 +3028,7 @@ packages__group_devel_env_for_freetz:
 packages__group_devel_minimum: |
   {{
     packages__group_tag_devel_rcs_minimal +
+    packages__group_devel_tools_minimal +
     packages__group_devel_language_independent_unit_testing +
     packages__group_devel_shellscript +
     []
@@ -3067,6 +3092,7 @@ packages__group_system_management_full: |
 packages__group_package_management_minimal:
   ## Still used by things Ansible v2.3 for example.
   - 'aptitude'
+  - 'extrepo'
   - '{{ "debian-archive-keyring" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "apt-transport-https" if (ansible_pkg_mgr in ["apt"]) else "" }}'
   - '{{ "wajig" if (ansible_pkg_mgr in ["apt"]) else "" }}'
@@ -3173,13 +3199,10 @@ packages__group_core_additional:
   - 'curl'
   - 'wget'
   - 'httpie'
-
   - 'rsync'
   - 'casync'
-
   - 'ftp'
   - 'lftp'
-
   - 'openssh-client'
   - 'iproute2'
   - 'iputils-ping'
@@ -3190,7 +3213,6 @@ packages__group_core_additional:
   - 'iperf3'
   - 'dnsutils'
   - 'whois'
-
   - 'tig'
   - 'markdown'
   - 'autojump'
@@ -3198,9 +3220,8 @@ packages__group_core_additional:
   - 'expect'
   - 'sshpass'
   - 'editorconfig'
-
+  - 'git-sizer'
   - 'libuser'
-
   - 'parted'
   - 'cloud-guest-utils'
   - 'uuid'
@@ -3212,7 +3233,6 @@ packages__group_core_additional:
   - 'rename'
   - 'socat'
   - 'debianutils'
-
   - 'python3-setuptools'
 
 packages__group_core_basic: |
@@ -3858,6 +3878,9 @@ packages__group_user_desktop_sharing_full: |
 # Miscellaneous [[[
 # ~~~~~~~~~~~~~
 
+packages__group_user_terminal:
+  - 'xfce4-terminal'
+
 packages__group_user_file_manager:
   - 'nemo'
   - 'nemo-gtkhash'
@@ -3976,6 +3999,7 @@ packages__group_network_manager_vpn_plugin:
 
 packages__group_user_basic: |
   {{
+    packages__group_user_terminal +
     packages__group_user_file_manager +
     packages__group_user_text_editor +
     packages__group_user_password_manager +

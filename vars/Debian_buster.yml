@@ -19,6 +19,8 @@ packages__blacklist_by_vars:
   - 'python-tox'
   - 'python-vte'
   - 'cpu-x'
+  - 'python3-pydantic'
+  - 'pre-commit'
 
 # .. Only defined here to overrule Debian_stretch.yml when packages__load_distribution_additional_releases (((
 packages__blacklist_revoke_by_vars:

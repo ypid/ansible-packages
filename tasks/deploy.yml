@@ -35,3 +35,15 @@
     default_release: '{{ packages__deploy_default_release|d(omit) }}'
     dpkg_options: '{{ packages__deploy_dpkg_options|d(omit) }}'
   when: (ansible_pkg_mgr == 'apt')
+
+- name: Install packages via other package manager than APT
+  package:
+    name: '{{ q("flattened", packages__class_install|d([])) }}'
+    state: '{{ packages__deploy_state }}'
+  when: (ansible_pkg_mgr != 'apt')
+
+- name: Remove packages via other package manager than APT
+  package:
+    name: '{{ q("flattened", packages__class_absent|d([])) }}'
+    state: 'absent'
+  when: (ansible_pkg_mgr != 'apt')
