@@ -3122,7 +3122,6 @@ packages__group_package_management_minimal:
   - 'aptitude'
   - 'extrepo'
   - '{{ "debian-archive-keyring" if (ansible_pkg_mgr in ["apt"]) else "" }}'
-  - '{{ "apt-transport-https" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
   # "Error: No information about packages! (Maybe no deb entries?)" on BeagleBone Black.
   # Seems to also have other issues: "initializing cache. This may take a while ** Killed"
@@ -4396,6 +4395,7 @@ packages__absent_preset_minimal:
   - 'net-tools'
   - 'qemu'
   - '{{ "wajig" if (ansible_pkg_mgr in ["apt"]) else "" }}'
+  - '{{ "apt-transport-https" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
   ## Nothing against it but the new default is digikam:
   - 'shotwell'
