@@ -139,6 +139,10 @@ Jinja 2.8 is [available in Debian Jessie Backports](https://packages.debian.org/
 
   Other projects also deal with the different package names across distributions. phoronix-test-suite has a nice collection.
 
+* [pkg-map element of the diskimage-builder from openstrack](https://docs.openstack.org/diskimage-builder/latest/elements/pkg-map/README.html)
+
+  Another way to deal with distro specific package names.
+
 [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
 [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
 [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml
