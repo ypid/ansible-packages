@@ -1900,7 +1900,7 @@ packages__group_tag_admin_filesystem_minimal:
   - 'btrfs-progs'
 
 
-packages__group_sysadmin_firewall: |
+packages__group_sysadmin_firewall:
   - 'iptables'
   - 'ipset'
 
