@@ -1195,7 +1195,7 @@ packages__localizations_available_additional_dist: []
 # Note that debops.apt_preferences_ will need to run in the same context as this role.
 packages__apt_preferences__debian_backports_list:
 
-  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-progs linux-base libcpupower1 linux-cpupower'
+  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-progs linux-base libcpupower1 linux-cpupower iproute2'
     ## linux-base is required by linux-image-686-pae
     backports: [ 'stretch', 'buster' ]
     state: '{{ packages__apt_preferences__backports_linux_image | d("absent") }}'
@@ -1282,11 +1282,6 @@ packages__apt_preferences__only_usable_backports_state: 'present'
 #
 # Default state of backports presets.
 packages__apt_preferences__backports_state: 'absent'
-
-
-# .. envvar:: packages__apt_preferences__backports_hplip_state
-#
-packages__apt_preferences__backports_hplip_state: 'absent'
 
 
 # .. envvar:: packages__debian_stretch_from_jessie_list
@@ -1709,6 +1704,7 @@ packages__group_tag_admin_monitoring_network_minimum:
   - 'mtr-tiny'
 
   - 'tcpdump'
+  - 'tshark'
   - 'ngrep'
   - 'iptraf-ng'
   - 'speedtest-cli'
@@ -1782,8 +1778,6 @@ packages__group_network_address_calculation:
   - 'gip'
 
 packages__group_tag_network_firewall:
-  - 'iptables'
-  - 'ipset'
   - 'fwbuilder'
 
 # .. ]]]
@@ -1840,6 +1834,9 @@ packages__group_hardware_testing_and_benchmarking_additional:
   - 'stress'
   - 'stress-ng'
   - 'memtester'
+
+  - 'flent'
+  - '{{ "netperf" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
   # - '{{ "phoronix-test-suite" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
@@ -1902,6 +1899,11 @@ packages__group_sysadmin_gui: |
 packages__group_tag_admin_filesystem_minimal:
   - 'btrfs-progs'
 
+
+packages__group_sysadmin_firewall: |
+  - 'iptables'
+  - 'ipset'
+
 packages__group_sysadmin_minimal: |
   {{
     packages__group_tag_admin_monitoring_minimum +
@@ -1912,6 +1914,7 @@ packages__group_sysadmin_minimal: |
 packages__group_sysadmin_basic: |
   {{
     packages__group_sysadmin_minimal +
+    packages__group_sysadmin_firewall +
     packages__group_tag_admin_backup +
     packages__group_tag_works_with_archive_minimal +
     packages__group_tag_admin_monitoring_basic +
@@ -3922,7 +3925,7 @@ packages__group_user_text_editor:
   - 'vim-gtk3'
 
 packages__group_user_password_manager:
-  - 'keepassx'
+  - 'keepassxc'
   # - 'kpcli'
 
   ## Sometimes still useful for import or the like.
@@ -3979,6 +3982,7 @@ packages__group_user_additional:
   - 'autokey-gtk'
   - 'xclip'
   - 'gnome-software'
+  - 'plantuml'
 
   - 'cifs-utils'
   - 'smbclient'
