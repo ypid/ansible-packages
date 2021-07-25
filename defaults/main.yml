@@ -2387,6 +2387,7 @@ packages__group_tag_devel_rcs_additional:
   - 'git-email'
   - 'git-gui'
   - 'gitk'
+  - 'datalad'
 
   # ypid does not use it:
   # - 'vcsh'
