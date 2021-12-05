@@ -1,0 +1,18 @@
+---
+
+packages__targets:
+  - 'Debian GNU/Linux 11 (bullseye)'
+
+packages__blacklist_by_vars:
+  - 'cdcat'
+  - 'sikulix'
+  - 'apt-venv'
+  - 'digikam-doc'
+  - 'grip'
+  - 'gwakeonlan'
+  - 'nvramtool'
+  - 'qalculate-gtk'
+  - 'ring'
+  - 'runsnakerun'
+  - 'viewmol'
+  - 'zenmap'
