@@ -3704,6 +3704,7 @@ packages__group_wm_xfce:
   # - 'hddtemp'
   - 'xfce4-screenshooter'
   - 'gnome-system-monitor'
+  - 'libpam-gnome-keyring'
 
   # Used by ypid dotfiles.
   - 'libgeocode-glib0'
@@ -3903,6 +3904,12 @@ packages__group_user_additional:
   - 'unison-gtk'
   - 'nextcloud-desktop'
   - 'seahorse'
+
+  # Needed to use the keyring for git.
+  # https://stackoverflow.com/questions/36585496/error-when-using-git-credential-helper-with-gnome-keyring-as-sudo/40312117#40312117
+  - 'libsecret-1-0'
+  - 'libsecret-1-dev'
+
   - 'filezilla'
   - 'catfish'
   - 'gtkhash'
