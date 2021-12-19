@@ -1204,7 +1204,7 @@ packages__localizations_available_additional_dist: []
 # Note that debops.apt_preferences_ will need to run in the same context as this role.
 packages__apt_preferences__debian_backports_list:
 
-  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-progs linux-base libcpupower1 linux-cpupower iproute2'
+  - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-progs linux-base libcpupower1 linux-cpupower iproute2 acpi-call-dkms'
     ## linux-base is required by linux-image-686-pae
     backports: [ 'stretch', 'buster' ]
     state: '{{ packages__apt_preferences__backports_linux_image | d("absent") }}'
