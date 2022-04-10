@@ -1464,6 +1464,9 @@ packages__group_tag_field_arts_audio:
 # ~~~~~~~~~~~~~
 
 packages__group_tag_role_documentation:
+  - 'manpages'
+  - 'tldr'
+
   ## 'git-doc' being selected causes all known docs packages to get installed
   ## conditionally if the main application is installed.
   - 'git-doc'
@@ -1620,7 +1623,7 @@ packages__group_tag_admin_backup:
 # """""""
 
 packages__group_ansible_depends:
-  - 'python3-crypto'
+  - 'python3-cryptography'
   - 'python3-httplib2'
   - 'python3-jinja2'
   - 'python3-netaddr'
@@ -1661,6 +1664,8 @@ packages__group_ansible_depends_full: |
 packages__group_ansible:
   - 'ansible'
   - 'ansible-lint'
+  - 'ansible-mitogen'
+  - 'python3-jmespath'
 
 packages__group_ansible_full: |
   {{
@@ -1681,6 +1686,8 @@ packages__group_tag_admin_monitoring_minimum:
   - 'procinfo'
   - 'ncdu'
   - 'sysfsutils'
+
+  # Provides `iostat`
   - 'sysstat'
 
 packages__group_tag_admin_monitoring_additional:
@@ -1804,6 +1811,7 @@ packages__group_core_hardware:
   - 'lsscsi'
   - 'lm-sensors'
   - 'spectre-meltdown-checker'
+  - 'pciutils'
 
   ## Install manually in the rare case this is required.
   # - 'idle3-tools'
@@ -1821,6 +1829,7 @@ packages__group_hardware_info:
   - 'lsscsi'
   - 'sg3-utils'
   - 'cpuid'
+  - 'uhubctl'
 
 packages__group_hardware_info_gui:
   - 'lshw-gtk'
@@ -2219,7 +2228,9 @@ packages__group_multimedia_additional:
 
   - 'id3v2'
 
-  - 'gespeaker'
+  # Not in Debian 11 anymore:
+  # - 'gespeaker'
+
   - '{{ "mbrola" if (packages__nonfree_enabled|d() | bool) else "" }}'
 
 packages__group_multimedia_cd_ripping:
@@ -2371,8 +2382,6 @@ packages__group_office_full: |
 # """""""""""""""""""""""
 
 packages__group_tag_devel_rcs_minimal:
-  - 'myrepos'
-  - 'git'
   - 'git-remote-gcrypt'
 
   - 'tig'
@@ -2404,6 +2413,11 @@ packages__group_tag_devel_rcs_additional:
 
   ## Not yet in stable.
   # - 'gitinspector'
+
+  # myrepos alternatives:
+  # * gita: Useful.
+  # * gitbatch: Actually a ncurses UI.
+  # * python3-git-repo-updater: `gitup`, single threaded thus slow on multiple repos.
 
   - 'gource'
   - 'pepper'
@@ -2681,6 +2695,9 @@ packages__group_tag_devel_lang_python_ypid_basic:
   - 'python3-pydantic'
   - 'python3-tldextract'
   - 'tldextract'
+  - 'python3-dotenv'
+  - 'python3-xdg'
+  - 'python3-pynetbox'
 
   - 'python3-xmltodict'
   - 'python3-defusedxml'
@@ -3163,6 +3180,7 @@ packages__group_core_minimum:
   - 'file'
   - 'procps'
   - 'psmisc'
+  - 'pciutils'
   - 'grep'
   - 'make'
   - 'man-db'
@@ -3189,6 +3207,7 @@ packages__group_core_minimum:
   # - 'vim'
   # - 'vim-nox'
   - 'neovim'
+  - 'python3-pynvim'
 
   - 'git'
   - 'myrepos'
@@ -3243,6 +3262,7 @@ packages__group_core_additional:
   - 'git-sizer'
   - 'libuser'
   - 'parted'
+  - 'dfrs'
   - 'cloud-guest-utils'
   - 'uuid'
   - 'base58'
@@ -3408,7 +3428,6 @@ packages__group_core_full: |
     packages__group_core_basic +
     packages__group_system_management_full +
     packages__group_package_management_minimal +
-    packages__group_core_minimum +
     packages__group_core_cron +
     (packages__group_core_bare_metal if (ansible_virtualization_role in ['host', 'NA']) else []) +
     packages__group_core_hardware +
