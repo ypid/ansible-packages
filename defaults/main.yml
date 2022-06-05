@@ -1223,7 +1223,7 @@ packages__apt_preferences__debian_backports_list:
 
     ## Generic
   - package: 'repo shellcheck'
-    backports: [ 'buster' ]
+    backports: [ 'buster', 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_repo | d(packages__apt_preferences__client_backports_state) }}'
 
   - package: 'firejail firejail-*'
@@ -1245,6 +1245,10 @@ packages__apt_preferences__debian_backports_list:
   - package: 'npm'
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_nodejs_state | d(packages__apt_preferences__client_backports_state) }}'
+
+  - package: 'python3-elasticsearch'
+    backports: [ 'bullseye' ]
+    state: '{{ packages__apt_preferences__backports_python3_elasticsearch_state | d(packages__apt_preferences__client_backports_state) }}'
 
 
 # .. envvar:: packages__apt_preferences__security_backports_state
@@ -2721,6 +2725,7 @@ packages__group_tag_devel_lang_python_ypid_basic:
   - 'python3-pretty-yaml'
   - 'tox'
   - 'python3-ruamel.yaml'
+  - 'python3-dotenv'
   - 'python3-traceback2'
   - 'python3-nose'
   - 'python3-nose2-cov'
@@ -3955,6 +3960,9 @@ packages__group_user_additional:
 
   - 'gtk-vector-screenshot'
   - 'gnome-screenshot'
+
+  - 'dconf-cli'
+  - 'dconf-editor'
 
 packages__group_applied_cryptography_basic:
   - 'signing-party'
