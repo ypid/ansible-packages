@@ -1206,7 +1206,7 @@ packages__apt_preferences__debian_backports_list:
 
   - package: 'linux-image-amd64 linux-headers-amd64 linux-image-686-pae linux-headers-686-pae btrfs-progs linux-base libcpupower1 linux-cpupower iproute2 acpi-call-dkms'
     ## linux-base is required by linux-image-686-pae
-    backports: [ 'stretch', 'buster' ]
+    backports: [ 'stretch', 'buster', 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_linux_image | d("absent") }}'
 
   - package: 'zfs-dkms spl-dkms dkms zfsutils-linux libnvpair1linux libuutil1linux libzfs2linux libzpool2linux'
@@ -1238,6 +1238,11 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
+  - package: 'lshw'
+    filename: 'upgrade_broken_stable_packages_to_backports.pref'
+    backports: [ 'bullseye' ]
+    state: '{{ packages__apt_preferences__backports_upgrade_broken_stable_packages_to_backports_state | d(packages__apt_preferences__core_backports_state) }}'
+
   - package: 'yamllint'
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_yamllint_state | d(packages__apt_preferences__client_backports_state) }}'
@@ -1249,6 +1254,10 @@ packages__apt_preferences__debian_backports_list:
   - package: 'python3-elasticsearch'
     backports: [ 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_python3_elasticsearch_state | d(packages__apt_preferences__client_backports_state) }}'
+
+  - package: 'youtube-dl'
+    backports: [ 'buster', 'bullseye', 'bookworm' ]
+    state: '{{ packages__apt_preferences__backports_youtube_dl_state | d(packages__apt_preferences__client_backports_state) }}'
 
 
 # .. envvar:: packages__apt_preferences__security_backports_state
@@ -1686,16 +1695,17 @@ packages__group_ansible_full: |
 packages__group_tag_admin_monitoring_minimum:
   - 'htop'
   - 'iotop'
-  - 'fatrace'
   - 'procinfo'
   - 'ncdu'
+
+packages__group_tag_admin_monitoring_additional:
+  - 'nmon'
+  - 'fatrace'
+
   - 'sysfsutils'
 
   # Provides `iostat`
   - 'sysstat'
-
-packages__group_tag_admin_monitoring_additional:
-  - 'nmon'
 
   ## pcp has replaced the original dstat:
   # - 'dstat'
