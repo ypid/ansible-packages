@@ -959,7 +959,6 @@ packages__conditional_role:
       - 'network-manager-iodine-gnome'
 
   - present_packages:
-      - 'gnome-themes-standard'
       - 'network-manager-openvpn'
     require: 2
     additional_packages:
@@ -1933,10 +1932,12 @@ packages__group_sysadmin_gui: |
 packages__group_tag_admin_filesystem_minimal:
   - 'btrfs-progs'
 
-
 packages__group_sysadmin_firewall:
   - 'iptables'
   - 'ipset'
+
+packages__group_sysadmin_network:
+  - 'wireguard'
 
 packages__group_sysadmin_minimal: |
   {{
@@ -1949,6 +1950,7 @@ packages__group_sysadmin_basic: |
   {{
     packages__group_sysadmin_minimal +
     packages__group_sysadmin_firewall +
+    packages__group_sysadmin_network +
     packages__group_tag_admin_backup +
     packages__group_tag_works_with_archive_minimal +
     packages__group_tag_admin_monitoring_basic +
@@ -2198,6 +2200,7 @@ packages__group_multimedia_editing_minimum:
   - 'gimp'
   - 'inkscape'
   - 'audacity'
+  - 'obs-studio'
 
 packages__group_multimedia_editing_additional:
   - 'gaupol'
@@ -2280,6 +2283,7 @@ packages__group_pdf_viewing_additional:
   - 'qpdfview'
   - 'pdfgrep'
   - 'xournal'
+  - 'okular'
 
 packages__group_pdf_editing:
   - 'pdfposter'
@@ -2762,6 +2766,7 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-jsmin'
   - 'python3-redis'
   - 'python3-elasticsearch'
+  - 'python3-influxdb'
   - 'python3-memcache'
   - 'python3-unidecode'
   - 'python3-django'
@@ -2780,6 +2785,9 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-humanize'
   - 'python3-gnupg'
   - 'python3-openssl'
+  - 'python3-iptables'
+  - 'python3-netfilter'
+  - 'python3-nftables'
   - 'python3-jinja2'
   - 'python3-pystache'
   - 'python3-markdown'
@@ -3668,6 +3676,7 @@ packages__group_wm_cinnamon:
   - 'xdg-user-dirs-gtk'
   - 'gnome-terminal'
   - 'gnome-screenshot'
+  - 'flameshot'
 
 # .. ]]]
 
@@ -3742,6 +3751,8 @@ packages__group_wm_xfce:
 
   # Used by ypid dotfiles.
   - 'libgeocode-glib0'
+
+  - 'pavucontrol'
 
 # .. ]]]
 
@@ -3938,6 +3949,7 @@ packages__group_user_additional:
   - 'unison-gtk'
   - 'nextcloud-desktop'
   - 'seahorse'
+  - 'libsecret-tools'
 
   # Needed to use the keyring for git.
   # https://stackoverflow.com/questions/36585496/error-when-using-git-credential-helper-with-gnome-keyring-as-sudo/40312117#40312117
@@ -3974,6 +3986,10 @@ packages__group_user_additional:
   - 'dconf-cli'
   - 'dconf-editor'
 
+  - 'kafkacat'
+
+  - 'command-not-found'
+
 packages__group_applied_cryptography_basic:
   - 'signing-party'
 
@@ -3987,6 +4003,7 @@ packages__group_network_avahi:
 
 packages__group_network_manager_basic:
   - 'network-manager'
+  - 'wifi-qr'
 
   ## Currently to many dependencies on Debian Stretch.
   # - 'network-manager-ssh'
