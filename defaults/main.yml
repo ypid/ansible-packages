@@ -121,9 +121,7 @@ packages__deploy_dpkg_options: '{{ omit }}'
 #
 # Directory target system where the package lists will be written to in export
 # mode.
-packages__export_directory: '{{ (ansible_env.HOME
-                                if (ansible_env|d() and ansible_env.HOME|d())
-                                else "/home/user") + "/.ansible/apt_package_lists" }}'
+packages__export_directory: '{{ ansible_env.HOME|d("/home/user") + "/.ansible/apt_package_lists" }}'
 
 
 # .. envvar:: packages__export_classes
