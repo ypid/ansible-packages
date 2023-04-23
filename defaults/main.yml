@@ -77,6 +77,7 @@ packages__deploy_force: False
 # Whether or not recommended packages should be installed.
 # Set to ``False`` so that we can choose exactly what to install.
 packages__deploy_install_recommends: False
+## TODO: Change to true. It is not worth it.
 
 
 # .. envvar:: packages__deploy_update_cache
@@ -1223,8 +1224,8 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'buster', 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_repo | d(packages__apt_preferences__client_backports_state) }}'
 
-  - package: 'firejail firejail-*'
-    backports: [ 'stretch', 'buster' ]
+  - package: 'firejail firejail-* firetools'
+    backports: [ 'stretch', 'buster', 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_firejail_state | d(packages__apt_preferences__only_available_backports_state) }}'
 
   - package: 'libreoffice libreoffice-* python3-uno ure uno-* libuno-* fonts-opensymbol'
@@ -1251,10 +1252,6 @@ packages__apt_preferences__debian_backports_list:
   - package: 'python3-elasticsearch'
     backports: [ 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_python3_elasticsearch_state | d(packages__apt_preferences__client_backports_state) }}'
-
-  - package: 'youtube-dl'
-    backports: [ 'buster', 'bullseye', 'bookworm' ]
-    state: '{{ packages__apt_preferences__backports_youtube_dl_state | d(packages__apt_preferences__client_backports_state) }}'
 
 
 # .. envvar:: packages__apt_preferences__security_backports_state
@@ -1524,6 +1521,7 @@ packages__group_internet_minimum:
   - 'firefox-esr'
 
   - 'chromium'
+  - 'webext-ublock-origin-chromium'
   - 'libnss3-tools'
 
   - 'torbrowser-launcher'
@@ -1555,7 +1553,7 @@ packages__group_internet_additional:
 
   # - 'uget'
   - 'webhttrack'
-  - 'youtube-dl'
+  - 'yt-dlp'
 
 packages__group_internet_full: |
   {{
@@ -1918,6 +1916,7 @@ packages__group_sysadmin_gui_additional:
 packages__group_tag_admin_virtualization:
   - 'virt-manager'
   - 'gir1.2-spiceclientglib-2.0'
+  - 'gir1.2-spiceclientgtk-3.0'
   - 'spice-client-gtk'
 
 packages__group_sysadmin_gui: |
@@ -2191,6 +2190,9 @@ packages__group_multimedia_minimum:
   - 'cheese'
   - 'digikam'
   - 'viewnior'
+
+  # Required to display WebP pictures using viewnior for example.
+  - 'webp-pixbuf-loader'
 
   - 'webp'
 
@@ -2652,6 +2654,7 @@ packages__group_tag_devel_lang_perl:
 
 packages__group_tag_devel_lang_python_minimal:
   - 'python3-pip'
+  - 'pipx'
 
   - 'python3-future'
 
@@ -2812,6 +2815,8 @@ packages__group_tag_devel_lang_python_additional:
   - 'python3-click'
   - 'python3-gmpy2'
   - 'python3-cryptography'
+  - 'python3-asn1crypto'
+  - 'python3-oscrypto'
   - 'python3-btrfs'
   - 'python3-ldap3'
   - 'python3-pyotp'
@@ -3672,9 +3677,6 @@ packages__group_wm_gnome_full: |
 packages__group_wm_cinnamon:
   - 'cinnamon-core'
   - 'xdg-user-dirs-gtk'
-  - 'gnome-terminal'
-  - 'gnome-screenshot'
-  - 'flameshot'
 
 # .. ]]]
 
@@ -3741,9 +3743,9 @@ packages__group_wm_xfce:
   - 'gnome-power-manager'
   - 'xfce4-pulseaudio-plugin'
   - 'xfce4-sensors-plugin'
+  - 'xfce4-fsguard-plugin'
   - 'blueman'
   # - 'hddtemp'
-  - 'xfce4-screenshooter'
   - 'gnome-system-monitor'
   - 'libpam-gnome-keyring'
 
@@ -3751,6 +3753,9 @@ packages__group_wm_xfce:
   - 'libgeocode-glib0'
 
   - 'pavucontrol'
+
+  - 'package-update-indicator'
+  - 'flameshot'
 
 # .. ]]]
 
@@ -3879,6 +3884,8 @@ packages__group_user_terminal:
   - 'xfce4-terminal'
 
 packages__group_user_file_manager:
+
+  # Consider not installing Nemo because only Nautilus is supported by Qubes OS Extensions?
   - 'nemo'
   - 'nemo-gtkhash'
   - 'nemo-fileroller'
@@ -3960,6 +3967,7 @@ packages__group_user_additional:
   - 'grsync'
 
   # Reevaluate this later.
+  # 2023-03: Autokey was not reliable in my short testing.
   # - 'autokey-gtk'
 
   - 'xclip'

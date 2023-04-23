@@ -16,3 +16,4 @@ packages__blacklist_by_vars:
   - 'runsnakerun'
   - 'viewmol'
   - 'zenmap'
+  - 'python3-oscrypto'
