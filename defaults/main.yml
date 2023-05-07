@@ -1249,6 +1249,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_nodejs_state | d(packages__apt_preferences__client_backports_state) }}'
 
+  - package: 'golang'
+    backports: [ 'bullseye' ]
+    state: '{{ packages__apt_preferences__backports_golang_state | d(packages__apt_preferences__client_backports_state) }}'
+
   - package: 'python3-elasticsearch'
     backports: [ 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_python3_elasticsearch_state | d(packages__apt_preferences__client_backports_state) }}'
@@ -2471,6 +2475,7 @@ packages__group_devel_hex_editor:
 
 packages__group_devel_android:
   - 'adb'
+  - 'pidcat'
   - 'android-sdk-platform-tools-common'
   - 'fastboot'
   - 'pidcat'
