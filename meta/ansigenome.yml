@@ -91,9 +91,9 @@ ansigenome_info:
     resulting in for the different classes and if that is what you intended.
 
     <!-- Check the [docs][/docs/getting-started.rst] and the [example -->
-    <!-- playbooks][/playbooks] for more details. -->
+    <!-- playbooks][/docs/playbooks] for more details. -->
 
-    Check the [example playbooks][/playbooks] to get started.
+    Check the [example playbooks][/docs/playbooks] to get started.
 
     ### Role variables
 

@@ -94,9 +94,9 @@ version control so you can see what a change to a package group is
 resulting in for the different classes and if that is what you intended.
 
 <!-- Check the [docs][/docs/getting-started.rst] and the [example -->
-<!-- playbooks][/playbooks] for more details. -->
+<!-- playbooks][/docs/playbooks] for more details. -->
 
-Check the [example playbooks][/playbooks] to get started.
+Check the [example playbooks][/docs/playbooks] to get started.
 
 ### Role variables
 
@@ -144,7 +144,7 @@ Jinja 2.8 is [available in Debian Jessie Backports](https://packages.debian.org/
   Another way to deal with distro specific package names.
 
 [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
-[/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
+[/docs/playbooks]: https://github.com/ypid/ansible-packages/tree/master/docs/playbooks
 [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml
 
 ### Installation
