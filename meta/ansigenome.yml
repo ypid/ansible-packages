@@ -133,5 +133,5 @@ ansigenome_info:
       packages based on attributes/facts of the hosts.
 
     [/docs/getting-started.rst]: https://github.com/ypid/ansible-packages/blob/master/docs/getting-started.rst
-    [/playbooks]: https://github.com/ypid/ansible-packages/tree/master/playbooks
+    [/docs/playbooks]: https://github.com/ypid/ansible-packages/tree/master/docs/playbooks
     [defaults/main.yml]: https://github.com/ypid/ansible-packages/blob/master/defaults/main.yml
