@@ -3293,7 +3293,8 @@ packages__group_core_additional:
   - 'git-sizer'
   - 'libuser'
   - 'parted'
-  - 'dfrs'
+  # - 'dfrs'
+  - 'duf'
   - 'cloud-guest-utils'
   - 'uuid'
   - 'base58'
@@ -3491,6 +3492,13 @@ packages__group_user_terminal_programs_minimum:
   - 'pssh'
   - 'sshfs'
   - 'encfs'
+  - 'cryfs'
+
+  # Not the best supported software unfortunately:
+  # https://bugs.launchpad.net/ubuntu/+source/ecryptfs-utils/+bug/1718658
+  # Not using ecryptfs until that is fixed!
+  # - 'ecryptfs-utils'
+
   - 'debian-keyring'
   - 'inotify-tools'
 
@@ -3704,8 +3712,9 @@ packages__group_wm_mate:
   - 'mate-applets'
   - 'mate-media'
   - 'mate-utils'
+  - 'gnome-software'
 
-  - 'xscreensaver'
+  # - 'xscreensaver'
 
   ## Auto select `lightdm` it gdm3 is not selected.
   # - 'lightdm'
@@ -4128,20 +4137,8 @@ packages__classes_client: |
   {{
     packages__classes_base +
     packages__group_core_full +
-    packages__group_sysadmin_basic +
-    packages__group_package_management_full +
-    packages__group_internet_full +
-    packages__group_office_basic +
-    packages__group_tag_use_printing +
-    packages__group_tag_field_finance_minimum +
-    packages__group_user_file_cleanup +
-    packages__group_education_basic +
-    packages__group_multimedia_basic +
-    packages__group_user_full +
-    packages__group_user_terminal_programs_minimum +
-    packages__group_firmware_full +
-    packages__group_tag_admin_virtualization +
-    packages__group_network_remmina +
+    packages__group_internet_minimum +
+    packages__group_email_minimum +
     []
   }}
 
@@ -4529,10 +4526,8 @@ packages__classes:
   client: |
     {{
       packages__classes_client +
-      packages__group_wm_cinnamon +
       packages__group_wm_mate +
       packages__group_network_manager_basic +
-      packages__group_tag_game +
       (packages__additional_for_class.client|d([])) +
       []
     }}

@@ -40,6 +40,7 @@ packages__name_remapping_by_vars:
   'chromium-l10n': 'chromium-browser-l10n'
   'chromium-sandbox': 'chromium-browser'
   'iceowl-extension': 'xul-ext-lightning'
+  'firmware-iwlwifi': 'linux-modules-iwlwifi-generic'
 
   ## FIXME conditional include of `system-config-printer-gnome` if `x11-common`
   ## is selected.
