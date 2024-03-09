@@ -1232,6 +1232,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie', 'stretch', 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__client_backports_state) }}'
 
+  - package: 'qemu-utils qemu-*'
+    backports: [ 'buster' ]
+    state: '{{ packages__apt_preferences__backports_qemu_state | d(packages__apt_preferences__client_backports_state) }}'
+
   - package: 'ansible'
     backports: [ 'buster' ]
     state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
@@ -2719,7 +2723,6 @@ packages__group_tag_devel_lang_python_ypid_basic:
   - 'python3-pydantic'
   - 'python3-tldextract'
   - 'tldextract'
-  - 'python3-dotenv'
   - 'python3-xdg'
   - 'python3-pynetbox'
 
@@ -2849,6 +2852,9 @@ packages__group_devel_virtualization:
   - 'qemu-user'
   # - 'qemu-user-binfmt'
   - 'qemu-user-static'
+
+  # https://github.com/quickemu-project/quickemu
+  - 'qemu-system-gui'
 
   ## Just provides a wrapper script :file:`/usr/bin/kvm` which runs :program:`qemu-system-x86`.
   - 'qemu-kvm'
@@ -3750,7 +3756,9 @@ packages__group_wm_xfce:
   - 'xscreensaver'
   - 'xfce4-notifyd'
   - 'greybird-gtk-theme'
-  - 'xfce4-netload-plugin'
+
+  # - 'xfce4-netload-plugin'
+
   - 'xfce4-timer-plugin'
   - 'xfce4-battery-plugin'
   - 'xfce4-power-manager'
@@ -3758,6 +3766,7 @@ packages__group_wm_xfce:
   - 'xfce4-pulseaudio-plugin'
   - 'xfce4-sensors-plugin'
   - 'xfce4-fsguard-plugin'
+  - 'xfce4-genmon-plugin'
   - 'blueman'
   # - 'hddtemp'
   - 'gnome-system-monitor'
@@ -3964,7 +3973,10 @@ packages__group_e2e_testing_basic:
 packages__group_user_additional:
   - 'cpu-x'
   - 'gucharmap'
-  - 'mat'
+
+  - 'mat2'
+  - 'metadata-cleaner'
+
   - 'unison-gtk'
   - 'nextcloud-desktop'
   - 'seahorse'
