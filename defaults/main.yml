@@ -1106,11 +1106,11 @@ packages__localizations_available_global:
       - 'hyphen-LANG_CODE'
       - 'hunspell-LANG_CULTURE'
 
-  - present_packages: 'vim'
+  - present_packages: 'neovim'
     additional_packages:
       - 'aspell-LANG_CODE'
 
-  - present_packages: 'vim'
+  - present_packages: 'neovim'
     ## Based on: task-german (dependencies and recommended)
     additional_packages:
       - 'task-german'
@@ -1527,6 +1527,7 @@ packages__group_imaging:
 
 packages__group_internet_minimum:
   - 'firefox-esr'
+  - 'webext-ublock-origin-firefox'
 
   - 'chromium'
   - 'webext-ublock-origin-chromium'
@@ -1537,7 +1538,6 @@ packages__group_internet_minimum:
 
 packages__group_email_minimum:
   - 'thunderbird'
-  - 'enigmail'
   # - 'xul-ext-sogo-connector'
 
 
@@ -2749,9 +2749,7 @@ packages__group_tag_devel_lang_python_ypid_basic:
   - 'tox'
   - 'python3-ruamel.yaml'
   - 'python3-dotenv'
-  - 'python3-traceback2'
   - 'python3-nose'
-  - 'python3-nose2-cov'
   - 'python3-flexmock'
   - 'python3-requests'
   - 'python3-invoke'
@@ -2782,9 +2780,6 @@ packages__group_tag_devel_lang_python_additional:
   - 'runsnakerun'
   - 'python3-bs4'
   - 'python3-doc'
-  - 'python3-traceback2'
-  - 'python3-nose'
-  - 'python3-nose2-cov'
   - 'python3-testfixtures'
 
   - 'python3-q'
@@ -3241,8 +3236,6 @@ packages__group_core_minimum:
   ## Might be useful for some. Also comes in handy on really slow computers.
   - 'nano'
 
-  # - 'vim'
-  # - 'vim-nox'
   - 'neovim'
   - 'python3-pynvim'
 

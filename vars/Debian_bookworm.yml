@@ -4,4 +4,4 @@ packages__targets:
   - 'Debian GNU/Linux 12 (bookworm)'
 
 packages__blacklist_by_vars:
-  - 'iptstate'
+  - 'git-sizer'
