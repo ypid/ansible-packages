@@ -1683,6 +1683,11 @@ packages__group_ansible:
   - 'ansible-mitogen'
   - 'python3-jmespath'
 
+    # Executing modules with `delegate_to: 'localhost'` does
+    # `EXEC /bin/sh -c '/usr/bin/env python` for some reason and I cannot
+    # change it to python3?
+  - 'python-is-python3'
+
 packages__group_ansible_full: |
   {{
     packages__group_ansible_depends_full +
