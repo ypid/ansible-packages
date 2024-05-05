@@ -17,3 +17,6 @@ packages__blacklist_by_vars:
   - 'asr-manpages'
   - 'firefoxdriver'
   - 'python3-naturalsort'
+  - 'nvramtool'
+  - 'sikulix'
+  - 'zenmap'

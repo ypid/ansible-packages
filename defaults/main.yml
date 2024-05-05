@@ -779,12 +779,6 @@ packages__conditional_role:
 
   - present_packages:
       - 'git-doc'
-      - 'digikam'
-    additional_packages:
-      - 'digikam-doc'
-
-  - present_packages:
-      - 'git-doc'
       - 'kicad'
     additional_packages:
       - 'kicad-doc-en'
@@ -1541,17 +1535,6 @@ packages__group_email_minimum:
   # - 'xul-ext-sogo-connector'
 
 
-# https://wiki.debian.org/Flash
-
-packages__group_internet_flash: []
-  # - 'browser-plugin-gnash'
-
-  ## `flashplugin-nonfree` is constantly lagging behind.
-  ## https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=814316
-  # - '{{ "flashplugin-nonfree" if (packages__nonfree_enabled|d() | bool) else "" }}'
-
-  # - '{{ "browser-plugin-freshplayer-pepperflash" if (packages__contrib_enabled|d() | bool) else "" }}'
-
 packages__group_internet_additional:
   - 'liferea'
 
@@ -1567,7 +1550,6 @@ packages__group_internet_full: |
   {{
     packages__group_internet_minimum +
     packages__group_email_minimum +
-    packages__group_internet_flash +
     packages__group_internet_additional +
     ([ 'gajim', 'gajim-omemo' ]
     if (
@@ -1583,8 +1565,7 @@ packages__group_internet_full: |
 # ~~~~
 
 packages__group_tag_protocol_voip_minimum:
-  - 'ring'
-  - 'linphone'
+  - 'linphone-desktop'
 
 # .. ]]]
 
@@ -1813,7 +1794,6 @@ packages__group_network_address_calculation:
   - 'sipcalc'
   - 'subnetcalc'
   - 'ipv6calc'
-  - 'gip'
 
 packages__group_tag_network_firewall:
   - 'fwbuilder'
@@ -2017,7 +1997,6 @@ packages__group_tag_field_astronomy:
   - 'stellarium'
   - 'gpredict'
   - 'kstars'
-  - 'lightspeed'
   - 'sunclock'
 
 packages__group_tag_field_chemistry:
@@ -2034,7 +2013,6 @@ packages__group_tag_field_chemistry:
   - 'chemical-mime-data'
   - 'openbabel'
   - 'gdis'
-  - 'viewmol'
 
   - 'pymol'
   - 'apbs'
@@ -2103,11 +2081,11 @@ packages__group_tag_field_linguistics_minimum:
   - 'wordnet'
 
 packages__group_tag_field_linguistics_additional:
-  ## Based on education-language (only makes recommendations).
+  # Based on education-language (only makes recommendations).
   - 'anki'
   - 'wordnet-gui'
 
-  ## As of 3.14.1-1, it seems to have dropped the ability to configure other dict servers in the GUI?
+  # As of 3.14.1-1, it seems to have dropped the ability to configure other dict servers in the GUI?
   # - 'gnome-dictionary'
 
   - 'goldendict'
@@ -2304,8 +2282,6 @@ packages__group_pdf_editing:
   - 'pdftk'
   - 'pdfchain'
 
-  - 'pdfmod'
-
 packages__group_typesetting_minimal:
   - 'texlive-latex-base'
 
@@ -2323,7 +2299,6 @@ packages__group_typesetting_converters:
   - 'docx2txt'
   - 'wkhtmltopdf'
   - 'rst2pdf'
-  - 'grip'
 
 packages__group_typesetting_additional:
   - 'texlive-full'
@@ -2418,9 +2393,6 @@ packages__group_tag_devel_rcs_minimal:
   - 'tig'
 
 packages__group_tag_devel_rcs_additional:
-  - 'git-svn'
-  - 'git-el'
-  - 'git-cvs'
   - 'git-email'
   - 'git-gui'
   - 'gitk'
@@ -2429,6 +2401,8 @@ packages__group_tag_devel_rcs_additional:
   # ypid does not use it:
   # - 'vcsh'
   # - 'git-remote-bzr'
+  # - 'git-svn'
+  # - 'git-cvs'
 
   ## Just use git-svn:
   # - 'subversion'
@@ -2451,9 +2425,11 @@ packages__group_tag_devel_rcs_additional:
   # * python3-git-repo-updater: `gitup`, single threaded thus slow on multiple repos.
 
   - 'gource'
-  - 'pepper'
 
-  ## Actually diffing, merging stuff:
+  # Unmaintained and dropped out of Debian:
+  # - 'pepper'
+
+  # Actually diffing, merging stuff:
   - 'patchutils'
   - 'colordiff'
   - 'rdiff'
@@ -2492,15 +2468,13 @@ packages__group_devel_android:
   - 'heimdall-flash-frontend'
   - 'fdroidcl'
 
-packages__group_devel_debian:
   - 'dh-make'
   - 'debhelper'
-  - 'dpatch'
   - 'asciidoc'
   - 'apt-venv'
 
 packages__group_devel_java:
-  - 'openjdk-11-jdk'
+  - 'openjdk-17-jdk'
   - 'libtrove3-java'
   - 'gradle'
   - 'maven'
@@ -2512,10 +2486,11 @@ packages__group_devel_qt:
   - 'qtcreator'
 
 packages__group_devel_graphics:
-  - 'libgl1-mesa-dev'
-  - 'freeglut3-dev'
-  - 'mesa-utils'
-  - 'mesa-utils-extra'
+  # Unsure why those were installed or if I still use them:
+  # - 'libgl1-mesa-dev'
+  # - 'freeglut3-dev'
+  # - 'mesa-utils'
+  # - 'mesa-utils-extra'
 
   ## Provides :command:`rsvg-convert` needed for development of the doclicense LaTeX package.
   - 'librsvg2-bin'
@@ -2523,10 +2498,6 @@ packages__group_devel_graphics:
 packages__group_devel_javascript:
   - 'npm'
   - 'nodejs'
-  - 'node-uglify'
-  - 'node-mysql'
-  - 'node-debug'
-  - 'coffeescript'
 
 packages__group_devel_web:
   - 'jekyll'
@@ -2856,7 +2827,7 @@ packages__group_devel_virtualization:
   # https://github.com/quickemu-project/quickemu
   - 'qemu-system-gui'
 
-  ## Just provides a wrapper script :file:`/usr/bin/kvm` which runs :program:`qemu-system-x86`.
+  #	Virtual package
   - 'qemu-kvm'
 
   ## `kvm-ok` has been separated (https://bugs.launchpad.net/ubuntu/+source/qemu-kvm/+bug/429443). Seems to not be in Debian?
@@ -2970,7 +2941,6 @@ packages__group_devel_additional:
   - 'libcap2-bin'
   - 'libboost-all-dev'
   - 'pandoc'
-  - 'pandoc-citeproc'
   - 'cdbs'
   - 'libssl-dev'
   - 'uthash-dev'
@@ -3128,7 +3098,6 @@ packages__group_devel_full: |
   {{
     packages__group_devel_basic +
     packages__group_tag_devel_rcs_full +
-    packages__group_devel_debian +
     packages__group_devel_android +
     packages__group_devel_golang +
     packages__group_tag_devel_lang_ruby +
@@ -3854,10 +3823,8 @@ packages__group_network_remmina:
   - 'freerdp2-x11'
   - 'remmina'
   - 'remmina-plugin-secret'
-  - 'remmina-plugin-nx'
   - 'remmina-plugin-rdp'
   - 'remmina-plugin-vnc'
-  - 'remmina-plugin-xdmcp'
 
   ## Seems to be catching up as of 2015-08.
   ## Problem: https://gettoweb.de/linux/rdesktop-und-credssp-required-by-server/
@@ -4006,8 +3973,6 @@ packages__group_user_additional:
   - 'scrot'
   - 'redshift-gtk'
 
-  - 'cdcat'
-
   - 'screenkey'
 
   - 'gtk-vector-screenshot'
@@ -4024,7 +3989,6 @@ packages__group_applied_cryptography_basic:
   - 'signing-party'
 
 packages__group_applied_cryptography_additional:
-  - 'hopenpgp-tools'
   - 'pgpdump'
 
 packages__group_network_avahi:
@@ -4054,7 +4018,6 @@ packages__group_user_full: |
     packages__group_user_basic +
     packages__group_user_file_cleanup +
     packages__group_user_additional +
-    packages__group_e2e_testing_basic +
     []
   }}
 
@@ -4399,7 +4362,7 @@ packages__absent_preset_minimal:
   - '{{ "apt-transport-https" if (ansible_pkg_mgr in ["apt"]) else "" }}'
 
   ## Nothing against it but the new default is digikam:
-  - 'shotwell'
+  # - 'shotwell'
 
   ## Is superseded by `tmux` but don’t automatically ensure absence `screen` by this preset:
   # - 'screen'

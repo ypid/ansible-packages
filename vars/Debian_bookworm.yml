@@ -5,3 +5,4 @@ packages__targets:
 
 packages__blacklist_by_vars:
   - 'git-sizer'
+  - 'anki'
