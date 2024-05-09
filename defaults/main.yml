@@ -2654,23 +2654,14 @@ packages__group_tag_devel_lang_python_ypid_basic:
   - 'python3-iso8601'
 
   - 'yapf3'
-  - 'twine'
   - 'python3-wheel'
-  - 'python3-pycodestyle'
-  - 'python3-autopep8'
-  - 'python3-coverage'
-  - 'flake8'
-  - 'python3-flake8'
-  - 'pylint'
   - 'ipython3'
-  - 'python3-all'
   - 'python3-dev'
   - 'isort'
   - 'python3-virtualenv'
   - 'python3-feedparser'
   - 'python3-setuptools'
   - 'python3-setuptools-git'
-  - 'python3-radicale'
   - 'python3-flaskext.wtf'
   - 'python3-icu'
   - 'python3-termcolor'
@@ -2708,10 +2699,10 @@ packages__group_tag_devel_lang_python_ypid_basic:
 
   - 'python3-nagiosplugin'
 
-  ## Used for logging to systemd-journald:
+  # Used for logging to systemd-journald:
   - 'python3-systemd'
 
-  ## For reportbug:
+  # For reportbug:
 
   - 'python3-netaddr'
 
@@ -2722,7 +2713,6 @@ packages__group_tag_devel_lang_python_ypid_basic:
   - 'python3-paramiko'
   - 'python3-pexpect'
   - 'python3-pretty-yaml'
-  - 'tox'
   - 'python3-ruamel.yaml'
   - 'python3-dotenv'
   - 'python3-nose'
