@@ -1209,6 +1209,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie', 'stretch', 'buster' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
 
+  - package: 'gdu'
+    backports: [ 'bullseye' ]
+    state: '{{ packages__apt_preferences__backports_gdu_state | d(packages__apt_preferences__core_backports_state) }}'
+
   - package: 'josm josm-* jmapviewer openstreetmap-map-icons-classic'
     backports: [ 'jessie', 'stretch', 'buster', 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_josm | d(packages__apt_preferences__client_backports_state) }}'
@@ -1225,14 +1229,6 @@ packages__apt_preferences__debian_backports_list:
   - package: 'libreoffice libreoffice-* python3-uno ure uno-* libuno-* fonts-opensymbol'
     backports: [ 'jessie', 'stretch', 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_libreoffice_state | d(packages__apt_preferences__client_backports_state) }}'
-
-  - package: 'qemu-utils qemu-*'
-    backports: [ 'buster' ]
-    state: '{{ packages__apt_preferences__backports_qemu_state | d(packages__apt_preferences__client_backports_state) }}'
-
-  - package: 'ansible'
-    backports: [ 'buster' ]
-    state: '{{ packages__apt_preferences__backports_ansible_state | d(packages__apt_preferences__core_backports_state) }}'
 
   - package: 'lshw'
     filename: 'upgrade_broken_stable_packages_to_backports.pref'
@@ -1254,6 +1250,10 @@ packages__apt_preferences__debian_backports_list:
   - package: 'python3-elasticsearch'
     backports: [ 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_python3_elasticsearch_state | d(packages__apt_preferences__client_backports_state) }}'
+
+  - package: 'lnav'
+    backports: [ 'bookworm' ]
+    state: '{{ packages__apt_preferences__backports_lnav_state | d(packages__apt_preferences__client_backports_state) }}'
 
 
 # .. envvar:: packages__apt_preferences__security_backports_state
@@ -1524,8 +1524,11 @@ packages__group_internet_minimum:
   - 'webext-ublock-origin-firefox'
 
   - 'chromium'
-  - 'webext-ublock-origin-chromium'
   - 'libnss3-tools'
+
+  # Would need to be in Debian backports to be useful because I have the
+  # feeling you want the latest version of this.
+  # - 'webext-ublock-origin-chromium'
 
   - 'torbrowser-launcher'
 
@@ -1685,7 +1688,7 @@ packages__group_tag_admin_monitoring_minimum:
   - 'htop'
   - 'iotop'
   - 'procinfo'
-  - 'ncdu'
+  - 'gdu'
 
 packages__group_tag_admin_monitoring_additional:
   - 'nmon'
@@ -1712,6 +1715,8 @@ packages__group_tag_admin_monitoring_additional:
 
   ## https://github.com/lebinh/ngxtop
   ## Not yet packaged for Debian: https://github.com/lebinh/ngxtop/issues/13
+
+  - 'smem'
 
 packages__group_tag_admin_monitoring_network_minimum:
   - 'nethogs'
@@ -2838,6 +2843,7 @@ packages__group_devel_virtualization:
   - 'gdisk'
   - 'cloud-image-utils'
   - 'virtinst'
+  - 'dumpet'
 
 packages__group_devel_virtualization_desktop_contrib: []
   # - 'virtualbox'
@@ -3500,6 +3506,9 @@ packages__group_user_terminal_programs_minimum:
 
   ## flat file extractor
   # - 'ffe'
+
+  # Not in Nixpkgs.
+  - 'trydiffoscope'
 
 # .. ]]]
 
