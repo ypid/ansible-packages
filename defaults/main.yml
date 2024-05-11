@@ -2653,6 +2653,8 @@ packages__group_tag_devel_lang_python_ypid_basic:
   - 'python3-pytimeparse'
   - 'python3-iso8601'
 
+  - 'python3-poetry'
+
   - 'yapf3'
   - 'python3-wheel'
   - 'ipython3'
