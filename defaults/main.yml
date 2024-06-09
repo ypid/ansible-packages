@@ -1255,6 +1255,10 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'bookworm' ]
     state: '{{ packages__apt_preferences__backports_lnav_state | d(packages__apt_preferences__client_backports_state) }}'
 
+  - package: 'kicad'
+    backports: [ 'bookworm' ]
+    state: '{{ packages__apt_preferences__backports_kicad_state | d(packages__apt_preferences__client_backports_state) }}'
+
 
 # .. envvar:: packages__apt_preferences__security_backports_state
 #
