@@ -1987,9 +1987,9 @@ packages__group_tag_use_printing:
   - 'cups'
   - 'printer-driver-cups-pdf'
 
-  - 'hplip'
-  - 'hpijs-ppds'
-  - 'printer-driver-hpcups'
+  # - 'hplip'
+  # - 'hpijs-ppds'
+  # - 'printer-driver-hpcups'
   # - 'printer-driver-ptouch'
 
 packages__group_tag_use_printing_additional:
