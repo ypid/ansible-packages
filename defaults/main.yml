@@ -3878,15 +3878,15 @@ packages__group_user_terminal:
 
 packages__group_user_file_manager:
 
-  # Consider not installing Nemo because only Nautilus is supported by Qubes OS Extensions?
-  - 'nemo'
-  - 'nemo-gtkhash'
-  - 'nemo-fileroller'
-
   ## For Android USB file sharing.
   - 'gvfs-backends'
 
   - 'nautilus'
+
+  # Consider not installing Nemo because only Nautilus is supported by Qubes OS Extensions?
+  # - 'nemo'
+  # - 'nemo-gtkhash'
+  # - 'nemo-fileroller'
 
   - 'doublecmd-qt'
   - 'doublecmd-help-en'
