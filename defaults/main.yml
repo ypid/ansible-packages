@@ -1992,8 +1992,8 @@ packages__group_tag_use_printing:
   # - 'printer-driver-hpcups'
   # - 'printer-driver-ptouch'
 
-packages__group_tag_use_printing_additional:
-  - 'hplip-gui'
+packages__group_tag_use_printing_additional: []
+  # - 'hplip-gui'
   # - 'gtklp'
 
 # .. ]]]
