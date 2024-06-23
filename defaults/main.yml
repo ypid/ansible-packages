@@ -3947,7 +3947,7 @@ packages__group_user_additional:
   - 'mat2'
   - 'metadata-cleaner'
 
-  - 'unison-gtk'
+  # - 'unison-gtk'
   - 'nextcloud-desktop'
   - 'seahorse'
   - 'libsecret-tools'
