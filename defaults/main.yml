@@ -3745,7 +3745,6 @@ packages__group_wm_xfce:
   - 'xfce4-fsguard-plugin'
   - 'xfce4-genmon-plugin'
   - 'blueman'
-  # - 'hddtemp'
   - 'gnome-system-monitor'
   - 'libpam-gnome-keyring'
 
