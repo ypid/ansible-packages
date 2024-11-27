@@ -1209,6 +1209,11 @@ packages__apt_preferences__debian_backports_list:
     backports: [ 'jessie', 'stretch', 'buster', 'bookworm' ]
     state: '{{ packages__apt_preferences__backports_git_annex_state | d(packages__apt_preferences__core_backports_state) }}'
 
+  - package: 'smartmontools'
+    backports: [ 'bookworm' ]
+    reason: 'Most up-to-date version is desirable to be sure that SMART values are translated correctly'
+    state: '{{ packages__apt_preferences__backports_smartmontools_state | d(packages__apt_preferences__core_backports_state) }}'
+
   - package: 'gdu'
     backports: [ 'bullseye' ]
     state: '{{ packages__apt_preferences__backports_gdu_state | d(packages__apt_preferences__core_backports_state) }}'
